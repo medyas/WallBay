@@ -1,6 +1,12 @@
 package ml.medyas.wallbay.network.unsplash;
 
+import java.util.List;
+
 import ml.medyas.wallbay.BuildConfig;
+import ml.medyas.wallbay.entities.unsplash.UnsplashCollectionSearchEntity;
+import ml.medyas.wallbay.entities.unsplash.UnsplashCollectionsEntity;
+import ml.medyas.wallbay.entities.unsplash.UnsplashPhotoEntity;
+import ml.medyas.wallbay.entities.unsplash.UnsplashSearchEntity;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -11,25 +17,25 @@ public interface UnsplashService {
 
     @Headers("Authorization : " + BuildConfig.UnsplashApiKey)
     @GET("/photos")
-    Call<String> photos(@Query("order_by") String orderBy, @Query("per_pager") int perPager, @Query("pager") int page);
+    Call<List<UnsplashPhotoEntity>> photos(@Query("order_by") String orderBy, @Query("per_pager") int perPager, @Query("pager") int page);
 
     @Headers("Authorization : " + BuildConfig.UnsplashApiKey)
     @GET("/search/photos")
-    Call<String> search(@Query("query") String query, @Query("per_pager") int perPager, @Query("pager") int page);
+    Call<UnsplashSearchEntity> search(@Query("query") String query, @Query("per_pager") int perPager, @Query("pager") int page);
 
     @Headers("Authorization : " + BuildConfig.UnsplashApiKey)
     @GET("/collections")
-    Call<String> collections(@Query("per_pager") int perPager, @Query("pager") int page);
+    Call<UnsplashCollectionsEntity> collections(@Query("per_pager") int perPager, @Query("pager") int page);
 
     @Headers("Authorization : " + BuildConfig.UnsplashApiKey)
     @GET("/collections/featured")
-    Call<String> featuredCollections(@Query("per_pager") int perPager, @Query("pager") int page);
+    Call<UnsplashCollectionsEntity> featuredCollections(@Query("per_pager") int perPager, @Query("pager") int page);
 
     @Headers("Authorization : " + BuildConfig.UnsplashApiKey)
     @GET("/search/collections")
-    Call<String> searchCollections(@Query("query") String query, @Query("per_pager") int perPager, @Query("pager") int page);
+    Call<UnsplashCollectionSearchEntity> searchCollections(@Query("query") String query, @Query("per_pager") int perPager, @Query("pager") int page);
 
     @Headers("Authorization : " + BuildConfig.UnsplashApiKey)
     @GET("/collections/{id}/photos")
-    Call<String> collectionPhotos(@Path("id") String id);
+    Call<List<UnsplashPhotoEntity>> collectionPhotos(@Path("id") int id, @Query("pager") int page, @Query("per_pager") int perPage);
 }
