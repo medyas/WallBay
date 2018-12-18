@@ -1,5 +1,6 @@
 package ml.medyas.wallbay.network.pexels;
 
+import ml.medyas.wallbay.entities.pexels.PexelsEntity;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -14,12 +15,12 @@ public class PexelsCalls {
                 .build();
     }
 
-    public Call<String> getSearch(String query, int perPager, int page) {
+    public Call<PexelsEntity> getSearch(String query, int perPager, int page) {
         return builder().create(PexelsService.class).
                 search(query, perPager, page);
     }
 
-    public Call<String> getCurated(int perPager, int page) {
+    public Call<PexelsEntity> getCurated(int perPager, int page) {
         return builder().create(PexelsService.class).
                 curated(perPager, page);
     }

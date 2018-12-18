@@ -33,12 +33,12 @@ public class UnsplashCollectionSearchEntity implements Parcelable {
     private Integer totalPages;
     @SerializedName("results")
     @Expose
-    private List<UnsplashCollectionSearchEntity> results = null;
+    private List<UnsplashCollectionsEntity> results = null;
 
     protected UnsplashCollectionSearchEntity(Parcel in) {
         this.total = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.totalPages = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        in.readList(this.results, (UnsplashCollectionSearchEntity.class.getClassLoader()));
+        in.readList(this.results, (UnsplashCollectionsEntity.class.getClassLoader()));
     }
 
     /**
@@ -52,7 +52,7 @@ public class UnsplashCollectionSearchEntity implements Parcelable {
      * @param results
      * @param totalPages
      */
-    public UnsplashCollectionSearchEntity(Integer total, Integer totalPages, List<UnsplashCollectionSearchEntity> results) {
+    public UnsplashCollectionSearchEntity(Integer total, Integer totalPages, List<UnsplashCollectionsEntity> results) {
         super();
         this.total = total;
         this.totalPages = totalPages;
@@ -75,11 +75,11 @@ public class UnsplashCollectionSearchEntity implements Parcelable {
         this.totalPages = totalPages;
     }
 
-    public List<UnsplashCollectionSearchEntity> getUnsplashCollectionSearchEntitys() {
+    public List<UnsplashCollectionsEntity> getUnsplashCollectionSearchEntitys() {
         return results;
     }
 
-    public void setUnsplashCollectionSearchEntitys(List<UnsplashCollectionSearchEntity> results) {
+    public void setUnsplashCollectionSearchEntitys(List<UnsplashCollectionsEntity> results) {
         this.results = results;
     }
 

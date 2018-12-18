@@ -3,8 +3,16 @@ package ml.medyas.wallbay.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
+import ml.medyas.wallbay.entities.unsplash.PreviewPhoto;
+import ml.medyas.wallbay.entities.unsplash.Tag;
+
 
 public class CollectionEntity implements Parcelable {
+    private int id;
+    private String title;
+    private int totalPhotos;
     public static final Creator<CollectionEntity> CREATOR = new Creator<CollectionEntity>() {
         @Override
         public CollectionEntity createFromParcel(Parcel in) {
@@ -16,15 +24,15 @@ public class CollectionEntity implements Parcelable {
             return new CollectionEntity[size];
         }
     };
-    private int id;
-    private String title;
-    private int totalPhotos;
-    private String[] tags;
     private String username;
     private String userImg;
-    private String[] imagePreviews;
+    private List<Tag> tags;
+    private List<PreviewPhoto> imagePreviews;
 
-    public CollectionEntity(int id, String title, int totalPhotos, String[] tags, String username, String userImg, String[] imagePreviews) {
+    public CollectionEntity() {
+    }
+
+    public CollectionEntity(int id, String title, int totalPhotos, List<Tag> tags, String username, String userImg, List<PreviewPhoto> imagePreviews) {
         this.id = id;
         this.title = title;
         this.totalPhotos = totalPhotos;
@@ -34,17 +42,14 @@ public class CollectionEntity implements Parcelable {
         this.imagePreviews = imagePreviews;
     }
 
-    public CollectionEntity() {
-    }
-
     protected CollectionEntity(Parcel in) {
         id = in.readInt();
         title = in.readString();
         totalPhotos = in.readInt();
-        tags = in.createStringArray();
+        tags = in.createTypedArrayList(Tag.CREATOR);
         username = in.readString();
         userImg = in.readString();
-        imagePreviews = in.createStringArray();
+        imagePreviews = in.createTypedArrayList(PreviewPhoto.CREATOR);
     }
 
     public int getId() {
@@ -71,11 +76,11 @@ public class CollectionEntity implements Parcelable {
         this.totalPhotos = totalPhotos;
     }
 
-    public String[] getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(String[] tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 
@@ -95,11 +100,11 @@ public class CollectionEntity implements Parcelable {
         this.userImg = userImg;
     }
 
-    public String[] getImagePreviews() {
+    public List<PreviewPhoto> getImagePreviews() {
         return imagePreviews;
     }
 
-    public void setImagePreviews(String[] imagePreviews) {
+    public void setImagePreviews(List<PreviewPhoto> imagePreviews) {
         this.imagePreviews = imagePreviews;
     }
 
@@ -113,9 +118,9 @@ public class CollectionEntity implements Parcelable {
         parcel.writeInt(id);
         parcel.writeString(title);
         parcel.writeInt(totalPhotos);
-        parcel.writeStringArray(tags);
+        parcel.writeTypedList(tags);
         parcel.writeString(username);
         parcel.writeString(userImg);
-        parcel.writeStringArray(imagePreviews);
+        parcel.writeTypedList(imagePreviews);
     }
 }

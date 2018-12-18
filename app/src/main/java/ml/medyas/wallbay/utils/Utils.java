@@ -7,6 +7,6 @@ public class Utils {
     public static final String UNSPLASH_PROFILE_URL = "https://unsplash.com/";
 
     public enum webSite {
-        PIXABAY, PEXELS, UNSPLASH
+        PIXABAY, PEXELS, UNSPLASH, EMPTY, ERROR
     }
 }

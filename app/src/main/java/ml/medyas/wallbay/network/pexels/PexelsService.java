@@ -1,6 +1,7 @@
 package ml.medyas.wallbay.network.pexels;
 
 import ml.medyas.wallbay.BuildConfig;
+import ml.medyas.wallbay.entities.pexels.PexelsEntity;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -10,10 +11,10 @@ public interface PexelsService {
 
     @Headers("Authorization : " + BuildConfig.PexelsApiKey)
     @GET("/search")
-    Call<String> search(@Query("query") String query, @Query("per_pager") int perPager, @Query("pager") int page);
+    Call<PexelsEntity> search(@Query("query") String query, @Query("per_page") int perPager, @Query("page") int page);
 
 
     @Headers("Authorization : " + BuildConfig.PexelsApiKey)
     @GET("/curated")
-    Call<String> curated(@Query("per_pager") int perPager, @Query("pager") int page);
+    Call<PexelsEntity> curated(@Query("per_page") int perPager, @Query("page") int page);
 }

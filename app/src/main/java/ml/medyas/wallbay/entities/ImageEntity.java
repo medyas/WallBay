@@ -17,7 +17,7 @@ public class ImageEntity implements Parcelable {
             return new ImageEntity[size];
         }
     };
-    private int id;
+    private String id;
     private String userName;
     private String userImg;
     private Utils.webSite provider;
@@ -34,7 +34,7 @@ public class ImageEntity implements Parcelable {
     public ImageEntity() {
     }
 
-    public ImageEntity(int id, String userName, String userImg, Utils.webSite provider, int likes, int views, int downloads, int width, int height, String url, String originalImage, String previewImage, String[] tags) {
+    public ImageEntity(String id, String userName, String userImg, Utils.webSite provider, int likes, int views, int downloads, int width, int height, String url, String originalImage, String previewImage, String[] tags) {
         this.id = id;
         this.userName = userName;
         this.userImg = userImg;
@@ -51,7 +51,7 @@ public class ImageEntity implements Parcelable {
     }
 
     protected ImageEntity(Parcel in) {
-        id = in.readInt();
+        id = in.readString();
         userName = in.readString();
         userImg = in.readString();
         likes = in.readInt();
@@ -65,11 +65,11 @@ public class ImageEntity implements Parcelable {
         tags = in.createStringArray();
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -176,7 +176,7 @@ public class ImageEntity implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
+        parcel.writeString(id);
         parcel.writeString(userName);
         parcel.writeString(userImg);
         parcel.writeInt(likes);
