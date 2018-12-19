@@ -13,12 +13,12 @@ import java.util.List;
 
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.entities.ImageEntity;
-import ml.medyas.wallbay.models.PixabayViewModel;
+import ml.medyas.wallbay.models.PexelsViewModel;
 import ml.medyas.wallbay.utils.Utils;
 
 public class MainActivity extends AppCompatActivity {
 
-    private PixabayViewModel mViewModel;
+    private PexelsViewModel mViewModel;
     private int page = 1;
 
     @Override
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mViewModel = ViewModelProviders.of(this)
-                .get(PixabayViewModel.class);
+                .get(PexelsViewModel.class);
 
         getData();
 
@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         });
         if (mViewModel.getUnsplashSearch("nature", 15, page - 1).hasObservers()) {
             mViewModel.getUnsplashSearch("nature", 15, page - 1).removeObservers(this);
-        }
-        mViewModel.getUnsplashSearch("nature", 15, page).observe(this, new Observer<List<ImageEntity>>() {
+        }*/
+        mViewModel.getPexelsSearch("nature", page).observe(this, new Observer<List<ImageEntity>>() {
             @Override
             public void onChanged(@Nullable List<ImageEntity> imageEntities) {
                 if (!imageEntities.isEmpty() && imageEntities != null) {
@@ -77,9 +77,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        */
 
-        mViewModel.getPixabaySearch("", 50, 1, "", "", false, "")
+
+        /*mViewModel.getPixabaySearch("", 50, 1, "", "", false, "")
                 .observe(this, new Observer<List<ImageEntity>>() {
                     @Override
                     public void onChanged(@Nullable List<ImageEntity> imageEntities) {
@@ -96,6 +96,6 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(tag, "Null");
                         }
                     }
-                });
+                });*/
     }
 }

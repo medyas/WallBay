@@ -17,8 +17,8 @@ public class PixabayViewModel extends ViewModel {
         }
     }
 
-    public LiveData<List<ImageEntity>> getPixabaySearch(String query, int perPage, int page, String category, String colors, boolean editorsChoice, String orderBy) {
-        return pixabayRepo.getSearch(query, perPage, page, category, colors, editorsChoice, orderBy);
+    public LiveData<List<ImageEntity>> getPixabaySearch(String query, int page, String category, String colors, boolean editorsChoice, String orderBy) {
+        return pixabayRepo.getSearch(query, page, category, colors, editorsChoice, orderBy);
     }
 
 }

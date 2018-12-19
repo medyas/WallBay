@@ -16,6 +16,8 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static ml.medyas.wallbay.utils.Utils.REQUEST_SIZE;
+
 public class UnsplashCalls {
     private static final String URL = "https://api.unsplash.com/";
 
@@ -36,33 +38,33 @@ public class UnsplashCalls {
                 .build();
     }
 
-    public Call<List<UnsplashPhotoEntity>> getPhotos(String orderBy, int perPager, int page) {
+    public Call<List<UnsplashPhotoEntity>> getPhotos(String orderBy, int page) {
         return builder().create(UnsplashService.class).
-                photos(orderBy, perPager, page);
+                photos(orderBy, REQUEST_SIZE, page);
     }
 
-    public Call<UnsplashSearchEntity> getSearch(String query, int perPager, int page) {
+    public Call<UnsplashSearchEntity> getSearch(String query, int page) {
         return builder().create(UnsplashService.class).
-                search(query, perPager, page);
+                search(query, REQUEST_SIZE, page);
     }
 
-    public Call<List<UnsplashCollectionsEntity>> getCollections(int perPager, int page) {
+    public Call<List<UnsplashCollectionsEntity>> getCollections(int page) {
         return builder().create(UnsplashService.class).
-                collections(perPager, page);
+                collections(REQUEST_SIZE, page);
     }
 
-    public Call<List<UnsplashCollectionsEntity>> getFeaturedCollections(int perPager, int page) {
+    public Call<List<UnsplashCollectionsEntity>> getFeaturedCollections(int page) {
         return builder().create(UnsplashService.class).
-                featuredCollections(perPager, page);
+                featuredCollections(REQUEST_SIZE, page);
     }
 
-    public Call<UnsplashCollectionSearchEntity> getSearchCollections(String query, int perPager, int page) {
+    public Call<UnsplashCollectionSearchEntity> getSearchCollections(String query, int page) {
         return builder().create(UnsplashService.class).
-                searchCollections(query, perPager, page);
+                searchCollections(query, REQUEST_SIZE, page);
     }
 
-    public Call<List<UnsplashPhotoEntity>> getCollectionPhotos(int id, int perPage, int page) {
+    public Call<List<UnsplashPhotoEntity>> getCollectionPhotos(int id, int page) {
         return builder().create(UnsplashService.class).
-                collectionPhotos(id, perPage, page);
+                collectionPhotos(id, REQUEST_SIZE, page);
     }
 }

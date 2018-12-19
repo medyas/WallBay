@@ -25,10 +25,10 @@ public class UnsplashRepository {
         this.unsplashService = new UnsplashCalls();
     }
 
-    public LiveData<List<ImageEntity>> getPhotos(String orderBy, int per_page, int page) {
+    public LiveData<List<ImageEntity>> getPhotos(String orderBy, int page) {
         final MutableLiveData<List<ImageEntity>> data = new MutableLiveData<>();
 
-        unsplashService.getPhotos(orderBy, per_page, page).enqueue(new Callback<List<UnsplashPhotoEntity>>() {
+        unsplashService.getPhotos(orderBy, page).enqueue(new Callback<List<UnsplashPhotoEntity>>() {
             @Override
             public void onResponse(Call<List<UnsplashPhotoEntity>> call, Response<List<UnsplashPhotoEntity>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -72,13 +72,13 @@ public class UnsplashRepository {
         return data;
     }
 
-    public LiveData<List<ImageEntity>> getSearch(String query, int per_page, int page) {
+    public LiveData<List<ImageEntity>> getSearch(String query, int page) {
         final MutableLiveData<List<ImageEntity>> data = new MutableLiveData<>();
 
-        unsplashService.getSearch(query, per_page, page).enqueue(new Callback<UnsplashSearchEntity>() {
+        unsplashService.getSearch(query, page).enqueue(new Callback<UnsplashSearchEntity>() {
             @Override
             public void onResponse(Call<UnsplashSearchEntity> call, Response<UnsplashSearchEntity> response) {
-                if (response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     List<ImageEntity> list = new ArrayList<>();
                     for (UnsplashPhotoEntity item : response.body().getUnsplashPhotoEntitys()) {
                         ImageEntity imageEntity = new ImageEntity(item.getId(),
@@ -119,13 +119,13 @@ public class UnsplashRepository {
         return data;
     }
 
-    public LiveData<List<CollectionEntity>> getCollections(int per_page, int page) {
+    public LiveData<List<CollectionEntity>> getCollections(int page) {
         final MutableLiveData<List<CollectionEntity>> data = new MutableLiveData<>();
 
-        unsplashService.getCollections(per_page, page).enqueue(new Callback<List<UnsplashCollectionsEntity>>() {
+        unsplashService.getCollections(page).enqueue(new Callback<List<UnsplashCollectionsEntity>>() {
             @Override
             public void onResponse(Call<List<UnsplashCollectionsEntity>> call, Response<List<UnsplashCollectionsEntity>> response) {
-                if (response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     List<CollectionEntity> list = new ArrayList<>();
                     for (UnsplashCollectionsEntity item : response.body()) {
                         CollectionEntity collectionEntity = new CollectionEntity(
@@ -154,13 +154,13 @@ public class UnsplashRepository {
 
     }
 
-    public LiveData<List<CollectionEntity>> getFeaturedCollections(int per_page, int page) {
+    public LiveData<List<CollectionEntity>> getFeaturedCollections(int page) {
         final MutableLiveData<List<CollectionEntity>> data = new MutableLiveData<>();
 
-        unsplashService.getFeaturedCollections(per_page, page).enqueue(new Callback<List<UnsplashCollectionsEntity>>() {
+        unsplashService.getFeaturedCollections(page).enqueue(new Callback<List<UnsplashCollectionsEntity>>() {
             @Override
             public void onResponse(Call<List<UnsplashCollectionsEntity>> call, Response<List<UnsplashCollectionsEntity>> response) {
-                if (response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     List<CollectionEntity> list = new ArrayList<>();
                     for (UnsplashCollectionsEntity item : response.body()) {
                         CollectionEntity collectionEntity = new CollectionEntity(
@@ -188,13 +188,13 @@ public class UnsplashRepository {
         return data;
     }
 
-    public LiveData<List<CollectionEntity>> getSearchCollections(String query, int per_page, int page) {
+    public LiveData<List<CollectionEntity>> getSearchCollections(String query, int page) {
         final MutableLiveData<List<CollectionEntity>> data = new MutableLiveData<>();
 
-        unsplashService.getSearchCollections(query, per_page, page).enqueue(new Callback<UnsplashCollectionSearchEntity>() {
+        unsplashService.getSearchCollections(query, page).enqueue(new Callback<UnsplashCollectionSearchEntity>() {
             @Override
             public void onResponse(Call<UnsplashCollectionSearchEntity> call, Response<UnsplashCollectionSearchEntity> response) {
-                if (response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     List<CollectionEntity> list = new ArrayList<>();
                     for (UnsplashCollectionsEntity item : response.body().getUnsplashCollectionSearchEntitys()) {
                         CollectionEntity collectionEntity = new CollectionEntity(
@@ -224,13 +224,13 @@ public class UnsplashRepository {
 
     }
 
-    public LiveData<List<ImageEntity>> getCollectionPhoto(int id, int per_page, int page) {
+    public LiveData<List<ImageEntity>> getCollectionPhoto(int id, int page) {
         final MutableLiveData<List<ImageEntity>> data = new MutableLiveData<>();
 
-        unsplashService.getCollectionPhotos(id, per_page, page).enqueue(new Callback<List<UnsplashPhotoEntity>>() {
+        unsplashService.getCollectionPhotos(id, page).enqueue(new Callback<List<UnsplashPhotoEntity>>() {
             @Override
             public void onResponse(Call<List<UnsplashPhotoEntity>> call, Response<List<UnsplashPhotoEntity>> response) {
-                if (response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     List<ImageEntity> list = new ArrayList<>();
                     for (UnsplashPhotoEntity item : response.body()) {
                         ImageEntity imageEntity = new ImageEntity(item.getId(),

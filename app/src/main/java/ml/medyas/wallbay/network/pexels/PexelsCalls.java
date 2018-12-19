@@ -12,6 +12,8 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static ml.medyas.wallbay.utils.Utils.REQUEST_SIZE;
+
 public class PexelsCalls {
     private static final String URL = "https://api.pexels.com/v1/";
 
@@ -32,13 +34,13 @@ public class PexelsCalls {
                 .build();
     }
 
-    public Call<PexelsEntity> getSearch(String query, int perPager, int page) {
+    public Call<PexelsEntity> getSearch(String query, int page) {
         return builder().create(PexelsService.class).
-                search(query, perPager, page);
+                search(query, REQUEST_SIZE, page);
     }
 
-    public Call<PexelsEntity> getCurated(int perPager, int page) {
+    public Call<PexelsEntity> getCurated(int page) {
         return builder().create(PexelsService.class).
-                curated(perPager, page);
+                curated(REQUEST_SIZE, page);
     }
 }

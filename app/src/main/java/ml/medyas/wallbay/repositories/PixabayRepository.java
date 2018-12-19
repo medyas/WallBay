@@ -23,10 +23,10 @@ public class PixabayRepository {
         this.pixabayService = new PixabayCalls();
     }
 
-    public LiveData<List<ImageEntity>> getSearch(String query, int perPage, int page, String category, String colors, boolean editorsChoice, String orderBy) {
+    public LiveData<List<ImageEntity>> getSearch(String query, int page, String category, String colors, boolean editorsChoice, String orderBy) {
         final MutableLiveData<List<ImageEntity>> data = new MutableLiveData<>();
 
-        pixabayService.getSearch(query, perPage, page, category, colors, editorsChoice, orderBy).enqueue(new Callback<PixabayEntity>() {
+        pixabayService.getSearch(query, page, category, colors, editorsChoice, orderBy).enqueue(new Callback<PixabayEntity>() {
             @Override
             public void onResponse(@NonNull Call<PixabayEntity> call, @NonNull Response<PixabayEntity> response) {
                 if (response.isSuccessful() && response.body() != null) {

@@ -18,27 +18,27 @@ public class UnsplashViewModel extends ViewModel {
         }
     }
 
-    public LiveData<List<ImageEntity>> getUnsplashPhotos(String orderBy, int per_page, int page) {
-        return unsplashRepo.getPhotos(orderBy, per_page, page);
+    public LiveData<List<ImageEntity>> getUnsplashPhotos(String orderBy, int page) {
+        return unsplashRepo.getPhotos(orderBy, page);
     }
 
-    public LiveData<List<ImageEntity>> getUnsplashSearch(String query, int per_page, int page) {
-        return unsplashRepo.getSearch(query, per_page, page);
+    public LiveData<List<ImageEntity>> getUnsplashSearch(String query, int page) {
+        return unsplashRepo.getSearch(query, page);
     }
 
-    public LiveData<List<CollectionEntity>> getUnsplashCollections(int per_page, int page) {
-        return unsplashRepo.getCollections(per_page, page);
+    public LiveData<List<CollectionEntity>> getUnsplashCollections(int page) {
+        return unsplashRepo.getCollections(page);
     }
 
-    public LiveData<List<CollectionEntity>> getUnsplashFeaturedCollections(int per_page, int page) {
-        return unsplashRepo.getFeaturedCollections(per_page, page);
+    public LiveData<List<CollectionEntity>> getUnsplashFeaturedCollections(int page) {
+        return unsplashRepo.getFeaturedCollections(page);
     }
 
-    public LiveData<List<CollectionEntity>> getUnsplashSearchCollections(String query, int per_page, int page) {
-        return unsplashRepo.getSearchCollections(query, per_page, page);
+    public LiveData<List<CollectionEntity>> getUnsplashSearchCollections(String query, int page) {
+        return unsplashRepo.getSearchCollections(query, page);
     }
 
-    public LiveData<List<ImageEntity>> getUnsplashCollectionPhoto(int id, int per_page, int page) {
-        return unsplashRepo.getCollectionPhoto(id, per_page, page);
+    public LiveData<List<ImageEntity>> getUnsplashCollectionPhoto(int id, int page) {
+        return unsplashRepo.getCollectionPhoto(id, page);
     }
 }
