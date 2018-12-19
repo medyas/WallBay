@@ -2,6 +2,7 @@ package ml.medyas.wallbay.network.unsplash;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import ml.medyas.wallbay.entities.unsplash.UnsplashCollectionSearchEntity;
 import ml.medyas.wallbay.entities.unsplash.UnsplashCollectionsEntity;
 import ml.medyas.wallbay.entities.unsplash.UnsplashPhotoEntity;
@@ -18,6 +19,9 @@ public interface UnsplashService {
 
     @GET("search/photos")
     Call<UnsplashSearchEntity> search(@Query("query") String query, @Query("per_page") int perPage, @Query("page") int page);
+
+    @GET("search/photos")
+    Observable<UnsplashSearchEntity> searchAll(@Query("query") String query, @Query("per_page") int perPage, @Query("page") int page);
 
     @GET("collections")
     Call<List<UnsplashCollectionsEntity>> collections(@Query("per_page") int perPage, @Query("page") int page);

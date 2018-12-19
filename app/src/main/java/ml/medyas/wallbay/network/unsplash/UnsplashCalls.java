@@ -24,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static ml.medyas.wallbay.utils.Utils.REQUEST_SIZE;
 
 public class UnsplashCalls {
-    private static final String URL = "https://api.unsplash.com/";
+    public static final String URL = "https://api.unsplash.com/";
     private Context ctx;
 
     public UnsplashCalls(Context ctx) {

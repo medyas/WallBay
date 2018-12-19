@@ -20,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static ml.medyas.wallbay.utils.Utils.REQUEST_SIZE;
 
 public class PixabayCalls {
-    private static final String URL = "https://pixabay.com/api/";
+    public static final String URL = "https://pixabay.com/api/";
     private Context ctx;
 
     public PixabayCalls(Context ctx) {

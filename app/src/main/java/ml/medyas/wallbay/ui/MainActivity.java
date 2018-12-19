@@ -1,24 +1,20 @@
 package ml.medyas.wallbay.ui;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import java.util.List;
-
+import io.reactivex.disposables.Disposable;
 import ml.medyas.wallbay.R;
-import ml.medyas.wallbay.entities.ImageEntity;
-import ml.medyas.wallbay.models.UnsplashViewModel;
-import ml.medyas.wallbay.utils.Utils;
+import ml.medyas.wallbay.entities.SearchEntity;
+import ml.medyas.wallbay.models.SearchViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
-    private UnsplashViewModel mViewModel;
+    private SearchViewModel mViewModel;
     private int page = 1;
 
     @Override
@@ -27,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mViewModel = ViewModelProviders.of(this)
-                .get(UnsplashViewModel.class);
+                .get(SearchViewModel.class);
 
         getData();
 
@@ -44,7 +40,34 @@ public class MainActivity extends AppCompatActivity {
 
     private void getData() {
         final String tag = getClass().getName();
-        mViewModel.getUnsplashPhotos("latest", page).observe(this, new Observer<List<ImageEntity>>() {
+
+        mViewModel.getSearchAllEndpoints("nature", page).subscribe(new io.reactivex.Observer<SearchEntity>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+                Log.d("mainactivity", "onSubscribe");
+            }
+
+            @Override
+            public void onNext(SearchEntity searchEntity) {
+                if (searchEntity != null) {
+                    Log.d("mainactivity", "Data total size: " + searchEntity.getAll().size());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+        /*mViewModel.getUnsplashPhotos("latest", page).observe(this, new Observer<List<ImageEntity>>() {
             @Override
             public void onChanged(@Nullable List<ImageEntity> imageEntities) {
                 if (!imageEntities.isEmpty() && imageEntities != null) {
@@ -59,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        /*
+
         if (mViewModel.getUnsplashSearch("nature", page - 1).hasObservers()) {
             mViewModel.getUnsplashSearch("nature", page - 1).removeObservers(this);
         }

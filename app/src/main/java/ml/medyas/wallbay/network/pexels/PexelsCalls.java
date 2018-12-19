@@ -20,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static ml.medyas.wallbay.utils.Utils.REQUEST_SIZE;
 
 public class PexelsCalls {
-    private static final String URL = "https://api.pexels.com/v1/";
+    public static final String URL = "https://api.pexels.com/v1/";
     private Context ctx;
 
     public PexelsCalls(Context ctx) {
