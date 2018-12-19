@@ -2,7 +2,6 @@ package ml.medyas.wallbay.repositories;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +31,7 @@ public class UnsplashRepository {
         unsplashService.getPhotos(orderBy, per_page, page).enqueue(new Callback<List<UnsplashPhotoEntity>>() {
             @Override
             public void onResponse(Call<List<UnsplashPhotoEntity>> call, Response<List<UnsplashPhotoEntity>> response) {
-                if (response.body() != null) {
-                    Log.d("mainActivity", "Request finished - data size: " + response.body().size());
+                if (response.isSuccessful() && response.body() != null) {
                     List<ImageEntity> list = new ArrayList<>();
                     for (UnsplashPhotoEntity item : response.body()) {
                         ImageEntity imageEntity = new ImageEntity(item.getId(),
