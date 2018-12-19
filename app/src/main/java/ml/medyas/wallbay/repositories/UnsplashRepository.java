@@ -2,6 +2,7 @@ package ml.medyas.wallbay.repositories;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +22,8 @@ import retrofit2.Response;
 public class UnsplashRepository {
     private UnsplashCalls unsplashService;
 
-    public UnsplashRepository() {
-        this.unsplashService = new UnsplashCalls();
+    public UnsplashRepository(Context ctx) {
+        this.unsplashService = new UnsplashCalls(ctx);
     }
 
     public LiveData<List<ImageEntity>> getPhotos(String orderBy, int page) {

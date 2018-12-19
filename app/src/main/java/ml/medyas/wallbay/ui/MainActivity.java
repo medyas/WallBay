@@ -13,12 +13,12 @@ import java.util.List;
 
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.entities.ImageEntity;
-import ml.medyas.wallbay.models.PexelsViewModel;
+import ml.medyas.wallbay.models.UnsplashViewModel;
 import ml.medyas.wallbay.utils.Utils;
 
 public class MainActivity extends AppCompatActivity {
 
-    private PexelsViewModel mViewModel;
+    private UnsplashViewModel mViewModel;
     private int page = 1;
 
     @Override
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mViewModel = ViewModelProviders.of(this)
-                .get(PexelsViewModel.class);
+                .get(UnsplashViewModel.class);
 
         getData();
 
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getData() {
         final String tag = getClass().getName();
-        /*mViewModel.getUnsplashPhotos("", 20, page).observe(this, new Observer<List<ImageEntity>>() {
+        mViewModel.getUnsplashPhotos("latest", page).observe(this, new Observer<List<ImageEntity>>() {
             @Override
             public void onChanged(@Nullable List<ImageEntity> imageEntities) {
                 if (!imageEntities.isEmpty() && imageEntities != null) {
@@ -59,10 +59,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        if (mViewModel.getUnsplashSearch("nature", 15, page - 1).hasObservers()) {
-            mViewModel.getUnsplashSearch("nature", 15, page - 1).removeObservers(this);
-        }*/
-        mViewModel.getPexelsSearch("nature", page).observe(this, new Observer<List<ImageEntity>>() {
+        /*
+        if (mViewModel.getUnsplashSearch("nature", page - 1).hasObservers()) {
+            mViewModel.getUnsplashSearch("nature", page - 1).removeObservers(this);
+        }
+        mViewModel.getPexelsSearch("back", page).observe(this, new Observer<List<ImageEntity>>() {
             @Override
             public void onChanged(@Nullable List<ImageEntity> imageEntities) {
                 if (!imageEntities.isEmpty() && imageEntities != null) {
@@ -74,12 +75,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } else {
                     Log.d(tag, "Null");
+                    Log.d(tag, imageEntities.toString());
                 }
             }
         });
 
 
-        /*mViewModel.getPixabaySearch("", 50, 1, "", "", false, "")
+        mViewModel.getPixabaySearch("", page, "", "", false, "")
                 .observe(this, new Observer<List<ImageEntity>>() {
                     @Override
                     public void onChanged(@Nullable List<ImageEntity> imageEntities) {

@@ -1,7 +1,8 @@
 package ml.medyas.wallbay.models;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
 
 import java.util.List;
 
@@ -9,12 +10,13 @@ import ml.medyas.wallbay.entities.CollectionEntity;
 import ml.medyas.wallbay.entities.ImageEntity;
 import ml.medyas.wallbay.repositories.UnsplashRepository;
 
-public class UnsplashViewModel extends ViewModel {
+public class UnsplashViewModel extends AndroidViewModel {
     private UnsplashRepository unsplashRepo;
 
-    public UnsplashViewModel() {
+    public UnsplashViewModel(Application application) {
+        super(application);
         if (this.unsplashRepo == null) {
-            this.unsplashRepo = new UnsplashRepository();
+            this.unsplashRepo = new UnsplashRepository(application.getApplicationContext());
         }
     }
 

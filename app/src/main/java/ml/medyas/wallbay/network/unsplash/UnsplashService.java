@@ -14,19 +14,19 @@ import retrofit2.http.Query;
 public interface UnsplashService {
 
     @GET("photos")
-    Call<List<UnsplashPhotoEntity>> photos(@Query("order_by") String orderBy, @Query("per_page") int perPager, @Query("page") int page);
+    Call<List<UnsplashPhotoEntity>> photos(@Query("order_by") String orderBy, @Query("per_page") int perPage, @Query("page") int page);
 
     @GET("search/photos")
-    Call<UnsplashSearchEntity> search(@Query("query") String query, @Query("per_page") int perPager, @Query("page") int page);
+    Call<UnsplashSearchEntity> search(@Query("query") String query, @Query("per_page") int perPage, @Query("page") int page);
 
     @GET("collections")
-    Call<List<UnsplashCollectionsEntity>> collections(@Query("per_page") int perPager, @Query("page") int page);
+    Call<List<UnsplashCollectionsEntity>> collections(@Query("per_page") int perPage, @Query("page") int page);
 
     @GET("collections/featured")
-    Call<List<UnsplashCollectionsEntity>> featuredCollections(@Query("per_page") int perPager, @Query("page") int page);
+    Call<List<UnsplashCollectionsEntity>> featuredCollections(@Query("per_page") int perPage, @Query("page") int page);
 
     @GET("search/collections")
-    Call<UnsplashCollectionSearchEntity> searchCollections(@Query("query") String query, @Query("per_page") int perPager, @Query("page") int page);
+    Call<UnsplashCollectionSearchEntity> searchCollections(@Query("query") String query, @Query("per_page") int perPage, @Query("page") int page);
 
     @GET("collections/{id}/photos")
     Call<List<UnsplashPhotoEntity>> collectionPhotos(@Path("id") int id, @Query("per_page") int perPage, @Query("page") int page);

@@ -1,19 +1,21 @@
 package ml.medyas.wallbay.models;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
 
 import java.util.List;
 
 import ml.medyas.wallbay.entities.ImageEntity;
 import ml.medyas.wallbay.repositories.PexelsRepository;
 
-public class PexelsViewModel extends ViewModel {
+public class PexelsViewModel extends AndroidViewModel {
     private PexelsRepository pexelsRepo;
 
-    public PexelsViewModel() {
+    public PexelsViewModel(Application application) {
+        super(application);
         if (this.pexelsRepo == null) {
-            this.pexelsRepo = new PexelsRepository();
+            this.pexelsRepo = new PexelsRepository(application.getApplicationContext());
         }
     }
 

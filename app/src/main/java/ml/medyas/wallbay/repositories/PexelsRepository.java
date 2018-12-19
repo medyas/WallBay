@@ -3,6 +3,8 @@ package ml.medyas.wallbay.repositories;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +21,9 @@ import retrofit2.Response;
 public class PexelsRepository {
     private PexelsCalls pexelsService;
 
-    public PexelsRepository() {
+    public PexelsRepository(Context ctx) {
         if (this.pexelsService == null) {
-            this.pexelsService = new PexelsCalls();
+            this.pexelsService = new PexelsCalls(ctx);
         }
     }
 
@@ -32,6 +34,14 @@ public class PexelsRepository {
         pexelsService.getSearch(query, page).enqueue(new Callback<PexelsEntity>() {
             @Override
             public void onResponse(Call<PexelsEntity> call, Response<PexelsEntity> response) {
+                Log.d("mainactivity", "response: " + response.headers().toString());
+                if (response.raw().cacheResponse() != null) {
+                    Log.d("mainactivity", "response came from cache ");
+                }
+
+                if (response.raw().networkResponse() != null) {
+                    Log.d("mainactivity", "response came from server");
+                }
                 if (response.isSuccessful() && response.body() != null) {
                     List<ImageEntity> list = new ArrayList<>();
                     for (Photo item : response.body().getPhotos()) {

@@ -2,6 +2,7 @@ package ml.medyas.wallbay.repositories;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
@@ -19,8 +20,8 @@ import retrofit2.Response;
 public class PixabayRepository {
     private PixabayCalls pixabayService;
 
-    public PixabayRepository() {
-        this.pixabayService = new PixabayCalls();
+    public PixabayRepository(Context ctx) {
+        this.pixabayService = new PixabayCalls(ctx);
     }
 
     public LiveData<List<ImageEntity>> getSearch(String query, int page, String category, String colors, boolean editorsChoice, String orderBy) {
@@ -43,7 +44,7 @@ public class PixabayRepository {
                                 item.getImageWidth(),
                                 item.getImageHeight(),
                                 item.getPageURL(),
-                                item.getLargeImageURL(),
+                                item.getImageURL(),
                                 item.getWebformatURL(),
                                 item.getTags()
                         );

@@ -8,21 +8,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class Hit implements Parcelable {
 
-    public final static Parcelable.Creator<Hit> CREATOR = new Creator<Hit>() {
-
-
-        @SuppressWarnings({
-                "unchecked"
-        })
-        public Hit createFromParcel(Parcel in) {
-            return new Hit(in);
-        }
-
-        public Hit[] newArray(int size) {
-            return (new Hit[size]);
-        }
-
-    };
     @SerializedName("largeImageURL")
     @Expose
     private String largeImageURL;
@@ -44,6 +29,21 @@ public class Hit implements Parcelable {
     @SerializedName("user_id")
     @Expose
     private Integer userId;
+    public final static Parcelable.Creator<Hit> CREATOR = new Creator<Hit>() {
+
+
+        @SuppressWarnings({
+                "unchecked"
+        })
+        public Hit createFromParcel(Parcel in) {
+            return new Hit(in);
+        }
+
+        public Hit[] newArray(int size) {
+            return (new Hit[size]);
+        }
+
+    };
     @SerializedName("views")
     @Expose
     private Integer views;
@@ -59,6 +59,9 @@ public class Hit implements Parcelable {
     @SerializedName("webformatURL")
     @Expose
     private String webformatURL;
+    @SerializedName("imageURL")
+    @Expose
+    private String imageURL;
     @SerializedName("type")
     @Expose
     private String type;
@@ -86,9 +89,15 @@ public class Hit implements Parcelable {
     @SerializedName("userImageURL")
     @Expose
     private String userImageURL;
+    @SerializedName("id_hash")
+    @Expose
+    private String idHash;
     @SerializedName("previewURL")
     @Expose
     private String previewURL;
+    @SerializedName("fullHDURL")
+    @Expose
+    private String fullHDURL;
 
     protected Hit(Parcel in) {
         this.largeImageURL = ((String) in.readValue((String.class.getClassLoader())));
@@ -98,11 +107,13 @@ public class Hit implements Parcelable {
         this.imageWidth = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.userId = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.imageURL = ((String) in.readValue((String.class.getClassLoader())));
         this.views = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.comments = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.pageURL = ((String) in.readValue((String.class.getClassLoader())));
         this.imageHeight = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.webformatURL = ((String) in.readValue((String.class.getClassLoader())));
+        this.idHash = ((String) in.readValue((String.class.getClassLoader())));
         this.type = ((String) in.readValue((String.class.getClassLoader())));
         this.previewHeight = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.tags = ((String) in.readValue((String.class.getClassLoader())));
@@ -112,63 +123,11 @@ public class Hit implements Parcelable {
         this.imageSize = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.previewWidth = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.userImageURL = ((String) in.readValue((String.class.getClassLoader())));
+        this.fullHDURL = ((String) in.readValue((String.class.getClassLoader())));
         this.previewURL = ((String) in.readValue((String.class.getClassLoader())));
     }
 
-    /**
-     * No args constructor for use in serialization
-     */
     public Hit() {
-    }
-
-    /**
-     * @param tags
-     * @param webformatHeight
-     * @param imageHeight
-     * @param previewHeight
-     * @param previewURL
-     * @param imageSize
-     * @param favorites
-     * @param previewWidth
-     * @param type
-     * @param downloads
-     * @param userImageURL
-     * @param pageURL
-     * @param largeImageURL
-     * @param id
-     * @param views
-     * @param likes
-     * @param userId
-     * @param webformatWidth
-     * @param webformatURL
-     * @param user
-     * @param imageWidth
-     * @param comments
-     */
-    public Hit(String largeImageURL, Integer webformatHeight, Integer webformatWidth, Integer likes, Integer imageWidth, Integer id, Integer userId, Integer views, Integer comments, String pageURL, Integer imageHeight, String webformatURL, String type, Integer previewHeight, String tags, Integer downloads, String user, Integer favorites, Integer imageSize, Integer previewWidth, String userImageURL, String previewURL) {
-        super();
-        this.largeImageURL = largeImageURL;
-        this.webformatHeight = webformatHeight;
-        this.webformatWidth = webformatWidth;
-        this.likes = likes;
-        this.imageWidth = imageWidth;
-        this.id = id;
-        this.userId = userId;
-        this.views = views;
-        this.comments = comments;
-        this.pageURL = pageURL;
-        this.imageHeight = imageHeight;
-        this.webformatURL = webformatURL;
-        this.type = type;
-        this.previewHeight = previewHeight;
-        this.tags = tags;
-        this.downloads = downloads;
-        this.user = user;
-        this.favorites = favorites;
-        this.imageSize = imageSize;
-        this.previewWidth = previewWidth;
-        this.userImageURL = userImageURL;
-        this.previewURL = previewURL;
     }
 
     public String getLargeImageURL() {
@@ -227,6 +186,14 @@ public class Hit implements Parcelable {
         this.userId = userId;
     }
 
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
     public Integer getViews() {
         return views;
     }
@@ -265,6 +232,14 @@ public class Hit implements Parcelable {
 
     public void setWebformatURL(String webformatURL) {
         this.webformatURL = webformatURL;
+    }
+
+    public String getIdHash() {
+        return idHash;
+    }
+
+    public void setIdHash(String idHash) {
+        this.idHash = idHash;
     }
 
     public String getType() {
@@ -339,6 +314,14 @@ public class Hit implements Parcelable {
         this.userImageURL = userImageURL;
     }
 
+    public String getFullHDURL() {
+        return fullHDURL;
+    }
+
+    public void setFullHDURL(String fullHDURL) {
+        this.fullHDURL = fullHDURL;
+    }
+
     public String getPreviewURL() {
         return previewURL;
     }
@@ -355,11 +338,13 @@ public class Hit implements Parcelable {
         dest.writeValue(imageWidth);
         dest.writeValue(id);
         dest.writeValue(userId);
+        dest.writeValue(imageURL);
         dest.writeValue(views);
         dest.writeValue(comments);
         dest.writeValue(pageURL);
         dest.writeValue(imageHeight);
         dest.writeValue(webformatURL);
+        dest.writeValue(idHash);
         dest.writeValue(type);
         dest.writeValue(previewHeight);
         dest.writeValue(tags);
@@ -369,6 +354,7 @@ public class Hit implements Parcelable {
         dest.writeValue(imageSize);
         dest.writeValue(previewWidth);
         dest.writeValue(userImageURL);
+        dest.writeValue(fullHDURL);
         dest.writeValue(previewURL);
     }
 
