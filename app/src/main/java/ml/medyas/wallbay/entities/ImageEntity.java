@@ -4,9 +4,13 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
+import android.databinding.BindingAdapter;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import ml.medyas.wallbay.utils.ProviderTypeConverter;
 import ml.medyas.wallbay.utils.Utils;
@@ -60,6 +64,14 @@ public class ImageEntity implements Parcelable {
         this.originalImage = originalImage;
         this.previewImage = previewImage;
         this.tags = tags;
+    }
+
+    @Ignore
+    @BindingAdapter({"android:loadImage"})
+    public static void loadImage(ImageView view, String imageUrl) {
+        Glide.with(view.getContext())
+                .load(imageUrl)
+                .into(view);
     }
 
     @Ignore
