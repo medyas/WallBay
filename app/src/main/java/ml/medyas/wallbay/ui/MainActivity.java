@@ -17,6 +17,16 @@ public class MainActivity extends AppCompatActivity {
     private SearchViewModel mViewModel;
     private int page = 1;
 
+    //TODO 1: Create First Screen UI & and caching user pref
+    //TODO 3: Create fragments UI and communication with viewmodal ( livedata) for : For You
+    //• Pixabay
+    //• Pexels
+    //• Unsplash
+    //• Search
+    //MainActivity :
+    //• Creating the menu
+    //• Setting the navigation between fragmnets
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

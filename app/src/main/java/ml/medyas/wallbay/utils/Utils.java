@@ -9,6 +9,23 @@ public class Utils {
     public static final int REQUEST_SIZE = 30;
 
     public enum webSite {
-        PIXABAY, PEXELS, UNSPLASH, EMPTY, ERROR
+        PIXABAY(0), PEXELS(1), UNSPLASH(3), EMPTY(4), ERROR(5);
+
+        private int code;
+
+        webSite() {
+        }
+
+        webSite(int code) {
+            this.code = code;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public void setCode(int code) {
+            this.code = code;
+        }
     }
 }

@@ -1,11 +1,19 @@
 package ml.medyas.wallbay.entities;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
+import ml.medyas.wallbay.utils.ProviderTypeConverter;
 import ml.medyas.wallbay.utils.Utils;
 
+@Entity(tableName = "favorite")
 public class ImageEntity implements Parcelable {
+    @Ignore
     public static final Creator<ImageEntity> CREATOR = new Creator<ImageEntity>() {
         @Override
         public ImageEntity createFromParcel(Parcel in) {
@@ -17,9 +25,12 @@ public class ImageEntity implements Parcelable {
             return new ImageEntity[size];
         }
     };
-    private String id;
+    @NonNull
+    @PrimaryKey
+    private String id = "";
     private String userName;
     private String userImg;
+    @TypeConverters(ProviderTypeConverter.class)
     private Utils.webSite provider;
     private int likes;
     private int views;
@@ -31,10 +42,11 @@ public class ImageEntity implements Parcelable {
     private String previewImage;
     private String tags;
 
+    @Ignore
     public ImageEntity() {
     }
 
-    public ImageEntity(String id, String userName, String userImg, Utils.webSite provider, int likes, int views, int downloads, int width, int height, String url, String originalImage, String previewImage, String tags) {
+    public ImageEntity(@NonNull String id, String userName, String userImg, Utils.webSite provider, int likes, int views, int downloads, int width, int height, String url, String originalImage, String previewImage, String tags) {
         this.id = id;
         this.userName = userName;
         this.userImg = userImg;
@@ -50,6 +62,7 @@ public class ImageEntity implements Parcelable {
         this.tags = tags;
     }
 
+    @Ignore
     protected ImageEntity(Parcel in) {
         id = in.readString();
         userName = in.readString();
@@ -65,11 +78,12 @@ public class ImageEntity implements Parcelable {
         tags = in.readString();
     }
 
+    @NonNull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
@@ -169,11 +183,13 @@ public class ImageEntity implements Parcelable {
         this.tags = tags;
     }
 
+    @Ignore
     @Override
     public int describeContents() {
         return 0;
     }
 
+    @Ignore
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(id);
