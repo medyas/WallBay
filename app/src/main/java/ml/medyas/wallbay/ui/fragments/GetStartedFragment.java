@@ -3,17 +3,25 @@ package ml.medyas.wallbay.ui.fragments;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.adapter.GetStartedAdapter;
 import ml.medyas.wallbay.databinding.FragmentGetStartedBinding;
+import ml.medyas.wallbay.entities.GetStartedEntity;
 
 import static ml.medyas.wallbay.utils.Utils.calculateNoOfColumns;
+import static ml.medyas.wallbay.utils.Utils.getCategoriesFromList;
 import static ml.medyas.wallbay.utils.Utils.getCategoriesList;
 
 /**
@@ -25,46 +33,70 @@ import static ml.medyas.wallbay.utils.Utils.getCategoriesList;
  * create an instance of this fragment.
  */
 public class GetStartedFragment extends Fragment {
+    public static final String CATEGORIES_LIST = "categories_list";
     private OnGetStartedFragmentInteractions mListener;
-    private FragmentGetStartedBinding binding;
+    private List<GetStartedEntity> mList;
 
     public GetStartedFragment() {
         // Required empty public constructor
     }
 
     public static GetStartedFragment newInstance() {
-        GetStartedFragment fragment = new GetStartedFragment();
-        return fragment;
+        return new GetStartedFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+        if (savedInstanceState == null) {
+            mList = new ArrayList<>(getCategoriesList());
+        } else {
+            mList = savedInstanceState.getParcelableArrayList(CATEGORIES_LIST);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(CATEGORIES_LIST, (ArrayList<? extends Parcelable>) mList);
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_get_started, container, false);
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_get_started, container, false);
+        FragmentGetStartedBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_get_started, container, false);
 
         binding.getStartedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onGetStartedDone();
+                List<GetStartedEntity> list = new ArrayList<>(getSelectedList());
+                if (!list.isEmpty()) {
+                    mListener.onGetStartedDone(getCategoriesFromList(list));
+                } else {
+                    Toast.makeText(getContext(), "Please select a category !", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         binding.getStartedRecyclerView.setHasFixedSize(true);
         binding.getStartedRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), calculateNoOfColumns(getContext())));
-        binding.getStartedRecyclerView.setAdapter(new GetStartedAdapter(getCategoriesList(), getContext()));
+        binding.getStartedRecyclerView.setAdapter(new GetStartedAdapter(mList));
 
 
         return binding.getRoot();
 
+    }
+
+    private List<GetStartedEntity> getSelectedList() {
+        List<GetStartedEntity> list = new ArrayList<>();
+        for (GetStartedEntity item : mList) {
+            if (item.isSelected()) {
+                list.add(item);
+            }
+        }
+
+        return list;
     }
 
 
@@ -96,6 +128,6 @@ public class GetStartedFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnGetStartedFragmentInteractions {
-        void onGetStartedDone();
+        void onGetStartedDone(String categories);
     }
 }

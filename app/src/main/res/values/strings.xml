@@ -6,4 +6,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="get_started">get started</string>
     <string name="what_kind_of_categories_are_interested_in">What kind of categories are interested in?</string>
+    <string name="categories_images">categories images</string>
+    <string name="selection_checkbox">selection checkbox</string>
 </resources>

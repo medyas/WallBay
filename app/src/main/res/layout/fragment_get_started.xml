@@ -6,6 +6,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
         tools:context=".ui.fragments.GetStartedFragment">
 
         <TextView
@@ -15,6 +16,7 @@
             android:layout_marginTop="28dp"
             android:text="@string/what_kind_of_categories_are_interested_in"
             android:textAlignment="center"
+            android:textColor="@android:color/white"
             android:textSize="26sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -41,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="bottom"
+            app:elevation="4dp"
             android:background="@drawable/get_started_btn_gradient"
             android:gravity="center"
             android:orientation="horizontal"

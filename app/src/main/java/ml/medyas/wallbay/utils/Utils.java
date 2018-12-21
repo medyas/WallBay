@@ -50,7 +50,7 @@ public class Utils {
     public static List<GetStartedEntity> getCategoriesList() {
         List<GetStartedEntity> list = new ArrayList<>();
         for (int i = 0; i < categoriesListName.length; i++) {
-            GetStartedEntity getStartedEntity = new GetStartedEntity(categoriesListName[i], categoriesListImages[i]);
+            GetStartedEntity getStartedEntity = new GetStartedEntity(categoriesListName[i], categoriesListImages[i], false);
             list.add(getStartedEntity);
         }
 
@@ -74,5 +74,17 @@ public class Utils {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
         return (int) (dpWidth / 120);
+    }
+
+    public static String getCategoriesFromList(List<GetStartedEntity> getStartedEntities) {
+        StringBuilder categories = new StringBuilder();
+        for (int i = 0; i < getStartedEntities.size(); i++) {
+            categories.append(getStartedEntities.get(i).getCategoryName());
+            if (i + 1 < getStartedEntities.size()) {
+                categories.append("|");
+            }
+        }
+
+        return categories.toString();
     }
 }

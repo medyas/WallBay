@@ -24,6 +24,8 @@ import ml.medyas.wallbay.ui.fragments.GetStartedFragment;
 
 public class MainActivity extends AppCompatActivity implements GetStartedFragment.OnGetStartedFragmentInteractions, ForYouFragment.OnForYouFragmentInteractions {
 
+    public static final String FIRST_START = "first_start";
+    public static final String INTEREST_CATEGORIES = "interest_categories";
     private SearchViewModel mViewModel;
     private int page = 1;
 
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        setSupportActionBar(binding.content.toolbar);
 
         binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,15 +55,15 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             }
         });
 
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        if (/*pref.getBoolean("first_start", true)*/ true) {
-            Log.d(getClass().getName(), "starting get started !");
-            binding.startContainer.setVisibility(View.VISIBLE);
-            showStartFragment();
-            pref.edit().putBoolean("first_start", false).apply();
-        } else {
-            Log.d(getClass().getName(), "starting normal layout");
-            binding.content.coordinator.setVisibility(View.VISIBLE);
+        if (savedInstanceState == null) {
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+            if (/*pref.getBoolean("first_start", true)*/ true) {
+                binding.startContainer.setVisibility(View.VISIBLE);
+                showStartFragment();
+                pref.edit().putBoolean(FIRST_START, false).apply();
+            } else {
+                binding.content.coordinator.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -181,12 +184,15 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     }
 
     @Override
-    public void onGetStartedDone() {
+    public void onGetStartedDone(String categories) {
         binding.startContainer.setVisibility(View.GONE);
 
         SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(this).edit();
-        pref.putBoolean("first_start", false).apply();
+        pref.putBoolean(FIRST_START, false);
+        pref.putString(INTEREST_CATEGORIES, categories);
+        pref.apply();
 
+        Log.d(getClass().getName(), categories);
         binding.content.coordinator.setVisibility(View.VISIBLE);
 
         replaceFragment(ForYouFragment.newInstance());
