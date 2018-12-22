@@ -8,6 +8,7 @@ import android.databinding.BindingAdapter;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -29,6 +30,20 @@ public class ImageEntity implements Parcelable {
             return new ImageEntity[size];
         }
     };
+
+    public static DiffUtil.ItemCallback<ImageEntity> DIFF_CALLBACK = new DiffUtil.ItemCallback<ImageEntity>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull ImageEntity imageEntity, @NonNull ImageEntity t1) {
+            return imageEntity.getId().equals(t1.getId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull ImageEntity imageEntity, @NonNull ImageEntity t1) {
+            return imageEntity.equals(t1);
+        }
+    };
+
+
     @NonNull
     @PrimaryKey
     private String id = "";

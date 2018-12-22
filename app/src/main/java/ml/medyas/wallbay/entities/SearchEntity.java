@@ -65,7 +65,7 @@ public class SearchEntity {
                     item.getImageHeight(),
                     item.getPageURL(),
                     item.getImageURL(),
-                    item.getWebformatURL(),
+                    item.getWebformatURL(), // previewURL
                     item.getTags()
             );
             list.add(imageEntity);
@@ -89,7 +89,7 @@ public class SearchEntity {
                     item.getHeight(),
                     item.getUrl(),
                     item.getSrc().getOriginal(),
-                    item.getSrc().getLarge(),
+                    item.getSrc().getMedium(),
                     null
             );
             list.add(imageEntity);
@@ -113,7 +113,7 @@ public class SearchEntity {
                     item.getHeight(),
                     item.getLinks().getHtml(),
                     item.getLinks().getDownloadLocation(),
-                    item.getUrls().getRegular(),
+                    item.getUrls().getSmall(),
                     null);
             list.add(imageEntity);
         }

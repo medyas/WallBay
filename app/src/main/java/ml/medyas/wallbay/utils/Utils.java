@@ -2,6 +2,7 @@ package ml.medyas.wallbay.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -17,8 +18,15 @@ public class Utils {
     public static final String PIXABAY_PROFILE_URL = "https://pixabay.com/en/users/";
     public static final String PEXELS_PROFILE_URL = "https://www.pexels.com/@";
     public static final String UNSPLASH_PROFILE_URL = "https://unsplash.com/";
+    public static final String INTEREST_CATEGORIES = "interest_categories";
 
     public static final int REQUEST_SIZE = 30;
+
+    public static int calculateNoOfColumns(Context context, int width) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        return (int) (dpWidth / width);
+    }
 
     public enum webSite {
         PIXABAY(0), PEXELS(1), UNSPLASH(3), EMPTY(4), ERROR(5);
@@ -70,10 +78,15 @@ public class Utils {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public static int calculateNoOfColumns(Context context) {
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        return (int) (dpWidth / 120);
+    /**
+     * This method converts device specific pixels to density independent pixels.
+     *
+     * @param px      A value in px (pixels) unit. Which we need to convert into db
+     * @param context Context to get resources and device specific display metrics
+     * @return A float value to represent dp equivalent to px value
+     */
+    public static int convertPixelsToDp(float px, Context context) {
+        return (int) (px / ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     public static String getCategoriesFromList(List<GetStartedEntity> getStartedEntities) {
@@ -86,5 +99,23 @@ public class Utils {
         }
 
         return categories.toString();
+    }
+
+    /**
+     * This method converts dp unit to equivalent pixels, depending on device density.
+     *
+     * @param dp      A value in dp (density independent pixels) unit. Which we need to convert into pixels
+     * @param context Context to get resources and device specific display metrics
+     * @return A float value to represent px equivalent to dp depending on device density
+     */
+    public static int convertDpToPixel(float dp, Context context) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return Math.round(px);
+    }
+
+    public enum NetworkState {
+        LOADING, LOADED, FAILED
     }
 }

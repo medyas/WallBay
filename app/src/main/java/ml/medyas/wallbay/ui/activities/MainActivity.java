@@ -22,17 +22,17 @@ import ml.medyas.wallbay.models.SearchViewModel;
 import ml.medyas.wallbay.ui.fragments.ForYouFragment;
 import ml.medyas.wallbay.ui.fragments.GetStartedFragment;
 
+import static ml.medyas.wallbay.utils.Utils.INTEREST_CATEGORIES;
+
 public class MainActivity extends AppCompatActivity implements GetStartedFragment.OnGetStartedFragmentInteractions, ForYouFragment.OnForYouFragmentInteractions {
 
     public static final String FIRST_START = "first_start";
-    public static final String INTEREST_CATEGORIES = "interest_categories";
     private SearchViewModel mViewModel;
     private int page = 1;
 
     private ActivityMainBinding binding;
 
-    //TODO 1: Create First Screen UI & and caching user pref
-    //TODO 3: Create fragments UI and communication with viewmodal ( livedata) for : For You
+    //TODO 1: Create fragments UI and communication with viewmodal ( livedata) for : For You
     //• Pixabay
     //• Pexels
     //• Unsplash
@@ -41,10 +41,11 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     //• Creating the menu
     //• Setting the navigation between fragmnets
 
+    //TODO add recyclerview item animation
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(binding.content.toolbar);
 
@@ -57,12 +58,12 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
 
         if (savedInstanceState == null) {
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-            if (/*pref.getBoolean("first_start", true)*/ true) {
+            if (pref.getBoolean("first_start", true)) {
                 binding.startContainer.setVisibility(View.VISIBLE);
                 showStartFragment();
-                pref.edit().putBoolean(FIRST_START, false).apply();
             } else {
                 binding.content.coordinator.setVisibility(View.VISIBLE);
+                replaceFragment(ForYouFragment.newInstance());
             }
         }
     }
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_favorite) {
-
+            //TODO: create favorite activity
         }
         return super.onOptionsItemSelected(item);
     }

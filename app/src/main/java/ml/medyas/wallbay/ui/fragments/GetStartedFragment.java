@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ml.medyas.wallbay.R;
-import ml.medyas.wallbay.adapter.GetStartedAdapter;
+import ml.medyas.wallbay.adapters.GetStartedAdapter;
 import ml.medyas.wallbay.databinding.FragmentGetStartedBinding;
 import ml.medyas.wallbay.entities.GetStartedEntity;
 
@@ -80,7 +80,7 @@ public class GetStartedFragment extends Fragment {
         });
 
         binding.getStartedRecyclerView.setHasFixedSize(true);
-        binding.getStartedRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), calculateNoOfColumns(getContext())));
+        binding.getStartedRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), calculateNoOfColumns(getContext(), 128)));
         binding.getStartedRecyclerView.setAdapter(new GetStartedAdapter(mList));
 
 

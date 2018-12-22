@@ -29,7 +29,7 @@ public class PixabayCalls {
 
     private Retrofit builder() {
         int cacheSize = 5 * 1024 * 1024; // 5 MB
-        final CacheControl cacheControl = new CacheControl.Builder().maxAge(12, TimeUnit.HOURS).build();
+        final CacheControl cacheControl = new CacheControl.Builder().maxAge(24, TimeUnit.HOURS).build();
         Cache cache = new Cache(ctx.getCacheDir(), cacheSize);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
             @Override

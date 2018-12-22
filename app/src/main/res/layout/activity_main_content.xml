@@ -21,19 +21,24 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.widget.NestedScrollView
+        <FrameLayout
+            android:id="@+id/main_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true"
-            android:fitsSystemWindows="true"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-            <FrameLayout
-                android:id="@+id/main_container"
+        <!--
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:fitsSystemWindows="true"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        </android.support.v4.widget.NestedScrollView>
+
+            </android.support.v4.widget.NestedScrollView>
+
+            -->
 
     </android.support.design.widget.CoordinatorLayout>
 

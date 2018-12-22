@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="imageItem"
+            type="ml.medyas.wallbay.entities.ImageEntity" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/item_content"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/item_image"
+            android:loadImage="@{imageItem.previewImage}" />
+
+        <ImageView
+            android:id="@+id/item_add_to_fav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/round_corners"
+            android:contentDescription="@string/add_image_to_favorite"
+            android:padding="4dp"
+            android:src="@drawable/ic_favorite_border_black_24dp"
+            android:tint="@color/colorPrimaryLight"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/round_corners"
+            android:contentDescription="@string/download_image"
+            android:padding="4dp"
+            android:src="@drawable/ic_file_download_black_24dp"
+            android:tint="@color/colorPrimaryLight"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+            -->
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

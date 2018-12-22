@@ -25,8 +25,6 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static ml.medyas.wallbay.utils.Utils.REQUEST_SIZE;
-
 public class SearchCalls {
 
     private Retrofit pexelsBuilder() {
@@ -79,19 +77,19 @@ public class SearchCalls {
 
         Observable<UnsplashSearchEntity> unsplashSearch = unsplashBuilder()
                 .create(UnsplashService.class)
-                .searchAll(query, REQUEST_SIZE, page)
+                .searchAll(query, 10, page)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
 
         Observable<PixabayEntity> pixabaySearch = pixabayBuilder()
                 .create(PixabayService.class)
-                .searchAll(BuildConfig.PixabayApiKey, query, REQUEST_SIZE, page, "", "", false, "")
+                .searchAll(BuildConfig.PixabayApiKey, query, 10, page, "", "", false, "")
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
 
         Observable<PexelsEntity> pexelsSearch = pexelsBuilder()
                 .create(PexelsService.class)
-                .searchAll(query, REQUEST_SIZE, page)
+                .searchAll(query, 10, page)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
 

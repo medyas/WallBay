@@ -1,4 +1,4 @@
-package ml.medyas.wallbay.adapter;
+package ml.medyas.wallbay.adapters;
 
 import android.animation.Animator;
 import android.databinding.DataBindingUtil;

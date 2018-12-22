@@ -8,4 +8,7 @@
     <string name="what_kind_of_categories_are_interested_in">What kind of categories are interested in?</string>
     <string name="categories_images">categories images</string>
     <string name="selection_checkbox">selection checkbox</string>
+    <string name="item_image">item image</string>
+    <string name="add_image_to_favorite">add image to favorite</string>
+    <string name="download_image">download image</string>
 </resources>
