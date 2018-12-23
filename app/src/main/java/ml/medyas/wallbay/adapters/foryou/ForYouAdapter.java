@@ -29,6 +29,7 @@ public class ForYouAdapter extends PagedListAdapter<ImageEntity, ForYouAdapter.F
 
     @Override
     public void onBindViewHolder(@NonNull final ForYouViewHolder holder, int i) {
+
         if (getItem(i) == null) {
 
         } else {
@@ -36,23 +37,24 @@ public class ForYouAdapter extends PagedListAdapter<ImageEntity, ForYouAdapter.F
             holder.imageEntityItemBinding.itemAddToFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onAddToFavorite(holder.getAdapterPosition());
+                    mListener.onAddToFavorite(getItem(holder.getAdapterPosition()));
                 }
             });
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onItemClicked(holder.getAdapterPosition());
+                    mListener.onItemClicked(getItem(holder.getAdapterPosition()));
                 }
             });
         }
     }
 
     public interface onImageItemClicked {
-        void onItemClicked(int position);
 
-        void onAddToFavorite(int position);
+        void onAddToFavorite(ImageEntity position);
+
+        void onItemClicked(ImageEntity item);
     }
 
     public class ForYouViewHolder extends RecyclerView.ViewHolder {

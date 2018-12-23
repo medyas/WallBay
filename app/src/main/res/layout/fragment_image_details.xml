@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="image"
+            type="ml.medyas.wallbay.entities.ImageEntity" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
+        tools:context=".ui.fragments.ImageDetailsFragment">
+
+
+        <com.github.chrisbanes.photoview.PhotoView
+            android:id="@+id/photo_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:loadImage="@{image.previewImage}" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:scaleType="centerCrop"
+            app:lottie_autoPlay="false"
+            app:lottie_colorFilter="@color/colorAccent"
+            app:lottie_loop="false"
+            app:lottie_rawRes="@raw/download_icon" />
+
+
+        <ImageView
+            android:id="@+id/onback_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|top"
+            android:layout_margin="8dp"
+            android:src="@drawable/ic_arrow_back_black_24dp"
+            android:tint="@android:color/white" />
+
+    </FrameLayout>
+</layout>

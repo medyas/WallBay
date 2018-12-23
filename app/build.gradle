@@ -83,7 +83,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 
     // Custom RecyclerView
-    implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
+    //implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
 
     // PhotoEditor
     implementation 'ja.burhanrashid52:photoeditor:0.3.3'

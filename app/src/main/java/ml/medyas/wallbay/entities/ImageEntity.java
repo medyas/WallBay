@@ -11,8 +11,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-
+import ml.medyas.wallbay.R;
+import ml.medyas.wallbay.utils.GlideApp;
 import ml.medyas.wallbay.utils.ProviderTypeConverter;
 import ml.medyas.wallbay.utils.Utils;
 
@@ -84,8 +84,10 @@ public class ImageEntity implements Parcelable {
     @Ignore
     @BindingAdapter({"android:loadImage"})
     public static void loadImage(ImageView view, String imageUrl) {
-        Glide.with(view.getContext())
+        GlideApp.with(view.getContext())
                 .load(imageUrl)
+                .placeholder(R.drawable.ic_image_black_24dp)
+                .error(R.drawable.ic_image_black_24dp)
                 .into(view);
     }
 

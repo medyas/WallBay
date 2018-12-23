@@ -17,28 +17,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:navigationIcon="@drawable/ic_menu_black_24dp"
+                app:titleTextColor="@android:color/white"
                 app:title="For You" />
 
         </android.support.design.widget.AppBarLayout>
+
 
         <FrameLayout
             android:id="@+id/main_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:fitsSystemWindows="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
         <!--
-            <android.support.v4.widget.NestedScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true"
-                android:fitsSystemWindows="true"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:fitsSystemWindows="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
-            </android.support.v4.widget.NestedScrollView>
-
-            -->
+        </android.support.v4.widget.NestedScrollView>
+        -->
 
     </android.support.design.widget.CoordinatorLayout>
 

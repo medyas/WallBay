@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import ml.medyas.wallbay.utils.GlideApp;
 
 public class GetStartedEntity implements Parcelable {
     private String categoryName;
@@ -42,7 +42,7 @@ public class GetStartedEntity implements Parcelable {
 
     @BindingAdapter({"android:loadImage"})
     public static void loadImage(ImageView view, int imageUrl) {
-        Glide.with(view.getContext())
+        GlideApp.with(view.getContext())
                 .load(imageUrl)
                 .into(view);
     }

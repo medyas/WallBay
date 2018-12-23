@@ -10,12 +10,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +27,7 @@ import ml.medyas.wallbay.utils.Utils;
 
 import static ml.medyas.wallbay.utils.Utils.INTEREST_CATEGORIES;
 import static ml.medyas.wallbay.utils.Utils.calculateNoOfColumns;
+import static ml.medyas.wallbay.utils.Utils.convertPixelsToDp;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +41,7 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
     private OnForYouFragmentInteractions mListener;
     private ForYouViewModel mViewModel;
     private ForYouAdapter mAdapter;
+    private FragmentForYouBinding binding;
 
     public ForYouFragment() {
         // Required empty public constructor
@@ -56,42 +55,18 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String interests = pref.getString(INTEREST_CATEGORIES, "");
-        if (interests != null && !interests.equals("")) {
-            mViewModel = ViewModelProviders.of(this, new ForYouViewModelFactory(interests)).get(ForYouViewModel.class);
-        }
-        mAdapter = new ForYouAdapter(this);
-        mViewModel.getPagedListLiveData().observe(this, new Observer<PagedList<ImageEntity>>() {
-            @Override
-            public void onChanged(@Nullable PagedList<ImageEntity> imageEntities) {
-                Log.d("mainactivity", String.format("image list size: %d", imageEntities.size()));
-                mAdapter.submitList(imageEntities);
-            }
-        });
-
-        mViewModel.getNetworkStateLiveData().observe(this, new Observer<Utils.NetworkState>() {
-            @Override
-            public void onChanged(@Nullable Utils.NetworkState networkState) {
-                if (networkState == Utils.NetworkState.LOADED) {
-                    Log.d("mainactivity", "loaded data");
-                } else if (networkState == Utils.NetworkState.LOADING) {
-                    Log.d("mainactivity", "loading data");
-                } else if (networkState == Utils.NetworkState.FAILED) {
-                    Log.d("mainactivity", "failed to load");
-                }
-            }
-        });
+        retryRequest();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        FragmentForYouBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_for_you, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_for_you, container, false);
 
+        mAdapter = new ForYouAdapter(this);
 
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(calculateNoOfColumns(getContext(), 200), StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(calculateNoOfColumns(getContext(), convertPixelsToDp(getResources().getDimension(R.dimen.item_width), getContext())), StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
 
         /*layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -105,10 +80,63 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
         });*/
         binding.forYouRecyclerView.setLayoutManager(layoutManager);
         binding.forYouRecyclerView.setHasFixedSize(false);
-        binding.forYouRecyclerView.setNestedScrollingEnabled(false);
         binding.forYouRecyclerView.setAdapter(mAdapter);
 
         return binding.getRoot();
+    }
+
+    private void retryRequest() {
+
+        if (mViewModel != null) {
+            if (mViewModel.getPagedListLiveData().hasActiveObservers()) {
+                mViewModel.getPagedListLiveData().removeObservers(this);
+                mViewModel.getNetworkStateLiveData().removeObservers(this);
+            }
+        } else {
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
+            String interests = pref.getString(INTEREST_CATEGORIES, "");
+            if (interests != null && !interests.equals("")) {
+                mViewModel = ViewModelProviders.of(this, new ForYouViewModelFactory(interests)).get(ForYouViewModel.class);
+            }
+        }
+
+
+        mViewModel.getPagedListLiveData().observe(this, new Observer<PagedList<ImageEntity>>() {
+            @Override
+            public void onChanged(@Nullable PagedList<ImageEntity> imageEntities) {
+                mAdapter.submitList(imageEntities);
+            }
+        });
+
+        mViewModel.getNetworkStateLiveData().observe(this, new Observer<Utils.NetworkState>() {
+            @Override
+            public void onChanged(@Nullable Utils.NetworkState networkState) {
+                if (networkState == Utils.NetworkState.LOADED) {
+                    binding.loadErrorLayout.itemLoad.setVisibility(View.GONE);
+                    binding.forYouRecyclerView.setVisibility(View.VISIBLE);
+
+                } else if (networkState == Utils.NetworkState.LOADING) {
+
+                } else if (networkState == Utils.NetworkState.FAILED) {
+                    if (mAdapter.getCurrentList().size() == 0) {
+                        binding.loadErrorLayout.netError.setVisibility(View.VISIBLE);
+                        binding.loadErrorLayout.itemLoad.setVisibility(View.GONE);
+                        Snackbar.make(binding.loadErrorLayout.netError, "Network Error", Snackbar.LENGTH_INDEFINITE)
+                                .setAction("Retray", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        binding.loadErrorLayout.netError.setVisibility(View.GONE);
+                                        binding.loadErrorLayout.itemLoad.setVisibility(View.VISIBLE);
+
+                                        retryRequest();
+                                    }
+                                }).show();
+                    } else {
+                        Snackbar.make(binding.loadErrorLayout.netError, "Failed to load more data", Snackbar.LENGTH_INDEFINITE).show();
+                    }
+                }
+            }
+        });
     }
 
 
@@ -130,13 +158,20 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
     }
 
     @Override
-    public void onItemClicked(int position) {
-        Log.d("mainactivity", String.format("clicked item: %d", position));
+    public void onItemClicked(ImageEntity imageEntity) {
+        ImageDetailsFragment frag = ImageDetailsFragment.newInstance(imageEntity);
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .add(R.id.main_container, frag, frag.getClass().getName())
+                .addToBackStack(frag.getClass().getName())
+                .commit();
+
+        mListener.onSetOnBackToolbar(true);
     }
 
     @Override
-    public void onAddToFavorite(int position) {
-        Log.d("mainactivity", String.format("add to fav item: %d", position));
+    public void onAddToFavorite(ImageEntity position) {
+
     }
 
     /**
@@ -151,100 +186,7 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
      */
     public interface OnForYouFragmentInteractions {
         void onImageClicked(ImageEntity imageEntity);
-    }
 
-    public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollListener {
-        // The minimum amount of items to have below your current scroll position
-        // before loading more.
-        private int visibleThreshold = 0;
-
-        // The current offset index of data you have loaded
-        private int currentPage = 1;
-
-        // The total number of items in the dataset after the last load
-        private int previousTotalItemCount = 0;
-
-        // True if we are still waiting for the last set of data to load.
-        private boolean loading = true;
-
-        // Sets the starting page index
-        private int startingPageIndex = 0;
-
-        private RecyclerView.LayoutManager mLayoutManager;
-
-        public EndlessRecyclerViewScrollListener(LinearLayoutManager layoutManager) {
-            this.mLayoutManager = layoutManager;
-        }
-
-        public EndlessRecyclerViewScrollListener(GridLayoutManager layoutManager) {
-            this.mLayoutManager = layoutManager;
-            visibleThreshold = visibleThreshold * layoutManager.getSpanCount();
-        }
-
-        public EndlessRecyclerViewScrollListener(StaggeredGridLayoutManager layoutManager) {
-            this.mLayoutManager = layoutManager;
-            visibleThreshold = visibleThreshold * layoutManager.getSpanCount();
-        }
-
-        public int getLastVisibleItem(int[] lastVisibleItemPositions) {
-            int maxSize = 0;
-            for (int i = 0; i < lastVisibleItemPositions.length; i++) {
-                if (i == 0) {
-                    maxSize = lastVisibleItemPositions[i];
-                } else if (lastVisibleItemPositions[i] > maxSize) {
-                    maxSize = lastVisibleItemPositions[i];
-                }
-            }
-            return maxSize;
-        }
-
-        // This happens many times a second during a scroll, so be wary of the code you place here.
-        // We are given a few useful parameters to help us work out if we need to load some more data,
-        // but first we check if we are waiting for the previous load to finish.
-        @Override
-        public void onScrolled(RecyclerView view, int dx, int dy) {
-            int lastVisibleItemPosition = 0;
-            int totalItemCount = mLayoutManager.getItemCount();
-
-            if (mLayoutManager instanceof StaggeredGridLayoutManager) {
-                int[] lastVisibleItemPositions = ((StaggeredGridLayoutManager) mLayoutManager).findLastVisibleItemPositions(null);
-                // get maximum element within the list
-                lastVisibleItemPosition = getLastVisibleItem(lastVisibleItemPositions);
-            } else if (mLayoutManager instanceof GridLayoutManager) {
-                lastVisibleItemPosition = ((GridLayoutManager) mLayoutManager).findLastVisibleItemPosition();
-            } else if (mLayoutManager instanceof LinearLayoutManager) {
-                lastVisibleItemPosition = ((LinearLayoutManager) mLayoutManager).findLastVisibleItemPosition();
-            }
-
-            // If it’s still loading, we check to see if the dataset count has
-            // changed, if so we conclude it has finished loading and update the current page
-            // number and total item count.
-            if (loading && (totalItemCount > previousTotalItemCount)) {
-                loading = false;
-                previousTotalItemCount = totalItemCount;
-            }
-
-            // If it isn’t currently loading, we check to see if we have breached
-            // the visibleThreshold and need to reload more data.
-            // If we do need to reload some more data, we execute onLoadMore to fetch the data.
-            // threshold should reflect how many total columns there are too
-            if (!loading && (lastVisibleItemPosition + visibleThreshold) > totalItemCount
-                    && view.getAdapter().getItemCount() > visibleThreshold) {// This condition will useful when recyclerview has less than visibleThreshold items
-                currentPage++;
-                onLoadMore(currentPage, totalItemCount, view);
-                loading = true;
-            }
-        }
-
-        // Call whenever performing new searches
-        public void resetState() {
-            this.currentPage = this.startingPageIndex;
-            this.previousTotalItemCount = 0;
-            this.loading = true;
-        }
-
-        // Defines the process for actually loading more data based on page
-        public abstract void onLoadMore(int page, int totalItemsCount, RecyclerView view);
-
+        void onSetOnBackToolbar(boolean setup);
     }
 }

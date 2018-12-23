@@ -3,6 +3,7 @@ package ml.medyas.wallbay.ui.activities;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -21,10 +22,12 @@ import ml.medyas.wallbay.entities.SearchEntity;
 import ml.medyas.wallbay.models.SearchViewModel;
 import ml.medyas.wallbay.ui.fragments.ForYouFragment;
 import ml.medyas.wallbay.ui.fragments.GetStartedFragment;
+import ml.medyas.wallbay.ui.fragments.ImageDetailsFragment;
 
 import static ml.medyas.wallbay.utils.Utils.INTEREST_CATEGORIES;
 
-public class MainActivity extends AppCompatActivity implements GetStartedFragment.OnGetStartedFragmentInteractions, ForYouFragment.OnForYouFragmentInteractions {
+public class MainActivity extends AppCompatActivity implements GetStartedFragment.OnGetStartedFragmentInteractions, ForYouFragment.OnForYouFragmentInteractions,
+        ImageDetailsFragment.OnImageDetailsFragmentInteractions {
 
     public static final String FIRST_START = "first_start";
     private SearchViewModel mViewModel;
@@ -49,13 +52,6 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(binding.content.toolbar);
 
-        binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                binding.drawerLayout.openDrawer(Gravity.START);
-            }
-        });
-
         if (savedInstanceState == null) {
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
             if (pref.getBoolean("first_start", true)) {
@@ -65,6 +61,25 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
                 binding.content.coordinator.setVisibility(View.VISIBLE);
                 replaceFragment(ForYouFragment.newInstance());
             }
+        } else {
+            binding.content.coordinator.setVisibility(View.VISIBLE);
+        }
+
+        setUpToolbar(true);
+    }
+
+    private void setUpToolbar(boolean b) {
+        if (b) {
+            binding.content.toolbar.setVisibility(View.VISIBLE);
+            binding.content.toolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
+            binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    binding.drawerLayout.openDrawer(Gravity.START);
+                }
+            });
+        } else {
+            binding.content.toolbar.setVisibility(View.GONE);
         }
     }
 
@@ -92,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     private void replaceFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, fragment, fragment.getClass().getName())
-                .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
+                //.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
                 .commit();
     }
 
@@ -203,5 +218,20 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     @Override
     public void onImageClicked(ImageEntity imageEntity) {
 
+    }
+
+    @Override
+    public void onSetOnBackToolbar(boolean setup) {
+        setUpToolbar(!setup);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onImageBackPressed() {
+        onBackPressed();
     }
 }

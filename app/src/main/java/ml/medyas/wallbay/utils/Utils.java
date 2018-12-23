@@ -22,11 +22,6 @@ public class Utils {
 
     public static final int REQUEST_SIZE = 30;
 
-    public static int calculateNoOfColumns(Context context, int width) {
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        return (int) (dpWidth / width);
-    }
 
     public enum webSite {
         PIXABAY(0), PEXELS(1), UNSPLASH(3), EMPTY(4), ERROR(5);
@@ -65,6 +60,22 @@ public class Utils {
         return list;
     }
 
+    public static int calculateItemWidth(Context context, int width) {
+        if (calculateNoOfColumns(context, width) > 1) {
+            return width;
+        } else {
+            DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+            float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+            return (int) (dpWidth / 2);
+        }
+    }
+
+
+    public static int calculateNoOfColumns(Context context, int width) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        return (int) (dpWidth / width);
+    }
 
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -78,17 +89,6 @@ public class Utils {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    /**
-     * This method converts device specific pixels to density independent pixels.
-     *
-     * @param px      A value in px (pixels) unit. Which we need to convert into db
-     * @param context Context to get resources and device specific display metrics
-     * @return A float value to represent dp equivalent to px value
-     */
-    public static int convertPixelsToDp(float px, Context context) {
-        return (int) (px / ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT));
-    }
-
     public static String getCategoriesFromList(List<GetStartedEntity> getStartedEntities) {
         StringBuilder categories = new StringBuilder();
         for (int i = 0; i < getStartedEntities.size(); i++) {
@@ -99,6 +99,17 @@ public class Utils {
         }
 
         return categories.toString();
+    }
+
+    /**
+     * This method converts device specific pixels to density independent pixels.
+     *
+     * @param px      A value in px (pixels) unit. Which we need to convert into db
+     * @param context Context to get resources and device specific display metrics
+     * @return A float value to represent dp equivalent to px value
+     */
+    public static int convertPixelsToDp(float px, Context context) {
+        return (int) (px / ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     /**
