@@ -6,6 +6,7 @@ import android.arch.paging.PagedList;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -13,9 +14,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.adapters.foryou.ForYouAdapter;
@@ -132,7 +135,7 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
                                     }
                                 }).show();
                     } else {
-                        Snackbar.make(binding.loadErrorLayout.netError, "Failed to load more data", Snackbar.LENGTH_INDEFINITE).show();
+                        Snackbar.make(binding.loadErrorLayout.netError, "Failed to load more data", Snackbar.LENGTH_LONG).show();
                     }
                 }
             }
@@ -158,12 +161,19 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
     }
 
     @Override
-    public void onItemClicked(ImageEntity imageEntity) {
+    public void onItemClicked(ImageEntity imageEntity, ImageView itemImage) {
         ImageDetailsFragment frag = ImageDetailsFragment.newInstance(imageEntity);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            frag.setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move).setDuration(300));
+            //frag.setEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
+            frag.setExitTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_left));
+        }
 
         getActivity().getSupportFragmentManager().beginTransaction()
                 .add(R.id.main_container, frag, frag.getClass().getName())
                 .addToBackStack(frag.getClass().getName())
+                .addSharedElement(itemImage, String.format("transition %s", imageEntity.getId()))
                 .commit();
 
         mListener.onSetOnBackToolbar(true);

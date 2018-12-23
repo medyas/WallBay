@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.databinding.ImageEntityItemBinding;
@@ -44,7 +45,7 @@ public class ForYouAdapter extends PagedListAdapter<ImageEntity, ForYouAdapter.F
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onItemClicked(getItem(holder.getAdapterPosition()));
+                    mListener.onItemClicked(getItem(holder.getAdapterPosition()), holder.imageEntityItemBinding.itemImage);
                 }
             });
         }
@@ -54,7 +55,7 @@ public class ForYouAdapter extends PagedListAdapter<ImageEntity, ForYouAdapter.F
 
         void onAddToFavorite(ImageEntity position);
 
-        void onItemClicked(ImageEntity item);
+        void onItemClicked(ImageEntity item, ImageView itemImage);
     }
 
     public class ForYouViewHolder extends RecyclerView.ViewHolder {

@@ -1,15 +1,18 @@
 package ml.medyas.wallbay.entities;
 
+import android.annotation.TargetApi;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.databinding.BindingAdapter;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.utils.GlideApp;
@@ -89,6 +92,19 @@ public class ImageEntity implements Parcelable {
                 .placeholder(R.drawable.ic_image_black_24dp)
                 .error(R.drawable.ic_image_black_24dp)
                 .into(view);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Ignore
+    @BindingAdapter({"android:addTransitionName"})
+    public static void addTransitionName(ImageView view, String id) {
+        view.setTransitionName(String.format("transition %s", id));
+    }
+
+    @Ignore
+    @BindingAdapter({"android:setText"})
+    public static void setText(TextView view, int num) {
+        view.setText(String.format("%d", num));
     }
 
     @Ignore

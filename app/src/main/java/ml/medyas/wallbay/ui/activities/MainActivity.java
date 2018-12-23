@@ -4,10 +4,12 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         ImageDetailsFragment.OnImageDetailsFragmentInteractions {
 
     public static final String FIRST_START = "first_start";
+    public static final String TOOLBAR_VISIBILITY = "toolbar_visibility";
     private SearchViewModel mViewModel;
     private int page = 1;
 
@@ -61,23 +64,32 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
                 binding.content.coordinator.setVisibility(View.VISIBLE);
                 replaceFragment(ForYouFragment.newInstance());
             }
+            setUpToolbar(true);
         } else {
             binding.content.coordinator.setVisibility(View.VISIBLE);
+            setUpToolbar(savedInstanceState.getBoolean(TOOLBAR_VISIBILITY));
         }
 
-        setUpToolbar(true);
+        binding.content.toolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
+        binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.drawerLayout.openDrawer(Gravity.START);
+            }
+        });
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(TOOLBAR_VISIBILITY, binding.content.toolbar.getVisibility() == View.VISIBLE);
     }
 
     private void setUpToolbar(boolean b) {
         if (b) {
             binding.content.toolbar.setVisibility(View.VISIBLE);
-            binding.content.toolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
-            binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    binding.drawerLayout.openDrawer(Gravity.START);
-                }
-            });
+
         } else {
             binding.content.toolbar.setVisibility(View.GONE);
         }
@@ -105,9 +117,12 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
 
 
     private void replaceFragment(Fragment fragment) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            fragment.setSharedElementReturnTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.slide_right));
+            fragment.setExitTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.slide_left));
+        }
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, fragment, fragment.getClass().getName())
-                //.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left)
                 .commit();
     }
 
@@ -233,5 +248,6 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     @Override
     public void onImageBackPressed() {
         onBackPressed();
+        setUpToolbar(true);
     }
 }

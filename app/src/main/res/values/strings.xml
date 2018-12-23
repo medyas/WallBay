@@ -11,4 +11,5 @@
     <string name="item_image">item image</string>
     <string name="add_image_to_favorite">add image to favorite</string>
     <string name="download_image">download image</string>
+    <string name="onback_button">onback button</string>
 </resources>
