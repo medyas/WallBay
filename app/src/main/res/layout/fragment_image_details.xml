@@ -22,8 +22,7 @@
 
         <include
             android:id="@+id/image_detail_info"
-            layout="@layout/image_detail_info"
-            android:visibility="gone" />
+            layout="@layout/image_detail_info" />
 
     </FrameLayout>
 </layout>

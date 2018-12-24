@@ -16,6 +16,7 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -25,6 +26,7 @@ import com.bumptech.glide.request.target.Target;
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.databinding.FragmentImageDetailsBinding;
 import ml.medyas.wallbay.entities.ImageEntity;
+import ml.medyas.wallbay.services.WallpaperService;
 import ml.medyas.wallbay.utils.GlideApp;
 
 /**
@@ -40,7 +42,7 @@ public class ImageDetailsFragment extends Fragment {
     private OnImageDetailsFragmentInteractions mListener;
     private FragmentImageDetailsBinding binding;
     private ImageEntity imageEntity;
-    private boolean toggle = true;
+    private boolean toggle = false;
 
     public ImageDetailsFragment() {
         // Required empty public constructor
@@ -132,12 +134,14 @@ public class ImageDetailsFragment extends Fragment {
                 break;
 
             case R.id.fab_wall:
+                setWallpaper();
+
                 break;
 
             case R.id.load_original:
                 GlideApp.with(this)
                         .load(imageEntity.getOriginalImage())
-                        .placeholder(R.drawable.ic_image_black_24dp)
+                        .placeholder(R.drawable.ic_loading_mark)
                         .error(R.drawable.ic_image_black_24dp)
                         .into(binding.photoView);
                 return;
@@ -150,6 +154,11 @@ public class ImageDetailsFragment extends Fragment {
 
         }
         toggleFabs();
+    }
+
+    private void setWallpaper() {
+        Toast.makeText(getContext(), "Loading image ...", Toast.LENGTH_SHORT).show();
+        WallpaperService.setWallpaper(getContext(), imageEntity);
     }
 
     private void favFavorite() {
