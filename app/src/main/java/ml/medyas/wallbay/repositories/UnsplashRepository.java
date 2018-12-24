@@ -45,6 +45,7 @@ public class UnsplashRepository {
                                 item.getWidth(),
                                 item.getHeight(),
                                 item.getLinks().getHtml(),
+                                item.getUrls().getRaw(),
                                 item.getLinks().getDownloadLocation(),
                                 item.getUrls().getRegular(),
                                 null);
@@ -92,6 +93,7 @@ public class UnsplashRepository {
                                 item.getWidth(),
                                 item.getHeight(),
                                 item.getLinks().getHtml(),
+                                item.getUrls().getRaw(),
                                 item.getLinks().getDownloadLocation(),
                                 item.getUrls().getRegular(),
                                 null);
@@ -244,6 +246,7 @@ public class UnsplashRepository {
                                 item.getWidth(),
                                 item.getHeight(),
                                 item.getLinks().getHtml(),
+                                item.getUrls().getRaw(),
                                 item.getLinks().getDownloadLocation(),
                                 item.getUrls().getRegular(),
                                 null);

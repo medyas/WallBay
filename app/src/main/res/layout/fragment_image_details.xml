@@ -11,7 +11,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/fab_btn_gradient">
+        android:background="@drawable/image_detail_background">
 
         <com.github.chrisbanes.photoview.PhotoView
             android:id="@+id/photo_view"

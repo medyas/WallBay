@@ -46,8 +46,6 @@ public class ImageDetailsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    //TODO add set image as wallpaper icon
-    //TODO add view original image
     //TODO create info sheet with color palette-image details-tags... provided by
 
     public static ImageDetailsFragment newInstance(ImageEntity imageEntity) {
@@ -142,7 +140,7 @@ public class ImageDetailsFragment extends Fragment {
                         .placeholder(R.drawable.ic_image_black_24dp)
                         .error(R.drawable.ic_image_black_24dp)
                         .into(binding.photoView);
-                break;
+                return;
 
             case R.id.image_share:
                 break;

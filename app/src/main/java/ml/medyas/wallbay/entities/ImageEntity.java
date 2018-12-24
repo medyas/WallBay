@@ -61,6 +61,7 @@ public class ImageEntity implements Parcelable {
     private int height;
     private String url;
     private String originalImage;
+    private String originalUrl;
     private String previewImage;
     private String tags;
 
@@ -68,7 +69,7 @@ public class ImageEntity implements Parcelable {
     public ImageEntity() {
     }
 
-    public ImageEntity(@NonNull String id, String userName, String userImg, Utils.webSite provider, int likes, int views, int downloads, int width, int height, String url, String originalImage, String previewImage, String tags) {
+    public ImageEntity(@NonNull String id, String userName, String userImg, Utils.webSite provider, int likes, int views, int downloads, int width, int height, String url, String originalImage, String originalUrl, String previewImage, String tags) {
         this.id = id;
         this.userName = userName;
         this.userImg = userImg;
@@ -80,6 +81,7 @@ public class ImageEntity implements Parcelable {
         this.height = height;
         this.url = url;
         this.originalImage = originalImage;
+        originalUrl = originalUrl;
         this.previewImage = previewImage;
         this.tags = tags;
     }
@@ -126,6 +128,7 @@ public class ImageEntity implements Parcelable {
         originalImage = in.readString();
         previewImage = in.readString();
         tags = in.readString();
+        originalUrl = in.readString();
     }
 
     @NonNull
@@ -233,6 +236,14 @@ public class ImageEntity implements Parcelable {
         this.tags = tags;
     }
 
+    public String getOriginalUrl() {
+        return originalUrl;
+    }
+
+    public void setOriginalUrl(String originalUrl) {
+        this.originalUrl = originalUrl;
+    }
+
     @Ignore
     @Override
     public int describeContents() {
@@ -254,5 +265,6 @@ public class ImageEntity implements Parcelable {
         parcel.writeString(originalImage);
         parcel.writeString(previewImage);
         parcel.writeString(tags);
+        parcel.writeString(originalUrl);
     }
 }

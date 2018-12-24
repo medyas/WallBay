@@ -48,7 +48,7 @@ public class PexelsRepository {
                                 item.getHeight(),
                                 item.getUrl(),
                                 item.getSrc().getOriginal(),
-                                item.getSrc().getLarge(),
+                                item.getSrc().getOriginal(), item.getSrc().getLarge(),
                                 null
                         );
                         list.add(imageEntity);
@@ -99,7 +99,7 @@ public class PexelsRepository {
                                 item.getHeight(),
                                 item.getUrl(),
                                 item.getSrc().getOriginal(),
-                                item.getSrc().getLarge(),
+                                item.getSrc().getOriginal(), item.getSrc().getLarge(),
                                 null
                         );
                         list.add(imageEntity);

@@ -45,7 +45,7 @@ public class PixabayRepository {
                                 item.getImageHeight(),
                                 item.getPageURL(),
                                 item.getImageURL(),
-                                item.getWebformatURL(),
+                                item.getImageURL(), item.getWebformatURL(),
                                 item.getTags()
                         );
                         list.add(imageEntity);
