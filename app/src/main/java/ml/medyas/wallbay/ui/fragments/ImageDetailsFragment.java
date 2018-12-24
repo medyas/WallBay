@@ -1,14 +1,13 @@
 package ml.medyas.wallbay.ui.fragments;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,13 +38,13 @@ import ml.medyas.wallbay.utils.GlideApp;
 public class ImageDetailsFragment extends Fragment {
     public static final String IMAGE_ENTITY = "IMAGE_ENTITY";
     private OnImageDetailsFragmentInteractions mListener;
+    private FragmentImageDetailsBinding binding;
     private ImageEntity imageEntity;
+    private boolean toggle = true;
 
     public ImageDetailsFragment() {
         // Required empty public constructor
     }
-
-    //TODO: save visibility status of the fabs
 
     public static ImageDetailsFragment newInstance(ImageEntity imageEntity) {
         ImageDetailsFragment frag = new ImageDetailsFragment();
@@ -69,9 +68,12 @@ public class ImageDetailsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final FragmentImageDetailsBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_image_details, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_image_details, container, false);
 
         binding.setImage(imageEntity);
+        binding.imageDetailInfo.setImage(imageEntity);
+        binding.imageDetailInfo.setFragment(this);
+
         GlideApp.with(this)
                 .asDrawable()
                 .load(imageEntity.getPreviewImage())
@@ -90,75 +92,151 @@ public class ImageDetailsFragment extends Fragment {
                 })
                 .into(binding.photoView);
 
-        binding.itemToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        binding.imageDetailInfo.itemToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mListener.onImageBackPressed();
             }
         });
 
-        binding.itemPlus.setOnClickListener(new View.OnClickListener() {
-            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+        binding.photoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Display mdisp = getActivity().getWindowManager().getDefaultDisplay();
-                Point mdispSize = new Point();
-                mdisp.getSize(mdispSize);
-                int maxX = mdispSize.x;
-                int maxY = mdispSize.y;
-
-                AnimatorSet decSet2 = new AnimatorSet();
-                decSet2.playTogether(
-                        ObjectAnimator.ofFloat(binding.floatingActionButton, View.ALPHA, 0, 1),
-                        ObjectAnimator.ofFloat(binding.floatingActionButton2, View.ALPHA, 0, 1),
-                        ObjectAnimator.ofFloat(binding.floatingActionButton3, View.ALPHA, 0, 1),
-                        ObjectAnimator.ofFloat(binding.floatingActionButton4, View.ALPHA, 0, 1),
-                        ObjectAnimator.ofFloat(binding.floatingActionButton5, View.ALPHA, 0, 1),
-                        ObjectAnimator.ofFloat(binding.floatingActionButton, "y", maxY - 350),
-                        ObjectAnimator.ofFloat(binding.floatingActionButton2, "y", maxY - 350),
-                        ObjectAnimator.ofFloat(binding.floatingActionButton3, "y", maxY - 250),
-                        ObjectAnimator.ofFloat(binding.floatingActionButton4, "y", maxY - 350),
-                        ObjectAnimator.ofFloat(binding.floatingActionButton5, "y", maxY - 350),
-                        ObjectAnimator.ofFloat(binding.itemPlus, View.ALPHA, 1, 0),
-                        ObjectAnimator.ofFloat(binding.itemPlus, "y", maxY)
-                );
-                decSet2.setDuration(500);
-                decSet2.start();
-            }
-        });
-
-        binding.floatingActionButton3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Display mdisp = getActivity().getWindowManager().getDefaultDisplay();
-                Point mdispSize = new Point();
-                mdisp.getSize(mdispSize);
-                int maxX = mdispSize.x;
-                int maxY = mdispSize.y;
-
-                AnimatorSet decSet2 = new AnimatorSet();
-                decSet2.playTogether(
-                        ObjectAnimator.ofFloat(binding.floatingActionButton, View.ALPHA, 1, 0),
-                        ObjectAnimator.ofFloat(binding.floatingActionButton2, View.ALPHA, 1, 0),
-                        ObjectAnimator.ofFloat(binding.floatingActionButton3, View.ALPHA, 1, 0),
-                        ObjectAnimator.ofFloat(binding.floatingActionButton4, View.ALPHA, 1, 0),
-                        ObjectAnimator.ofFloat(binding.floatingActionButton5, View.ALPHA, 1, 0),
-                        ObjectAnimator.ofFloat(binding.floatingActionButton, "y", maxY),
-                        ObjectAnimator.ofFloat(binding.floatingActionButton2, "y", maxY),
-                        ObjectAnimator.ofFloat(binding.floatingActionButton3, "y", maxY),
-                        ObjectAnimator.ofFloat(binding.floatingActionButton4, "y", maxY),
-                        ObjectAnimator.ofFloat(binding.floatingActionButton5, "y", maxY),
-                        ObjectAnimator.ofFloat(binding.itemPlus, View.ALPHA, 0, 1),
-                        ObjectAnimator.ofFloat(binding.itemPlus, "y", maxY - 200)
-                );
-                decSet2.setDuration(500);
-                decSet2.start();
+                if (binding.imageDetailInfo.getRoot().getVisibility() == View.GONE) {
+                    binding.imageDetailInfo.getRoot().setVisibility(View.VISIBLE);
+                } else {
+                    binding.imageDetailInfo.getRoot().setVisibility(View.GONE);
+                }
             }
         });
 
         return binding.getRoot();
+    }
+
+    public void onFabClicked(View view) {
+        switch (view.getId()) {
+            case R.id.fab_download:
+                fabDownload();
+                break;
+
+            case R.id.fab_fav:
+                favFavorite();
+                break;
+
+            case R.id.fab_info:
+                break;
+
+            case R.id.fab_edit:
+                break;
+
+            case R.id.fab_share:
+                break;
+
+            case R.id.item_plus:
+                break;
+
+        }
+        toggleFabs();
+    }
+
+    private void favFavorite() {
+        //TODO add to favorite
+        binding.imageDetailInfo.lottieFav.setVisibility(View.VISIBLE);
+        binding.imageDetailInfo.lottieFav.playAnimation();
+        binding.imageDetailInfo.lottieFav.addAnimatorListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                binding.imageDetailInfo.lottieFav.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+    }
+
+    private void fabDownload() {
+        //TODO download image
+        binding.imageDetailInfo.lottieDownload.setVisibility(View.VISIBLE);
+        binding.imageDetailInfo.lottieDownload.playAnimation();
+        binding.imageDetailInfo.lottieDownload.addAnimatorListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                binding.imageDetailInfo.lottieDownload.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+    }
+
+    private void toggleFabs() {
+        Display mdisp = getActivity().getWindowManager().getDefaultDisplay();
+        Point mdispSize = new Point();
+        mdisp.getSize(mdispSize);
+        int maxY = mdispSize.y;
+
+        if (toggle) {
+
+            binding.imageDetailInfo.itemPlus.setImageResource(R.drawable.ic_close_black_24dp);
+            AnimatorSet decSet2 = new AnimatorSet();
+            decSet2.playTogether(
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabShare, View.ALPHA, 0, 1),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabEdit, View.ALPHA, 0, 1),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabInfo, View.ALPHA, 0, 1),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabDownload, View.ALPHA, 0, 1),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabFav, View.ALPHA, 0, 1),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabShare, "y", maxY - 350),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabEdit, "y", maxY - 350),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabInfo, "y", maxY - 450),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabDownload, "y", maxY - 350),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabFav, "y", maxY - 350)
+            );
+            decSet2.setDuration(500);
+            decSet2.start();
+        } else {
+            binding.imageDetailInfo.itemPlus.setImageResource(R.drawable.ic_add_circle_outline_black_24dp);
+            AnimatorSet decSet2 = new AnimatorSet();
+            decSet2.playTogether(
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabShare, View.ALPHA, 1, 0),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabEdit, View.ALPHA, 1, 0),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabInfo, View.ALPHA, 1, 0),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabDownload, View.ALPHA, 1, 0),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabFav, View.ALPHA, 1, 0),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabShare, "y", maxY),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabEdit, "y", maxY),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabInfo, "y", maxY),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabDownload, "y", maxY),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabFav, "y", maxY)
+            );
+            decSet2.setDuration(500);
+            decSet2.start();
+        }
+
+        toggle = !toggle;
     }
 
 

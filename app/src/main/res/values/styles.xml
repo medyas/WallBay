@@ -8,4 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <style name="FabStyles">
+        <item name="android:tint">@android:color/white</item>
+        <item name="android:alpha">0.0</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:layout_margin">8dp</item>
+    </style>
+
 </resources>

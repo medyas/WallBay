@@ -80,19 +80,24 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
 
     }
 
+    private void setUpToolbar(boolean setup) {
+        if (setup) {
+            binding.content.toolbar.setVisibility(View.VISIBLE);
+        } else {
+            binding.content.toolbar.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(TOOLBAR_VISIBILITY, binding.content.toolbar.getVisibility() == View.VISIBLE);
     }
 
-    private void setUpToolbar(boolean b) {
-        if (b) {
-            binding.content.toolbar.setVisibility(View.VISIBLE);
-
-        } else {
-            binding.content.toolbar.setVisibility(View.GONE);
-        }
+    @Override
+    public void onBackPressed() {
+        setUpToolbar(true);
+        super.onBackPressed();
     }
 
     private void showStartFragment() {
@@ -241,6 +246,11 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     }
 
     @Override
+    public void reCreateFragment(Fragment fragment) {
+        replaceFragment(fragment);
+    }
+
+    @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
@@ -248,6 +258,5 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     @Override
     public void onImageBackPressed() {
         onBackPressed();
-        setUpToolbar(true);
     }
 }

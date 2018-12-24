@@ -13,12 +13,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.adapters.foryou.ForYouAdapter;
@@ -58,7 +60,7 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        retryRequest();
+        setUpViewModel();
     }
 
     @Override
@@ -72,23 +74,36 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(calculateNoOfColumns(getContext(), convertPixelsToDp(getResources().getDimension(R.dimen.item_width), getContext())), StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
 
-        /*layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int i) {
-                if(i==0) {
-                    return calculateNoOfColumns(getContext(), 200);
-                }
-                return 1;
-            }
-        });*/
         binding.forYouRecyclerView.setLayoutManager(layoutManager);
         binding.forYouRecyclerView.setHasFixedSize(false);
         binding.forYouRecyclerView.setAdapter(mAdapter);
+        binding.forYouRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && binding.loadErrorLayout.slideShowPlay.getVisibility() == View.VISIBLE) {
+                    binding.loadErrorLayout.slideShowPlay.hide();
+                } else if (dy < 0 && binding.loadErrorLayout.slideShowPlay.getVisibility() != View.VISIBLE) {
+                    binding.loadErrorLayout.slideShowPlay.show();
+                }
+            }
+        });
+
+        binding.loadErrorLayout.slideShowPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mAdapter.getCurrentList().size() == 0) {
+                    Toast.makeText(getContext(), "Wait for images to load!", Toast.LENGTH_SHORT).show();
+                } else {
+
+                }
+            }
+        });
 
         return binding.getRoot();
     }
 
-    private void retryRequest() {
+    private void setUpViewModel() {
 
         if (mViewModel != null) {
             if (mViewModel.getPagedListLiveData().hasActiveObservers()) {
@@ -131,7 +146,7 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
                                         binding.loadErrorLayout.netError.setVisibility(View.GONE);
                                         binding.loadErrorLayout.itemLoad.setVisibility(View.VISIBLE);
 
-                                        retryRequest();
+                                        mListener.reCreateFragment(ForYouFragment.newInstance());
                                     }
                                 }).show();
                     } else {
@@ -165,9 +180,9 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
         ImageDetailsFragment frag = ImageDetailsFragment.newInstance(imageEntity);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            frag.setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move).setDuration(300));
+            frag.setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
             //frag.setEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
-            frag.setExitTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_left));
+            frag.setExitTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
         }
 
         getActivity().getSupportFragmentManager().beginTransaction()
@@ -198,5 +213,7 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
         void onImageClicked(ImageEntity imageEntity);
 
         void onSetOnBackToolbar(boolean setup);
+
+        void reCreateFragment(Fragment fragment);
     }
 }

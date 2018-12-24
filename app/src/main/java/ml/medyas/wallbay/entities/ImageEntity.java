@@ -104,6 +104,11 @@ public class ImageEntity implements Parcelable {
     @Ignore
     @BindingAdapter({"android:setText"})
     public static void setText(TextView view, int num) {
+        if (num > 1000) {
+            String temp = String.valueOf(num);
+            view.setText(String.format("%sK", temp.substring(0, temp.length() - 3)));
+            return;
+        }
         view.setText(String.format("%d", num));
     }
 

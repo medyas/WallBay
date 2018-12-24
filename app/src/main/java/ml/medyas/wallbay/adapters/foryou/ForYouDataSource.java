@@ -38,7 +38,6 @@ public class ForYouDataSource extends PageKeyedDataSource<Integer, ImageEntity> 
 
             @Override
             public void onNext(SearchEntity searchEntity) {
-                Log.d("mainactivity", String.format("Requested initial Size: %d", params.requestedLoadSize));
 
                 callback.onResult(searchEntity.getAll(), null, 2);
                 networkState.postValue(Utils.NetworkState.LOADED);
@@ -73,7 +72,6 @@ public class ForYouDataSource extends PageKeyedDataSource<Integer, ImageEntity> 
 
             @Override
             public void onNext(SearchEntity searchEntity) {
-                Log.d("mainactivity", String.format("Requested page: %d", params.key));
 
                 callback.onResult(searchEntity.getAll(), params.key + 1);
                 networkState.postValue(Utils.NetworkState.LOADED);

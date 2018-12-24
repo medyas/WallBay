@@ -31,9 +31,11 @@
             android:layout_gravity="start"
             android:fitsSystemWindows="true">
 
+            <!--
             <include
                 android:id="@+id/navigation"
                 layout="@layout/navigation_base_layout" />
+                -->
 
         </android.support.design.widget.NavigationView>
 
