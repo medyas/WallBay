@@ -47,13 +47,13 @@
         <!-- Action fabs -->
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_share"
+            android:id="@+id/fab_wall"
             style="@style/FabStyles"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:onClick="@{fragment.onFabClicked}"
-            android:src="@drawable/ic_share_black_24dp"
+            android:onClick="@{fragment::onFabClicked}"
+            android:src="@drawable/ic_set_as_wallpaper"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/fab_edit"
             app:layout_constraintHorizontal_bias="0.5"
@@ -66,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:onClick="@{fragment.onFabClicked}"
+            android:onClick="@{fragment::onFabClicked}"
             android:src="@drawable/ic_file_download_black_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/fab_fav"
@@ -79,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:onClick="@{fragment.onFabClicked}"
+            android:onClick="@{fragment::onFabClicked}"
             android:src="@drawable/ic_favorite_border_black_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -92,12 +92,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:onClick="@{fragment.onFabClicked}"
+            android:onClick="@{fragment::onFabClicked}"
             android:src="@drawable/ic_edit_tool"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/fab_info"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/fab_share" />
+            app:layout_constraintStart_toEndOf="@+id/fab_wall" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_info"
@@ -105,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:onClick="@{fragment.onFabClicked}"
+            android:onClick="@{fragment::onFabClicked}"
             android:src="@drawable/ic_info_black_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/fab_download"
@@ -122,7 +122,7 @@
             android:layout_margin="16dp"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="@{fragment.onFabClicked}"
+            android:onClick="@{fragment::onFabClicked}"
             android:src="@drawable/ic_add_circle_outline_black_24dp"
             app:backgroundTint="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -189,7 +189,35 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/ic_arrow_back_black_24dp" />
+            app:navigationIcon="@drawable/ic_arrow_back_black_24dp">
+
+            <ImageButton
+                android:id="@+id/load_original"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/load_original"
+                android:onClick="@{fragment::onFabClicked}"
+                android:src="@drawable/ic_show_original"
+                android:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/image_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/share_image"
+                android:onClick="@{fragment::onFabClicked}"
+                android:src="@drawable/ic_share_black_24dp"
+                android:tint="@android:color/white" />
+
+        </android.support.v7.widget.Toolbar>
 
     </android.support.constraint.ConstraintLayout>
 </layout>

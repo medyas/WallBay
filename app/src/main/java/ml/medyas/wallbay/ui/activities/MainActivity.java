@@ -33,8 +33,6 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
 
     public static final String FIRST_START = "first_start";
     public static final String TOOLBAR_VISIBILITY = "toolbar_visibility";
-    private SearchViewModel mViewModel;
-    private int page = 1;
 
     private ActivityMainBinding binding;
 
@@ -133,9 +131,10 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
 
     private void getData() {
         final String tag = getClass().getName();
-        mViewModel = ViewModelProviders.of(this)
+        SearchViewModel mViewModel = ViewModelProviders.of(this)
                 .get(SearchViewModel.class);
 
+        int page = 1;
         mViewModel.getSearchAllEndpoints("nature", page).subscribe(new io.reactivex.Observer<SearchEntity>() {
             @Override
             public void onSubscribe(Disposable d) {

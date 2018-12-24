@@ -72,7 +72,7 @@ public class ForYouDataSource extends PageKeyedDataSource<Integer, ImageEntity> 
 
             @Override
             public void onNext(SearchEntity searchEntity) {
-
+                Log.d("mainactivity", String.format("loaded page %d", params.key));
                 callback.onResult(searchEntity.getAll(), params.key + 1);
                 networkState.postValue(Utils.NetworkState.LOADED);
             }

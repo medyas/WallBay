@@ -12,4 +12,6 @@
     <string name="add_image_to_favorite">add image to favorite</string>
     <string name="download_image">download image</string>
     <string name="onback_button">onback button</string>
+    <string name="share_image">share image</string>
+    <string name="load_original">load original image</string>
 </resources>

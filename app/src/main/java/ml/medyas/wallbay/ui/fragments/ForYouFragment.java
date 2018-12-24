@@ -52,6 +52,8 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
         // Required empty public constructor
     }
 
+    //TODO add recyclerView multi item selection with menu to download and share selected
+
     public static ForYouFragment newInstance() {
         return new ForYouFragment();
     }

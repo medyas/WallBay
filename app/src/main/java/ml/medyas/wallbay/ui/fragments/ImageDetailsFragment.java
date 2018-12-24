@@ -46,6 +46,10 @@ public class ImageDetailsFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //TODO add set image as wallpaper icon
+    //TODO add view original image
+    //TODO create info sheet with color palette-image details-tags... provided by
+
     public static ImageDetailsFragment newInstance(ImageEntity imageEntity) {
         ImageDetailsFragment frag = new ImageDetailsFragment();
         Bundle bundle = new Bundle();
@@ -129,7 +133,18 @@ public class ImageDetailsFragment extends Fragment {
             case R.id.fab_edit:
                 break;
 
-            case R.id.fab_share:
+            case R.id.fab_wall:
+                break;
+
+            case R.id.load_original:
+                GlideApp.with(this)
+                        .load(imageEntity.getOriginalImage())
+                        .placeholder(R.drawable.ic_image_black_24dp)
+                        .error(R.drawable.ic_image_black_24dp)
+                        .into(binding.photoView);
+                break;
+
+            case R.id.image_share:
                 break;
 
             case R.id.item_plus:
@@ -204,12 +219,12 @@ public class ImageDetailsFragment extends Fragment {
             binding.imageDetailInfo.itemPlus.setImageResource(R.drawable.ic_close_black_24dp);
             AnimatorSet decSet2 = new AnimatorSet();
             decSet2.playTogether(
-                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabShare, View.ALPHA, 0, 1),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabWall, View.ALPHA, 0, 1),
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabEdit, View.ALPHA, 0, 1),
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabInfo, View.ALPHA, 0, 1),
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabDownload, View.ALPHA, 0, 1),
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabFav, View.ALPHA, 0, 1),
-                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabShare, "y", maxY - 350),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabWall, "y", maxY - 350),
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabEdit, "y", maxY - 350),
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabInfo, "y", maxY - 450),
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabDownload, "y", maxY - 350),
@@ -221,12 +236,12 @@ public class ImageDetailsFragment extends Fragment {
             binding.imageDetailInfo.itemPlus.setImageResource(R.drawable.ic_add_circle_outline_black_24dp);
             AnimatorSet decSet2 = new AnimatorSet();
             decSet2.playTogether(
-                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabShare, View.ALPHA, 1, 0),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabWall, View.ALPHA, 1, 0),
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabEdit, View.ALPHA, 1, 0),
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabInfo, View.ALPHA, 1, 0),
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabDownload, View.ALPHA, 1, 0),
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabFav, View.ALPHA, 1, 0),
-                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabShare, "y", maxY),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabWall, "y", maxY),
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabEdit, "y", maxY),
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabInfo, "y", maxY),
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabDownload, "y", maxY),
