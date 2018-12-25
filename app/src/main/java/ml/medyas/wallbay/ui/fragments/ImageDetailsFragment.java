@@ -1,16 +1,20 @@
 package ml.medyas.wallbay.ui.fragments;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -28,6 +32,8 @@ import ml.medyas.wallbay.databinding.FragmentImageDetailsBinding;
 import ml.medyas.wallbay.entities.ImageEntity;
 import ml.medyas.wallbay.services.WallpaperService;
 import ml.medyas.wallbay.utils.GlideApp;
+
+import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -158,7 +164,7 @@ public class ImageDetailsFragment extends Fragment {
 
     private void setWallpaper() {
         Toast.makeText(getContext(), "Loading image ...", Toast.LENGTH_SHORT).show();
-        WallpaperService.setWallpaper(getContext(), imageEntity);
+        WallpaperService.setWallpaper(getContext(), imageEntity.getOriginalUrl());
     }
 
     private void favFavorite() {
@@ -189,7 +195,15 @@ public class ImageDetailsFragment extends Fragment {
     }
 
     private void fabDownload() {
-        //TODO download image
+
+        if (checkPermission()) {
+            downloadImage();
+        }
+    }
+
+    private void downloadImage() {
+        Toast.makeText(getContext(), "Downloading...", Toast.LENGTH_SHORT).show();
+
         binding.imageDetailInfo.lottieDownload.setVisibility(View.VISIBLE);
         binding.imageDetailInfo.lottieDownload.playAnimation();
         binding.imageDetailInfo.lottieDownload.addAnimatorListener(new Animator.AnimatorListener() {
@@ -213,6 +227,34 @@ public class ImageDetailsFragment extends Fragment {
 
             }
         });
+
+        WallpaperService.downloadWallpaper(getContext(), imageEntity.getOriginalUrl(), imageEntity.getProvider().getCode());
+    }
+
+    private boolean checkPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && checkSelfPermission(getContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 3);
+                return false;
+            }
+        } else { //permission is automatically granted on sdk<23 upon installation
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 3) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                downloadImage();
+            } else {
+                Toast.makeText(getContext(), "Could not get permission", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void toggleFabs() {

@@ -81,7 +81,7 @@ public class ImageEntity implements Parcelable {
         this.height = height;
         this.url = url;
         this.originalImage = originalImage;
-        originalUrl = originalUrl;
+        this.originalUrl = originalUrl;
         this.previewImage = previewImage;
         this.tags = tags;
     }
@@ -113,6 +113,7 @@ public class ImageEntity implements Parcelable {
         }
         view.setText(String.format("%d", num));
     }
+
 
     @Ignore
     protected ImageEntity(Parcel in) {

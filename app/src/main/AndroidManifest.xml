@@ -28,7 +28,16 @@
 
         <service
             android:name=".services.WallpaperService"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <receiver
+            android:name=".services.WallpaperReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

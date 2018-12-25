@@ -24,7 +24,7 @@ public class Utils {
 
 
     public enum webSite {
-        PIXABAY(0), PEXELS(1), UNSPLASH(3), EMPTY(4), ERROR(5);
+        PIXABAY(0), PEXELS(1), UNSPLASH(2), EMPTY(4), ERROR(5);
 
         private int code;
 

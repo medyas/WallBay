@@ -10,7 +10,8 @@ import ml.medyas.wallbay.entities.pixabay.Hit;
 import ml.medyas.wallbay.entities.pixabay.PixabayEntity;
 import ml.medyas.wallbay.entities.unsplash.UnsplashPhotoEntity;
 import ml.medyas.wallbay.entities.unsplash.UnsplashSearchEntity;
-import ml.medyas.wallbay.utils.Utils;
+
+import static ml.medyas.wallbay.utils.Utils.webSite;
 
 public class SearchEntity {
     private PixabayEntity pixabayEntity;
@@ -52,12 +53,14 @@ public class SearchEntity {
 
     private List<ImageEntity> getPixabayList() {
         List<ImageEntity> list = new ArrayList<>();
+        webSite provider = webSite.PEXELS;
+        provider.setCode(1);
         for (Hit item : pixabayEntity.getHits()) {
             ImageEntity imageEntity = new ImageEntity(
                     String.valueOf(item.getId()),
                     item.getUser(),
                     item.getUserImageURL(),
-                    Utils.webSite.PIXABAY,
+                    provider,
                     item.getLikes(),
                     item.getViews(),
                     item.getDownloads(),
@@ -77,12 +80,14 @@ public class SearchEntity {
 
     private List<ImageEntity> getPexelsList() {
         List<ImageEntity> list = new ArrayList<>();
+        webSite provider = webSite.PEXELS;
+        provider.setCode(1);
         for (Photo item : pexelsEntity.getPhotos()) {
             ImageEntity imageEntity = new ImageEntity(
                     String.valueOf(item.getId()),
                     item.getPhotographer(),
                     null,
-                    Utils.webSite.PEXELS,
+                    provider,
                     0,
                     0,
                     0,
@@ -103,11 +108,13 @@ public class SearchEntity {
 
     private List<ImageEntity> getUnsplahList() {
         List<ImageEntity> list = new ArrayList<>();
+        webSite provider = webSite.UNSPLASH;
+        provider.setCode(2);
         for (UnsplashPhotoEntity item : unsplashPhotoEntity.getUnsplashPhotoEntitys()) {
             ImageEntity imageEntity = new ImageEntity(item.getId(),
                     item.getUser().getUsername(),
                     item.getUser().getProfileImage().getMedium(),
-                    Utils.webSite.UNSPLASH,
+                    provider,
                     item.getLikes(),
                     0,
                     0,
