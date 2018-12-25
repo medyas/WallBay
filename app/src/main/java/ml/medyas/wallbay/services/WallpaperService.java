@@ -88,6 +88,7 @@ public class WallpaperService extends IntentService {
                 .setContentText("Download in progress...")
                 .setSmallIcon(R.drawable.ic_image_black_24dp)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setAutoCancel(false)
                 .setProgress(0, 0, true);
         notificationManager.notify(notificationId, mBuilder.build());
 
@@ -121,22 +122,23 @@ public class WallpaperService extends IntentService {
         Log.d("mainactivity", "onResourceReady !!");
         WallpaperManager myWallpaperManager
                 = WallpaperManager.getInstance(getApplicationContext());
+        String text = "Could not get the image";
         try {
             myWallpaperManager.setBitmap(resource);
             Toast.makeText(getApplicationContext(), "Image set as wallpaper", Toast.LENGTH_SHORT).show();
             Log.d("mainactivity", "finished load of image");
-            mBuilder.setContentText("Download complete")
-                    .setProgress(0, 0, false)
-                    .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(resource));
-            notificationManager.notify(notificationId, mBuilder.build());
+            text = "Download complete";
         } catch (IOException e) {
             e.printStackTrace();
             Log.d("mainactivity", e.getMessage());
-            Toast.makeText(getApplicationContext(), "Could not set image", Toast.LENGTH_SHORT).show();
-            mBuilder.setContentText("Could not get the image")
-                    .setProgress(0, 0, false);
-            notificationManager.notify(notificationId, mBuilder.build());
         }
+
+
+        mBuilder.setContentText(text)
+                .setProgress(0, 0, false)
+                .setAutoCancel(true)
+                .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(resource));
+        notificationManager.notify(notificationId, mBuilder.build());
 
         /*GlideApp.with(this)
                 .asBitmap()

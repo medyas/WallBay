@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        setSupportActionBar(binding.content.toolbar);
 
         if (savedInstanceState == null) {
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -68,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             setUpToolbar(savedInstanceState.getBoolean(TOOLBAR_VISIBILITY));
         }
 
+        setSupportActionBar(binding.content.toolbar);
         binding.content.toolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
         binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +78,24 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
 
     }
 
+
+    /*
+    mBinding.viewStub.setOnInflateListener(new ViewStub.OnInflateListener() {
+    @Override
+    public void onInflate(ViewStub stub, View inflated) {
+        ViewStubBinding binding = DataBindingUtil.bind(inflated);
+        binding.setModel(model);
+    }
+});
+
+
+
+public void inflateViewStub(View view) {
+    if (!mBinding.viewStub.isInflated()) {
+        mBinding.viewStub.getViewStub().inflate();
+    }
+}
+     */
     private void setUpToolbar(boolean setup) {
         if (setup) {
             binding.content.toolbar.setVisibility(View.VISIBLE);

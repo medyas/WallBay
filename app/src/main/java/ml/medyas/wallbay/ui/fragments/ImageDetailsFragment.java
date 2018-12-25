@@ -42,7 +42,7 @@ public class ImageDetailsFragment extends Fragment {
     private OnImageDetailsFragmentInteractions mListener;
     private FragmentImageDetailsBinding binding;
     private ImageEntity imageEntity;
-    private boolean toggle = false;
+    private boolean toggle = true;
 
     public ImageDetailsFragment() {
         // Required empty public constructor
