@@ -7,4 +7,5 @@
     <color name="colorAccent">#ffc0c2</color>
 
     <color name="colorLightTransparent">#44222149</color>
+    <color name="splashBackground">#ebeff2</color>
 </resources>

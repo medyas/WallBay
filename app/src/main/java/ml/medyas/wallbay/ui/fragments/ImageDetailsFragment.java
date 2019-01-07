@@ -5,13 +5,17 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -23,17 +27,24 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.disposables.Disposable;
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.databinding.FragmentImageDetailsBinding;
 import ml.medyas.wallbay.entities.ImageEntity;
 import ml.medyas.wallbay.services.WallpaperService;
 import ml.medyas.wallbay.utils.GlideApp;
+import ml.medyas.wallbay.utils.Utils;
 
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
+import static ml.medyas.wallbay.utils.Utils.drawableToBitmap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -83,6 +94,10 @@ public class ImageDetailsFragment extends Fragment {
         binding.setImage(imageEntity);
         binding.imageDetailInfo.setImage(imageEntity);
         binding.imageDetailInfo.setFragment(this);
+
+        GlideApp.with(this)
+                .load(R.drawable.image_loading)
+                .into(binding.loadingImage);
 
         GlideApp.with(this)
                 .asDrawable()
@@ -147,13 +162,21 @@ public class ImageDetailsFragment extends Fragment {
             case R.id.load_original:
                 GlideApp.with(this)
                         .load(imageEntity.getOriginalImage())
-                        .placeholder(R.drawable.ic_loading_mark)
+                        .apply(new RequestOptions()
+                                .format(DecodeFormat.PREFER_ARGB_8888))
+                        .placeholder(new ColorDrawable(Color.TRANSPARENT))
                         .error(R.drawable.ic_image_black_24dp)
                         .into(binding.photoView);
                 return;
 
             case R.id.image_share:
-                break;
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_TITLE, "Photo by: " + imageEntity.getUserName())
+                        .putExtra(Intent.EXTRA_TEXT, "Provided by: " + getProvider(imageEntity.getProvider()) + " - " + imageEntity.getUrl())
+                        .setType("image/jpeg")
+                        .putExtra(Intent.EXTRA_STREAM, Uri.parse(MediaStore.Images.Media.insertImage(getContext().getContentResolver(), drawableToBitmap(binding.photoView.getDrawable()), imageEntity.getUserName(), null)));
+                startActivity(Intent.createChooser(intent, "Share with"));
+                return;
 
             case R.id.item_plus:
                 break;
@@ -162,13 +185,43 @@ public class ImageDetailsFragment extends Fragment {
         toggleFabs();
     }
 
+    private String getProvider(Utils.webSite provider) {
+        switch (provider) {
+            case PIXABAY:
+                return "Pixabay";
+            case UNSPLASH:
+                return "Unsplash";
+            case PEXELS:
+                return "Pexels";
+        }
+        return "";
+    }
+
     private void setWallpaper() {
         Toast.makeText(getContext(), "Loading image ...", Toast.LENGTH_SHORT).show();
         WallpaperService.setWallpaper(getContext(), imageEntity.getOriginalUrl());
     }
 
     private void favFavorite() {
-        //TODO add to favorite
+
+        mListener.onAddToFavorite(imageEntity).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                Toast.makeText(getContext(), "Image added to Favorite", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Toast.makeText(getContext(), "could not added image to Favorite", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.imageDetailInfo.lottieFav.setProgress(.2f);
         binding.imageDetailInfo.lottieFav.setVisibility(View.VISIBLE);
         binding.imageDetailInfo.lottieFav.playAnimation();
         binding.imageDetailInfo.lottieFav.addAnimatorListener(new Animator.AnimatorListener() {
@@ -273,11 +326,11 @@ public class ImageDetailsFragment extends Fragment {
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabInfo, View.ALPHA, 0, 1),
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabDownload, View.ALPHA, 0, 1),
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabFav, View.ALPHA, 0, 1),
-                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabWall, "y", maxY - 350),
-                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabEdit, "y", maxY - 350),
-                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabInfo, "y", maxY - 450),
-                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabDownload, "y", maxY - 350),
-                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabFav, "y", maxY - 350)
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabWall, "y", maxY - 310),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabEdit, "y", maxY - 310),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabInfo, "y", maxY - 410),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabDownload, "y", maxY - 310),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabFav, "y", maxY - 310)
             );
             decSet2.setDuration(500);
             decSet2.start();
@@ -335,6 +388,7 @@ public class ImageDetailsFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
 
+        Completable onAddToFavorite(ImageEntity imageEntity);
         void onImageBackPressed();
     }
 }

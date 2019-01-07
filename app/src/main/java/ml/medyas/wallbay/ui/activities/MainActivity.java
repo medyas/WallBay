@@ -16,11 +16,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import io.reactivex.Completable;
 import io.reactivex.disposables.Disposable;
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.databinding.ActivityMainBinding;
 import ml.medyas.wallbay.entities.ImageEntity;
 import ml.medyas.wallbay.entities.SearchEntity;
+import ml.medyas.wallbay.models.FavoriteViewModel;
 import ml.medyas.wallbay.models.SearchViewModel;
 import ml.medyas.wallbay.ui.fragments.ForYouFragment;
 import ml.medyas.wallbay.ui.fragments.GetStartedFragment;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     public static final String TOOLBAR_VISIBILITY = "toolbar_visibility";
 
     private ActivityMainBinding binding;
+    private FavoriteViewModel favoriteViewModel;
 
     //TODO 1: Create fragments UI and communication with viewmodal ( livedata) for : For You
     //• Pixabay
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel.class);
 
         if (savedInstanceState == null) {
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -270,6 +274,11 @@ public void inflateViewStub(View view) {
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public Completable onAddToFavorite(ImageEntity imageEntity) {
+        return favoriteViewModel.insertFavorite(imageEntity);
     }
 
     @Override
