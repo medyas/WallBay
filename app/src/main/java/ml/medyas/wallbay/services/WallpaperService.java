@@ -16,6 +16,8 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
 import org.json.JSONException;
@@ -107,7 +109,8 @@ public class WallpaperService extends IntentService {
         final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID);
         mBuilder.setContentTitle("Wallpaper Download")
                 .setContentText("Download in progress...")
-                .setSmallIcon(R.drawable.ic_image_black_24dp)
+                .setSmallIcon(R.drawable.ic_set_as_wallpaper)
+                .setColor(getResources().getColor(R.color.colorPrimaryDark))
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .setAutoCancel(false)
                 .setProgress(0, 0, true);
@@ -119,6 +122,8 @@ public class WallpaperService extends IntentService {
             resource = GlideApp.with(getApplicationContext())
                     .asBitmap()
                     .load(url)
+                    .apply(new RequestOptions()
+                            .format(DecodeFormat.PREFER_ARGB_8888))
                     .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                     .get();
 

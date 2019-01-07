@@ -53,7 +53,7 @@ public class SearchEntity {
 
     private List<ImageEntity> getPixabayList() {
         List<ImageEntity> list = new ArrayList<>();
-        webSite provider = webSite.PEXELS;
+        webSite provider = webSite.PIXABAY;
         provider.setCode(1);
         for (Hit item : pixabayEntity.getHits()) {
             ImageEntity imageEntity = new ImageEntity(
@@ -97,7 +97,7 @@ public class SearchEntity {
                     item.getSrc().getOriginal(),
                     item.getSrc().getOriginal(),
                     item.getSrc().getMedium(),
-                    null
+                    ""
             );
             list.add(imageEntity);
         }
@@ -111,7 +111,8 @@ public class SearchEntity {
         webSite provider = webSite.UNSPLASH;
         provider.setCode(2);
         for (UnsplashPhotoEntity item : unsplashPhotoEntity.getUnsplashPhotoEntitys()) {
-            ImageEntity imageEntity = new ImageEntity(item.getId(),
+            ImageEntity imageEntity = new ImageEntity(
+                    item.getId(),
                     item.getUser().getUsername(),
                     item.getUser().getProfileImage().getMedium(),
                     provider,
@@ -124,7 +125,7 @@ public class SearchEntity {
                     item.getUrls().getRaw(),
                     item.getLinks().getDownloadLocation(),
                     item.getUrls().getSmall(),
-                    null);
+                    "");
             list.add(imageEntity);
         }
 

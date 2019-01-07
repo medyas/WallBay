@@ -158,4 +158,15 @@ public class Utils {
     }
 
 
+    public static String getProviders(Utils.webSite provider) {
+        switch (provider) {
+            case PIXABAY:
+                return "Pixabay";
+            case UNSPLASH:
+                return "Unsplash";
+            case PEXELS:
+                return "Pexels";
+        }
+        return "";
+    }
 }

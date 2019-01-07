@@ -15,4 +15,10 @@
     <string name="share_image">share image</string>
     <string name="load_original">load original image</string>
     <string name="image_loading_gif">image loading gif</string>
+    <string name="user_profile_image">user profile image</string>
+    <string name="dimensions">Dimensions</string>
+    <string name="link_icon">link icon</string>
+    <string name="tags">Tags</string>
+    <string name="url">Url</string>
+    <string name="palette">Palette</string>
 </resources>

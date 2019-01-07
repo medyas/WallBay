@@ -6,7 +6,9 @@ import android.arch.lifecycle.LiveData;
 import java.util.List;
 
 import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
+import io.reactivex.schedulers.Schedulers;
 import ml.medyas.wallbay.database.FavoriteDao;
 import ml.medyas.wallbay.database.FavoriteDatabase;
 import ml.medyas.wallbay.entities.ImageEntity;
@@ -31,7 +33,9 @@ public class FavoriteRepository {
             public void run() {
                 favoriteDao.addNewFavorite(imageEntity);
             }
-        });
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public Completable insertFavorite(final List<ImageEntity> imageEntity) {
@@ -40,7 +44,9 @@ public class FavoriteRepository {
             public void run() {
                 favoriteDao.addNewFavorite(imageEntity);
             }
-        });
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
 
@@ -50,7 +56,9 @@ public class FavoriteRepository {
             public void run() {
                 favoriteDao.deleteFavorite(imageEntity);
             }
-        });
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
 
     }
 
@@ -60,7 +68,9 @@ public class FavoriteRepository {
             public void run() {
                 favoriteDao.deleteFavorite(imageEntity);
             }
-        });
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
 }

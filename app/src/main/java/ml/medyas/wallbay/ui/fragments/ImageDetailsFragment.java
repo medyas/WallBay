@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
@@ -20,6 +21,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.graphics.Palette;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +47,7 @@ import ml.medyas.wallbay.utils.Utils;
 
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
 import static ml.medyas.wallbay.utils.Utils.drawableToBitmap;
+import static ml.medyas.wallbay.utils.Utils.getProviders;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,6 +63,7 @@ public class ImageDetailsFragment extends Fragment {
     private FragmentImageDetailsBinding binding;
     private ImageEntity imageEntity;
     private boolean toggle = true;
+    private Palette palette;
 
     public ImageDetailsFragment() {
         // Required empty public constructor
@@ -112,6 +116,7 @@ public class ImageDetailsFragment extends Fragment {
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                         startPostponedEnterTransition();
+                        createPaletteAsync(Utils.drawableToBitmap(resource));
                         return false;
                     }
                 })
@@ -138,6 +143,15 @@ public class ImageDetailsFragment extends Fragment {
         return binding.getRoot();
     }
 
+    public void createPaletteAsync(Bitmap bitmap) {
+        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+            public void onGenerated(Palette p) {
+                // Use generated instance
+                palette = p;
+            }
+        });
+    }
+
     public void onFabClicked(View view) {
         switch (view.getId()) {
             case R.id.fab_download:
@@ -145,10 +159,13 @@ public class ImageDetailsFragment extends Fragment {
                 break;
 
             case R.id.fab_fav:
-                favFavorite();
+                fabFavorite();
                 break;
 
             case R.id.fab_info:
+                ImageDetailsInfoDialog dialog = ImageDetailsInfoDialog.newInstance(imageEntity);
+                dialog.setPalette(palette);
+                dialog.show(getFragmentManager(), dialog.getClass().getName());
                 break;
 
             case R.id.fab_edit:
@@ -172,7 +189,7 @@ public class ImageDetailsFragment extends Fragment {
             case R.id.image_share:
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.putExtra(Intent.EXTRA_TITLE, "Photo by: " + imageEntity.getUserName())
-                        .putExtra(Intent.EXTRA_TEXT, "Provided by: " + getProvider(imageEntity.getProvider()) + " - " + imageEntity.getUrl())
+                        .putExtra(Intent.EXTRA_TEXT, "Provided by: " + getProviders(imageEntity.getProvider()) + " - " + imageEntity.getUrl())
                         .setType("image/jpeg")
                         .putExtra(Intent.EXTRA_STREAM, Uri.parse(MediaStore.Images.Media.insertImage(getContext().getContentResolver(), drawableToBitmap(binding.photoView.getDrawable()), imageEntity.getUserName(), null)));
                 startActivity(Intent.createChooser(intent, "Share with"));
@@ -185,24 +202,12 @@ public class ImageDetailsFragment extends Fragment {
         toggleFabs();
     }
 
-    private String getProvider(Utils.webSite provider) {
-        switch (provider) {
-            case PIXABAY:
-                return "Pixabay";
-            case UNSPLASH:
-                return "Unsplash";
-            case PEXELS:
-                return "Pexels";
-        }
-        return "";
-    }
-
     private void setWallpaper() {
         Toast.makeText(getContext(), "Loading image ...", Toast.LENGTH_SHORT).show();
         WallpaperService.setWallpaper(getContext(), imageEntity.getOriginalUrl());
     }
 
-    private void favFavorite() {
+    private void fabFavorite() {
 
         mListener.onAddToFavorite(imageEntity).subscribe(new CompletableObserver() {
             @Override
@@ -221,7 +226,6 @@ public class ImageDetailsFragment extends Fragment {
             }
         });
 
-        binding.imageDetailInfo.lottieFav.setProgress(.2f);
         binding.imageDetailInfo.lottieFav.setVisibility(View.VISIBLE);
         binding.imageDetailInfo.lottieFav.playAnimation();
         binding.imageDetailInfo.lottieFav.addAnimatorListener(new Animator.AnimatorListener() {
@@ -326,11 +330,11 @@ public class ImageDetailsFragment extends Fragment {
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabInfo, View.ALPHA, 0, 1),
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabDownload, View.ALPHA, 0, 1),
                     ObjectAnimator.ofFloat(binding.imageDetailInfo.fabFav, View.ALPHA, 0, 1),
-                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabWall, "y", maxY - 310),
-                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabEdit, "y", maxY - 310),
-                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabInfo, "y", maxY - 410),
-                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabDownload, "y", maxY - 310),
-                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabFav, "y", maxY - 310)
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabWall, "y", maxY - 320),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabEdit, "y", maxY - 320),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabInfo, "y", maxY - 420),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabDownload, "y", maxY - 320),
+                    ObjectAnimator.ofFloat(binding.imageDetailInfo.fabFav, "y", maxY - 320)
             );
             decSet2.setDuration(500);
             decSet2.start();

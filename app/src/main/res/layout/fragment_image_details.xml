@@ -29,7 +29,8 @@
 
         <include
             android:id="@+id/image_detail_info"
-            layout="@layout/image_detail_info" />
+            layout="@layout/image_detail_actions" />
+
 
     </FrameLayout>
 </layout>

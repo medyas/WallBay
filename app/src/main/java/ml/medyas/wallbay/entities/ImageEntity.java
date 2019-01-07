@@ -14,6 +14,8 @@ import android.support.v7.util.DiffUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.request.RequestOptions;
+
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.utils.GlideApp;
 import ml.medyas.wallbay.utils.ProviderTypeConverter;
@@ -96,6 +98,17 @@ public class ImageEntity implements Parcelable {
                 .into(view);
     }
 
+    @Ignore
+    @BindingAdapter({"android:loadRoundImage"})
+    public static void loadRoundImage(ImageView view, String imageUrl) {
+        GlideApp.with(view.getContext())
+                .load(imageUrl)
+                .apply(new RequestOptions().circleCrop())
+                .placeholder(R.drawable.ic_image_black_24dp)
+                .error(R.drawable.ic_person_black_24dp)
+                .into(view);
+    }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Ignore
     @BindingAdapter({"android:addTransitionName"})
@@ -106,7 +119,12 @@ public class ImageEntity implements Parcelable {
     @Ignore
     @BindingAdapter({"android:setText"})
     public static void setText(TextView view, int num) {
-        if (num > 1000) {
+        if (num >= 100000) {
+            String temp = String.valueOf(num);
+            view.setText(String.format("%sM", temp.substring(0, temp.length() - 5)));
+            return;
+        }
+        if (num >= 1000) {
             String temp = String.valueOf(num);
             view.setText(String.format("%sK", temp.substring(0, temp.length() - 3)));
             return;
