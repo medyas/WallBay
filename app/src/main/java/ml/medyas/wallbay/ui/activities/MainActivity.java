@@ -12,8 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import io.reactivex.Completable;
@@ -56,6 +54,15 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel.class);
 
+        setSupportActionBar(binding.content.toolbar);
+        binding.content.toolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
+        binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.drawerLayout.openDrawer(Gravity.START);
+            }
+        });
+
         if (savedInstanceState == null) {
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
             if (pref.getBoolean("first_start", true)) {
@@ -70,16 +77,6 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             binding.content.coordinator.setVisibility(View.VISIBLE);
             setUpToolbar(savedInstanceState.getBoolean(TOOLBAR_VISIBILITY));
         }
-
-        setSupportActionBar(binding.content.toolbar);
-        binding.content.toolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
-        binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                binding.drawerLayout.openDrawer(Gravity.START);
-            }
-        });
-
     }
 
 
@@ -102,9 +99,9 @@ public void inflateViewStub(View view) {
      */
     private void setUpToolbar(boolean setup) {
         if (setup) {
-            binding.content.toolbar.setVisibility(View.VISIBLE);
+            getSupportActionBar().show();
         } else {
-            binding.content.toolbar.setVisibility(View.GONE);
+            getSupportActionBar().hide();
         }
     }
 
@@ -124,20 +121,6 @@ public void inflateViewStub(View view) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.start_container, GetStartedFragment.newInstance())
                 .commit();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_activity_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_favorite) {
-            //TODO: create favorite activity
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 
@@ -257,13 +240,8 @@ public void inflateViewStub(View view) {
 
 
     @Override
-    public void onImageClicked(ImageEntity imageEntity) {
-
-    }
-
-    @Override
-    public void onSetOnBackToolbar(boolean setup) {
-        setUpToolbar(!setup);
+    public void onSetOnBackToolbar(boolean hide) {
+        setUpToolbar(!hide);
     }
 
     @Override

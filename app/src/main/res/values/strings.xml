@@ -21,4 +21,5 @@
     <string name="tags">Tags</string>
     <string name="url">Url</string>
     <string name="palette">Palette</string>
+    <string name="download">Download</string>
 </resources>

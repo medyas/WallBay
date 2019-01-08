@@ -13,16 +13,26 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.transition.TransitionInflater;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.disposables.Disposable;
 import ml.medyas.wallbay.R;
+import ml.medyas.wallbay.adapters.ActionModeCallback;
 import ml.medyas.wallbay.adapters.foryou.ForYouAdapter;
 import ml.medyas.wallbay.databinding.FragmentForYouBinding;
 import ml.medyas.wallbay.entities.ImageEntity;
@@ -42,17 +52,20 @@ import static ml.medyas.wallbay.utils.Utils.convertPixelsToDp;
  * Use the {@link ForYouFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ForYouFragment extends Fragment implements ForYouAdapter.onImageItemClicked {
+public class ForYouFragment extends Fragment implements ForYouAdapter.onImageItemClicked, ActionModeCallback.onActionModeDestroyInterface {
     private OnForYouFragmentInteractions mListener;
     private ForYouViewModel mViewModel;
     private ForYouAdapter mAdapter;
     private FragmentForYouBinding binding;
+    public static boolean inSelection = false;
+    private ActionModeCallback actionModeCallback;
+    private ActionMode actionMode;
 
     public ForYouFragment() {
         // Required empty public constructor
     }
 
-    //TODO add recyclerView multi item selection with menu to download and share selected
+    //TODO  menu to download and share selected
 
     public static ForYouFragment newInstance() {
         return new ForYouFragment();
@@ -62,7 +75,22 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setHasOptionsMenu(true);
         setUpViewModel();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main_activity_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_favorite) {
+            //TODO: create favorite activity
+            Toast.makeText(getContext(), "Favorite Fragment", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -72,6 +100,9 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_for_you, container, false);
 
         mAdapter = new ForYouAdapter(this);
+
+        actionModeCallback = new ActionModeCallback(getContext(), this);
+        binding.loadErrorLayout.slideShowPlay.hide();
 
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(calculateNoOfColumns(getContext(), convertPixelsToDp(getResources().getDimension(R.dimen.item_width), getContext())), StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
@@ -101,6 +132,7 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
                 }
             }
         });
+
 
         return binding.getRoot();
     }
@@ -178,27 +210,83 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
     }
 
     @Override
-    public void onItemClicked(ImageEntity imageEntity, ImageView itemImage) {
-        ImageDetailsFragment frag = ImageDetailsFragment.newInstance(imageEntity);
+    public void onItemClicked(ImageEntity imageEntity, ImageView itemImage, int adapterPosition) {
+        if (inSelection) {
+            if (actionMode != null) {
+                toggleSelection(adapterPosition);
+            }
+        } else {
+            ImageDetailsFragment frag = ImageDetailsFragment.newInstance(imageEntity);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            frag.setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
-            //frag.setEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
-            frag.setExitTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                frag.setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
+                //frag.setEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
+                frag.setExitTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
+            }
+
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .add(R.id.main_container, frag, frag.getClass().getName())
+                    .addToBackStack(frag.getClass().getName())
+                    .addSharedElement(itemImage, String.format("transition %s", imageEntity.getId()))
+                    .commit();
+
+            mListener.onSetOnBackToolbar(true);
         }
-
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .add(R.id.main_container, frag, frag.getClass().getName())
-                .addToBackStack(frag.getClass().getName())
-                .addSharedElement(itemImage, String.format("transition %s", imageEntity.getId()))
-                .commit();
-
-        mListener.onSetOnBackToolbar(true);
     }
 
     @Override
-    public void onAddToFavorite(ImageEntity position) {
+    public boolean onItemLongClicked(int position) {
+        inSelection = true;
+        //mListener.onSetOnBackToolbar(true);
+        mAdapter.notifyDataSetChanged();
+        if (actionMode == null) {
+            //actionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
+            Toolbar toolbar = ((AppCompatActivity) getActivity()).findViewById(R.id.toolbar);
+            actionMode = toolbar.startActionMode(actionModeCallback);
+        }
+        toggleSelection(position);
+        return true;
+    }
 
+    private void toggleSelection(int position) {
+        mAdapter.toggleSelection(position);
+        int count = mAdapter.getSelectedItemCount();
+
+        if (count == 0) {
+            actionMode.finish();
+        } else {
+            actionMode.setTitle(String.valueOf(count));
+            actionMode.invalidate();
+        }
+    }
+
+    @Override
+    public void onAddToFavorite(ImageEntity imageEntity) {
+        mListener.onAddToFavorite(imageEntity).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                Toast.makeText(getContext(), "Added to favorite", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onDestroyMode() {
+        ForYouFragment.inSelection = false;
+        actionMode = null;
+        mAdapter.clearSelection();
+        mAdapter.notifyDataSetChanged();
+        //mListener.onSetOnBackToolbar(false);
     }
 
     /**
@@ -212,9 +300,9 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnForYouFragmentInteractions {
-        void onImageClicked(ImageEntity imageEntity);
+        Completable onAddToFavorite(ImageEntity imageEntity);
 
-        void onSetOnBackToolbar(boolean setup);
+        void onSetOnBackToolbar(boolean hide);
 
         void reCreateFragment(Fragment fragment);
     }
