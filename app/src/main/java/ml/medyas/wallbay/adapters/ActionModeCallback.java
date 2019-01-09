@@ -1,25 +1,26 @@
 package ml.medyas.wallbay.adapters;
 
-import android.content.Context;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import ml.medyas.wallbay.R;
 
 public class ActionModeCallback implements ActionMode.Callback {
-    private onActionModeDestroyInterface mListener;
-    private Context context;
+    private onActionModeInterface mListener;
+    private boolean defaultMenu = true;
 
-    public ActionModeCallback(Context context, onActionModeDestroyInterface listener) {
-        this.context = context;
+    public ActionModeCallback(onActionModeInterface listener, boolean defaultMenu) {
         this.mListener = listener;
+        this.defaultMenu = defaultMenu;
     }
 
     @Override
     public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-        actionMode.getMenuInflater().inflate(R.menu.default_action_mode, menu);
+        if (defaultMenu)
+            actionMode.getMenuInflater().inflate(R.menu.default_action_mode, menu);
+        else
+            actionMode.getMenuInflater().inflate(R.menu.favorite_action_mode, menu);
         return true;
     }
 
@@ -33,12 +34,15 @@ public class ActionModeCallback implements ActionMode.Callback {
         int id = menuItem.getItemId();
         switch (id) {
             case R.id.add_to_fav:
-                Toast.makeText(context, "Menu favorite", Toast.LENGTH_SHORT).show();
-
+                mListener.onMenuFavClicked();
                 return true;
 
             case R.id.download:
-                Toast.makeText(context, "Menu Download", Toast.LENGTH_SHORT).show();
+                mListener.onMenuDownClicked();
+                return true;
+
+            case R.id.remove:
+                mListener.onMenuRemoveClicked();
                 return true;
         }
         return false;
@@ -49,7 +53,13 @@ public class ActionModeCallback implements ActionMode.Callback {
         mListener.onDestroyMode();
     }
 
-    public interface onActionModeDestroyInterface {
+    public interface onActionModeInterface {
         void onDestroyMode();
+
+        void onMenuFavClicked();
+
+        void onMenuDownClicked();
+
+        void onMenuRemoveClicked();
     }
 }

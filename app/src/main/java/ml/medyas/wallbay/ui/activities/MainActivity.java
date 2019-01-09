@@ -13,6 +13,9 @@ import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
+
+import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.disposables.Disposable;
@@ -22,6 +25,7 @@ import ml.medyas.wallbay.entities.ImageEntity;
 import ml.medyas.wallbay.entities.SearchEntity;
 import ml.medyas.wallbay.models.FavoriteViewModel;
 import ml.medyas.wallbay.models.SearchViewModel;
+import ml.medyas.wallbay.ui.fragments.FavoriteFragment;
 import ml.medyas.wallbay.ui.fragments.ForYouFragment;
 import ml.medyas.wallbay.ui.fragments.GetStartedFragment;
 import ml.medyas.wallbay.ui.fragments.ImageDetailsFragment;
@@ -29,24 +33,22 @@ import ml.medyas.wallbay.ui.fragments.ImageDetailsFragment;
 import static ml.medyas.wallbay.utils.Utils.INTEREST_CATEGORIES;
 
 public class MainActivity extends AppCompatActivity implements GetStartedFragment.OnGetStartedFragmentInteractions, ForYouFragment.OnForYouFragmentInteractions,
-        ImageDetailsFragment.OnImageDetailsFragmentInteractions {
+        ImageDetailsFragment.OnImageDetailsFragmentInteractions, FavoriteFragment.onFavoriteFragmentInteractions {
 
     public static final String FIRST_START = "first_start";
     public static final String TOOLBAR_VISIBILITY = "toolbar_visibility";
+    public static final String FAVORITE_SHOWN = "FAVORITE_SHOWN";
 
     private ActivityMainBinding binding;
     private FavoriteViewModel favoriteViewModel;
+    private boolean favShown = false;
 
-    //TODO 1: Create fragments UI and communication with viewmodal ( livedata) for : For You
+    //TODO 1: Create fragments UI : For You
     //• Pixabay
     //• Pexels
     //• Unsplash
     //• Search
-    //MainActivity :
-    //• Creating the menu
-    //• Setting the navigation between fragmnets
 
-    //TODO add recyclerview item animation
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +57,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel.class);
 
         setSupportActionBar(binding.content.toolbar);
-        binding.content.toolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
-        binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                binding.drawerLayout.openDrawer(Gravity.START);
-            }
-        });
+        setUpToolbar(true);
 
         if (savedInstanceState == null) {
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -70,12 +66,13 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
                 showStartFragment();
             } else {
                 binding.content.coordinator.setVisibility(View.VISIBLE);
-                replaceFragment(ForYouFragment.newInstance());
+                replaceFragment(ForYouFragment.newInstance(), false);
             }
-            setUpToolbar(true);
+            hideToolbar(true);
         } else {
             binding.content.coordinator.setVisibility(View.VISIBLE);
-            setUpToolbar(savedInstanceState.getBoolean(TOOLBAR_VISIBILITY));
+            hideToolbar(savedInstanceState.getBoolean(TOOLBAR_VISIBILITY));
+            setUpToolbar(!savedInstanceState.getBoolean(FAVORITE_SHOWN));
         }
     }
 
@@ -89,15 +86,42 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     }
 });
 
-
-
 public void inflateViewStub(View view) {
     if (!mBinding.viewStub.isInflated()) {
         mBinding.viewStub.getViewStub().inflate();
     }
 }
      */
-    private void setUpToolbar(boolean setup) {
+
+    private void setUpToolbar(final boolean setup) {
+        if (setup) {
+            favShown = false;
+            getSupportActionBar().setTitle(getString(R.string.app_name));
+            binding.content.toolbar.inflateMenu(R.menu.main_activity_menu);
+            binding.content.toolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
+            binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    binding.drawerLayout.openDrawer(Gravity.START);
+                }
+            });
+        } else {
+            favShown = true;
+            getSupportActionBar().setTitle(getString(R.string.favorite));
+            binding.content.toolbar.getMenu().clear();
+            binding.content.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+            binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+
+                    setUpToolbar(true);
+                }
+            });
+        }
+    }
+
+    private void hideToolbar(boolean setup) {
         if (setup) {
             getSupportActionBar().show();
         } else {
@@ -109,11 +133,12 @@ public void inflateViewStub(View view) {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(TOOLBAR_VISIBILITY, binding.content.toolbar.getVisibility() == View.VISIBLE);
+        outState.putBoolean(FAVORITE_SHOWN, favShown);
     }
 
     @Override
     public void onBackPressed() {
-        setUpToolbar(true);
+        hideToolbar(true);
         super.onBackPressed();
     }
 
@@ -124,14 +149,16 @@ public void inflateViewStub(View view) {
     }
 
 
-    private void replaceFragment(Fragment fragment) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            fragment.setSharedElementReturnTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.slide_right));
-            fragment.setExitTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.slide_left));
+    private void replaceFragment(Fragment fragment, boolean replace) {
+        if (getSupportFragmentManager().findFragmentByTag(fragment.getClass().getName()) == null || replace) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                fragment.setSharedElementReturnTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.slide_right));
+                fragment.setExitTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.slide_left));
+            }
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_container, fragment, fragment.getClass().getName())
+                    .commit();
         }
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, fragment, fragment.getClass().getName())
-                .commit();
     }
 
     private void getData() {
@@ -232,21 +259,20 @@ public void inflateViewStub(View view) {
         pref.putString(INTEREST_CATEGORIES, categories);
         pref.apply();
 
-        Log.d(getClass().getName(), categories);
         binding.content.coordinator.setVisibility(View.VISIBLE);
 
-        replaceFragment(ForYouFragment.newInstance());
+        replaceFragment(ForYouFragment.newInstance(), false);
     }
 
 
     @Override
-    public void onSetOnBackToolbar(boolean hide) {
-        setUpToolbar(!hide);
+    public void onHideToolbar(boolean hide) {
+        hideToolbar(!hide);
     }
 
     @Override
     public void reCreateFragment(Fragment fragment) {
-        replaceFragment(fragment);
+        replaceFragment(fragment, true);
     }
 
     @Override
@@ -257,6 +283,45 @@ public void inflateViewStub(View view) {
     @Override
     public Completable onAddToFavorite(ImageEntity imageEntity) {
         return favoriteViewModel.insertFavorite(imageEntity);
+    }
+
+    @Override
+    public Completable onAddToFavorite(List<ImageEntity> imageEntities) {
+        return favoriteViewModel.insertFavorite(imageEntities);
+    }
+
+    @Override
+    public void onItemClicked(ImageEntity imageEntity, int position, ImageView imageView) {
+        ImageDetailsFragment frag = ImageDetailsFragment.newInstance(imageEntity);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            frag.setSharedElementEnterTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.move));
+            //frag.setEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
+            frag.setExitTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.move));
+        }
+
+        hideToolbar(false);
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.main_container, frag, frag.getClass().getName())
+                .addToBackStack(frag.getClass().getName())
+                .addSharedElement(imageView, String.format("transition %s", imageEntity.getId()))
+                .commit();
+    }
+
+    @Override
+    public void onShowFavoriteFragment() {
+        Fragment fragment = FavoriteFragment.newInstance();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            fragment.setSharedElementReturnTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.slide_right));
+            fragment.setExitTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.slide_left));
+        }
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.main_container, fragment, fragment.getClass().getName())
+                .addToBackStack(fragment.getClass().getName())
+                .commit();
+
+        setUpToolbar(false);
     }
 
     @Override

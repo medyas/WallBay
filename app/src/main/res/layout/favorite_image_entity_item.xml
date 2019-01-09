@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="imageItem"
+            type="ml.medyas.wallbay.entities.ImageEntity" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <FrameLayout
+        android:id="@+id/item_content"
+        android:layout_width="@dimen/item_width"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp">
+
+        <ImageView
+            android:id="@+id/item_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:addTransitionName="@{imageItem.id}"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/item_image"
+            android:loadImage="@{imageItem.previewImage}"
+            tools:targetApi="lollipop" />
+
+        <ImageView
+            android:id="@+id/item_remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/round_corners"
+            android:contentDescription="@string/remove_from_favorite"
+            android:padding="4dp"
+            android:src="@drawable/ic_delete_black_24dp"
+            android:tint="@color/colorPrimaryLight" />
+
+    </FrameLayout>
+
+</layout>

@@ -20,7 +20,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <include
-            android:id="@+id/load_error_layout"
+            android:id="@+id/status_layout"
             layout="@layout/load_error_layout" />
 
     </android.support.constraint.ConstraintLayout>

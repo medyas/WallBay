@@ -6,7 +6,6 @@ import android.arch.paging.PagedList;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -17,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.transition.TransitionInflater;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,6 +25,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
@@ -52,7 +53,7 @@ import static ml.medyas.wallbay.utils.Utils.convertPixelsToDp;
  * Use the {@link ForYouFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ForYouFragment extends Fragment implements ForYouAdapter.onImageItemClicked, ActionModeCallback.onActionModeDestroyInterface {
+public class ForYouFragment extends Fragment implements ForYouAdapter.onImageItemClicked, ActionModeCallback.onActionModeInterface {
     private OnForYouFragmentInteractions mListener;
     private ForYouViewModel mViewModel;
     private ForYouAdapter mAdapter;
@@ -64,8 +65,6 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
     public ForYouFragment() {
         // Required empty public constructor
     }
-
-    //TODO  menu to download and share selected
 
     public static ForYouFragment newInstance() {
         return new ForYouFragment();
@@ -80,20 +79,6 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.main_activity_menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_favorite) {
-            //TODO: create favorite activity
-            Toast.makeText(getContext(), "Favorite Fragment", Toast.LENGTH_SHORT).show();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -101,8 +86,8 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
 
         mAdapter = new ForYouAdapter(this);
 
-        actionModeCallback = new ActionModeCallback(getContext(), this);
-        binding.loadErrorLayout.slideShowPlay.hide();
+        actionModeCallback = new ActionModeCallback(this, true);
+        binding.statusLayout.slideShowPlay.hide();
 
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(calculateNoOfColumns(getContext(), convertPixelsToDp(getResources().getDimension(R.dimen.item_width), getContext())), StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
@@ -114,15 +99,15 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0 && binding.loadErrorLayout.slideShowPlay.getVisibility() == View.VISIBLE) {
-                    binding.loadErrorLayout.slideShowPlay.hide();
-                } else if (dy < 0 && binding.loadErrorLayout.slideShowPlay.getVisibility() != View.VISIBLE) {
-                    binding.loadErrorLayout.slideShowPlay.show();
+                if (dy > 0 && binding.statusLayout.slideShowPlay.getVisibility() == View.VISIBLE) {
+                    binding.statusLayout.slideShowPlay.hide();
+                } else if (dy < 0 && binding.statusLayout.slideShowPlay.getVisibility() != View.VISIBLE) {
+                    binding.statusLayout.slideShowPlay.show();
                 }
             }
         });
 
-        binding.loadErrorLayout.slideShowPlay.setOnClickListener(new View.OnClickListener() {
+        binding.statusLayout.slideShowPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mAdapter.getCurrentList().size() == 0) {
@@ -139,12 +124,7 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
 
     private void setUpViewModel() {
 
-        if (mViewModel != null) {
-            if (mViewModel.getPagedListLiveData().hasActiveObservers()) {
-                mViewModel.getPagedListLiveData().removeObservers(this);
-                mViewModel.getNetworkStateLiveData().removeObservers(this);
-            }
-        } else {
+        if (mViewModel == null) {
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
             String interests = pref.getString(INTEREST_CATEGORIES, "");
             if (interests != null && !interests.equals("")) {
@@ -164,31 +144,45 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
             @Override
             public void onChanged(@Nullable Utils.NetworkState networkState) {
                 if (networkState == Utils.NetworkState.LOADED) {
-                    binding.loadErrorLayout.itemLoad.setVisibility(View.GONE);
+                    binding.statusLayout.itemLoad.setVisibility(View.GONE);
                     binding.forYouRecyclerView.setVisibility(View.VISIBLE);
 
                 } else if (networkState == Utils.NetworkState.LOADING) {
 
                 } else if (networkState == Utils.NetworkState.FAILED) {
                     if (mAdapter.getCurrentList().size() == 0) {
-                        binding.loadErrorLayout.netError.setVisibility(View.VISIBLE);
-                        binding.loadErrorLayout.itemLoad.setVisibility(View.GONE);
-                        Snackbar.make(binding.loadErrorLayout.netError, "Network Error", Snackbar.LENGTH_INDEFINITE)
+                        binding.statusLayout.netError.setVisibility(View.VISIBLE);
+                        binding.statusLayout.itemLoad.setVisibility(View.GONE);
+                        Snackbar.make(binding.statusLayout.netError, "Network Error", Snackbar.LENGTH_INDEFINITE)
                                 .setAction("Retray", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        binding.loadErrorLayout.netError.setVisibility(View.GONE);
-                                        binding.loadErrorLayout.itemLoad.setVisibility(View.VISIBLE);
+                                        binding.statusLayout.netError.setVisibility(View.GONE);
+                                        binding.statusLayout.itemLoad.setVisibility(View.VISIBLE);
 
                                         mListener.reCreateFragment(ForYouFragment.newInstance());
                                     }
                                 }).show();
                     } else {
-                        Snackbar.make(binding.loadErrorLayout.netError, "Failed to load more data", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(binding.statusLayout.netError, "Failed to load more data", Snackbar.LENGTH_LONG).show();
                     }
                 }
             }
         });
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main_activity_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_favorite) {
+            mListener.onShowFavoriteFragment();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -216,28 +210,13 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
                 toggleSelection(adapterPosition);
             }
         } else {
-            ImageDetailsFragment frag = ImageDetailsFragment.newInstance(imageEntity);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                frag.setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
-                //frag.setEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
-                frag.setExitTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
-            }
-
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(R.id.main_container, frag, frag.getClass().getName())
-                    .addToBackStack(frag.getClass().getName())
-                    .addSharedElement(itemImage, String.format("transition %s", imageEntity.getId()))
-                    .commit();
-
-            mListener.onSetOnBackToolbar(true);
+            mListener.onItemClicked(imageEntity, adapterPosition, itemImage);
         }
     }
 
     @Override
     public boolean onItemLongClicked(int position) {
         inSelection = true;
-        //mListener.onSetOnBackToolbar(true);
         mAdapter.notifyDataSetChanged();
         if (actionMode == null) {
             //actionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
@@ -282,11 +261,47 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
 
     @Override
     public void onDestroyMode() {
-        ForYouFragment.inSelection = false;
+        inSelection = false;
         actionMode = null;
         mAdapter.clearSelection();
         mAdapter.notifyDataSetChanged();
-        //mListener.onSetOnBackToolbar(false);
+    }
+
+    @Override
+    public void onMenuFavClicked() {
+        List<ImageEntity> imageEntities = new ArrayList<>();
+        for (Integer i : mAdapter.getSelectedItems()) {
+            imageEntities.add(mAdapter.getCurrentList().get(i));
+        }
+        mListener.onAddToFavorite(imageEntities).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                Toast.makeText(getContext(), getString(R.string.add_succ), Toast.LENGTH_SHORT).show();
+                actionMode.finish();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Toast.makeText(getContext(), getString(R.string.add_error), Toast.LENGTH_SHORT).show();
+                actionMode.finish();
+            }
+        });
+    }
+
+    @Override
+    public void onMenuDownClicked() {
+        Toast.makeText(getContext(), "Images downloaded", Toast.LENGTH_SHORT).show();
+        actionMode.finish();
+    }
+
+    @Override
+    public void onMenuRemoveClicked() {
+        // Leave empty
     }
 
     /**
@@ -302,7 +317,13 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
     public interface OnForYouFragmentInteractions {
         Completable onAddToFavorite(ImageEntity imageEntity);
 
-        void onSetOnBackToolbar(boolean hide);
+        Completable onAddToFavorite(List<ImageEntity> imageEntities);
+
+        void onItemClicked(ImageEntity imageEntity, int position, ImageView imageView);
+
+        void onShowFavoriteFragment();
+
+        void onHideToolbar(boolean hide);
 
         void reCreateFragment(Fragment fragment);
     }
