@@ -128,6 +128,21 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
     }
 
     /**
+     * Select all adapter items
+     */
+
+    public void selectAll() {
+        if (getItemCount() == getSelectedItems().size()) {
+            selectedItems.clear();
+        } else {
+            for (int i = 0; i < getItemCount(); i++) {
+                selectedItems.put(i, true);
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
      * Clear the selection status for all items
      */
     public void clearSelection() {
@@ -162,6 +177,15 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
 
     public void setSelectedItems(SparseBooleanArray selectedItems) {
         this.selectedItems = selectedItems;
+    }
+
+    public String getLastSelectedItem() {
+        ImageEntity imageEntity = imageEntities.get(selectedItems.keyAt(selectedItems.size() - 1));
+        return imageEntity.getPreviewImage();
+    }
+
+    public void clearItems() {
+        this.imageEntities.clear();
     }
 
     public interface onFavItemClicked {

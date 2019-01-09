@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/sheet_container"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom|end"
+            android:background="@drawable/sheet_round_corner"
+            android:orientation="horizontal"
+            android:padding="4dp"
+            app:elevation="4dp">
+
+            <TextView
+                android:id="@+id/selected_items"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_weight="2"
+                android:fontFamily="@font/roboto_bold"
+                android:text="0"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/selected_image"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_gravity="end|center"
+                android:layout_margin="4dp"
+                android:layout_weight="3"
+                android:background="@android:color/white"
+                android:contentDescription="@string/selected_images_preview"
+                android:padding="2dp"
+                android:scaleType="fitXY" />
+        </LinearLayout>
+    </FrameLayout>
+</layout>

@@ -42,7 +42,7 @@ public class ForYouAdapter extends SelectableClass {
             holder.imageEntityItemBinding.itemAddToFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onAddToFavorite(getItem(holder.getAdapterPosition()));
+                    mListener.onItemAddToFavorite(getItem(holder.getAdapterPosition()));
                 }
             });
 
@@ -88,9 +88,10 @@ public class ForYouAdapter extends SelectableClass {
         }
     }
 
+
     public interface onImageItemClicked {
 
-        void onAddToFavorite(ImageEntity position);
+        void onItemAddToFavorite(ImageEntity position);
 
         void onItemClicked(ImageEntity item, ImageView itemImage, int adapterPosition);
 

@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -39,6 +40,8 @@ import ml.medyas.wallbay.databinding.FragmentForYouBinding;
 import ml.medyas.wallbay.entities.ImageEntity;
 import ml.medyas.wallbay.models.foryou.ForYouViewModel;
 import ml.medyas.wallbay.models.foryou.ForYouViewModelFactory;
+import ml.medyas.wallbay.services.WallpaperService;
+import ml.medyas.wallbay.utils.GlideApp;
 import ml.medyas.wallbay.utils.Utils;
 
 import static ml.medyas.wallbay.utils.Utils.INTEREST_CATEGORIES;
@@ -61,6 +64,9 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
     public static boolean inSelection = false;
     private ActionModeCallback actionModeCallback;
     private ActionMode actionMode;
+
+    private TextView sheetText;
+    private ImageView sheetImage;
 
     public ForYouFragment() {
         // Required empty public constructor
@@ -99,10 +105,12 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0 && binding.statusLayout.slideShowPlay.getVisibility() == View.VISIBLE) {
-                    binding.statusLayout.slideShowPlay.hide();
-                } else if (dy < 0 && binding.statusLayout.slideShowPlay.getVisibility() != View.VISIBLE) {
-                    binding.statusLayout.slideShowPlay.show();
+                if (!inSelection) {
+                    if (dy > 0 && binding.statusLayout.slideShowPlay.getVisibility() == View.VISIBLE) {
+                        binding.statusLayout.slideShowPlay.hide();
+                    } else if (dy < 0 && binding.statusLayout.slideShowPlay.getVisibility() != View.VISIBLE) {
+                        binding.statusLayout.slideShowPlay.show();
+                    }
                 }
             }
         });
@@ -117,7 +125,6 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
                 }
             }
         });
-
 
         return binding.getRoot();
     }
@@ -203,6 +210,10 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
         mListener = null;
     }
 
+
+    /*
+            Adapter callbacks
+     */
     @Override
     public void onItemClicked(ImageEntity imageEntity, ImageView itemImage, int adapterPosition) {
         if (inSelection) {
@@ -218,6 +229,16 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
     public boolean onItemLongClicked(int position) {
         inSelection = true;
         mAdapter.notifyDataSetChanged();
+        binding.statusLayout.slideShowPlay.hide();
+
+        if (!binding.selectedSheet.isInflated()) {
+            binding.selectedSheet.getViewStub().inflate();
+            binding.selectedSheet.getRoot().setVisibility(View.VISIBLE);
+
+            sheetText = binding.selectedSheet.getRoot().findViewById(R.id.selected_items);
+            sheetImage = binding.selectedSheet.getRoot().findViewById(R.id.selected_image);
+        }
+        binding.selectedSheet.getRoot().setVisibility(View.VISIBLE);
         if (actionMode == null) {
             //actionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
             Toolbar toolbar = ((AppCompatActivity) getActivity()).findViewById(R.id.toolbar);
@@ -234,13 +255,18 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
         if (count == 0) {
             actionMode.finish();
         } else {
+            sheetText.setText(String.valueOf(count));
+            GlideApp.with(this)
+                    .load(mAdapter.getLastSelectedItem())
+                    .into(sheetImage);
+
             actionMode.setTitle(String.valueOf(count));
             actionMode.invalidate();
         }
     }
 
     @Override
-    public void onAddToFavorite(ImageEntity imageEntity) {
+    public void onItemAddToFavorite(ImageEntity imageEntity) {
         mListener.onAddToFavorite(imageEntity).subscribe(new CompletableObserver() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -259,8 +285,13 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
         });
     }
 
+    /*
+            ActionMode callbacks
+     */
     @Override
     public void onDestroyMode() {
+        binding.statusLayout.slideShowPlay.show();
+        binding.selectedSheet.getRoot().setVisibility(View.GONE);
         inSelection = false;
         actionMode = null;
         mAdapter.clearSelection();
@@ -295,13 +326,28 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
 
     @Override
     public void onMenuDownClicked() {
-        Toast.makeText(getContext(), "Images downloaded", Toast.LENGTH_SHORT).show();
+        List<String> urls = new ArrayList<>();
+        for (Integer i : mAdapter.getSelectedItems()) {
+            urls.add(mAdapter.getCurrentList().get(i).getOriginalUrl());
+        }
+        WallpaperService.bulkWallpaperDownload(getContext(), urls);
+        Toast.makeText(getContext(), "Downloading images...", Toast.LENGTH_SHORT).show();
         actionMode.finish();
     }
 
     @Override
     public void onMenuRemoveClicked() {
         // Leave empty
+    }
+
+    @Override
+    public void onSelectAll() {
+        mAdapter.selectAll();
+        sheetText.setText(String.valueOf(mAdapter.getSelectedItemCount()));
+        GlideApp.with(this)
+                .load(mAdapter.getLastSelectedItem())
+                .into(sheetImage);
+        actionMode.setTitle(String.valueOf(mAdapter.getSelectedItemCount()));
     }
 
     /**

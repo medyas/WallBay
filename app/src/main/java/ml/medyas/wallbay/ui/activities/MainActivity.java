@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
 
         if (savedInstanceState == null) {
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-            if (pref.getBoolean("first_start", true)) {
+            if (pref.getBoolean(FIRST_START, true)) {
                 binding.startContainer.setVisibility(View.VISIBLE);
                 showStartFragment();
             } else {

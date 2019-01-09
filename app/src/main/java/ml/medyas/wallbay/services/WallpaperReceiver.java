@@ -13,6 +13,7 @@ public class WallpaperReceiver extends BroadcastReceiver {
             String action = intent.getAction();
             if (action.equals("android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED")) {
                 Log.d("mainactivity", "Clicked on android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED");
+                //context.startActivity(new Intent(context, MainActivity.class));
             }
         }
     }

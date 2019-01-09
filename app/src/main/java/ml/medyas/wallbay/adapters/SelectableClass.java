@@ -51,6 +51,26 @@ public abstract class SelectableClass extends PagedListAdapter<ImageEntity, Recy
     }
 
     /**
+     * Select all adapter items
+     */
+
+    public void selectAll() {
+        if (getItemCount() == getSelectedItems().size()) {
+            selectedItems.clear();
+        } else {
+            for (int i = 0; i < getItemCount(); i++) {
+                selectedItems.put(i, true);
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    public String getLastSelectedItem() {
+        ImageEntity imageEntity = (ImageEntity) adapter.getCurrentList().get(selectedItems.keyAt(selectedItems.size() - 1));
+        return imageEntity.getPreviewImage();
+    }
+
+    /**
      * Clear the selection status for all items
      */
     public void clearSelection() {

@@ -17,5 +17,13 @@
         <include
             android:id="@+id/status_layout"
             layout="@layout/load_error_layout" />
+
+        <ViewStub
+            android:id="@+id/selected_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout="@layout/selected_sheet_layout"
+            android:visibility="gone" />
+
     </FrameLayout>
 </layout>

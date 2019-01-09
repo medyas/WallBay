@@ -16,4 +16,11 @@
         app:iconTint="@color/colorPrimaryDark"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/select_all"
+        android:icon="@drawable/ic_select_all_black_24dp"
+        android:title="@string/select_all"
+        app:iconTint="@color/colorPrimaryDark"
+        app:showAsAction="ifRoom" />
+
 </menu>

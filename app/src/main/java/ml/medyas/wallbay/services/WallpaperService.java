@@ -24,6 +24,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import ml.medyas.wallbay.BuildConfig;
@@ -45,6 +47,7 @@ public class WallpaperService extends IntentService {
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     private static final String ACTION_SET_WALLPAPER = "ml.medyas.wallbay.services.action.SET_WALLPAPER";
     private static final String ACTION_DOWNLOAD_WALLPAPER = "ml.medyas.wallbay.services.action.DOWNLOAD_WALLPAPER";
+    private static final String ACTION_BULK_DOWNLOAD = "ml.medyas.wallbay.services.action.BULK_DOWNLOAD";
 
     private static final String EXTRA_PARAM1 = "ml.medyas.wallbay.services.extra.IMAGE_ITEM";
     private static final String EXTRA_PARAM2 = "ml.medyas.wallbay.services.extra.IMAGE_PROVIDER";
@@ -74,16 +77,37 @@ public class WallpaperService extends IntentService {
         context.startService(intent);
     }
 
+    public static void bulkWallpaperDownload(Context context, List<String> list) {
+        Intent intent = new Intent(context, WallpaperService.class);
+        intent.setAction(ACTION_BULK_DOWNLOAD);
+        intent.putExtra(EXTRA_PARAM1, (ArrayList<String>) list);
+        context.startService(intent);
+    }
+
 
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
-            String url = intent.getStringExtra(EXTRA_PARAM1);
             String action = intent.getAction();
             if (ACTION_SET_WALLPAPER.equals(action)) {
+                String url = intent.getStringExtra(EXTRA_PARAM1);
                 handleSetWallpaperAction(url);
             } else if (ACTION_DOWNLOAD_WALLPAPER.equals(action)) {
+                String url = intent.getStringExtra(EXTRA_PARAM1);
                 handleDownloadWallpaperAction(url, intent.getIntExtra(EXTRA_PARAM2, 0));
+            } else if (ACTION_BULK_DOWNLOAD.equals(action)) {
+                List<String> urls = intent.getStringArrayListExtra(EXTRA_PARAM1);
+                handleBulkDownload(urls);
+            }
+        }
+    }
+
+    private void handleBulkDownload(List<String> urls) {
+        for (String url : urls) {
+            if (url.contains("https://api.unsplash.com")) {
+                retrieveUrl(url);
+            } else {
+                downloadImage(url);
             }
         }
     }
@@ -91,6 +115,7 @@ public class WallpaperService extends IntentService {
     /**
      * Handle action in the provided background thread with the provided
      * parameters.
+     * Handle setting image as wallpaper
      */
     private void handleSetWallpaperAction(String url) {
         final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -169,6 +194,10 @@ public class WallpaperService extends IntentService {
         notificationManager.notify(notificationId, mBuilder.build());
     }
 
+
+    /*
+            Handle downloading images to storage
+     */
     private void handleDownloadWallpaperAction(String url, int code) {
         if (code == 2) {
             retrieveUrl(url);
@@ -179,7 +208,6 @@ public class WallpaperService extends IntentService {
     }
 
     private void downloadImage(String url) {
-        Log.d("mainactivity", "url: " + url);
         Uri uri = Uri.parse(url);
         DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(uri);
@@ -197,7 +225,7 @@ public class WallpaperService extends IntentService {
             dir = Environment.getExternalStorageDirectory().toString() + dir;
         }
 
-        request.setDestinationInExternalPublicDir(dir, uri.getLastPathSegment());
+        request.setDestinationInExternalPublicDir(dir, uri.getLastPathSegment() + ".jpg");
 
         downloadManager.enqueue(request);
     }
@@ -227,7 +255,8 @@ public class WallpaperService extends IntentService {
 
                     final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID);
                     mBuilder.setContentTitle("Image Download")
-                            .setContentText("Failed to donwload the image")
+                            .setColor(getResources().getColor(R.color.colorLightTransparent))
+                            .setContentText("Failed to download the image")
                             .setSmallIcon(R.drawable.ic_error_black_24dp)
                             .setPriority(NotificationCompat.PRIORITY_LOW);
                     int notificationId = 124521;
@@ -243,7 +272,7 @@ public class WallpaperService extends IntentService {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Log.d("mainactivity", "response: " + temp);
+
                     downloadImage(json.optString("url"));
                 }
             });

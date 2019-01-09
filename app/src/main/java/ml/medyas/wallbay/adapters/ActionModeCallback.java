@@ -41,6 +41,10 @@ public class ActionModeCallback implements ActionMode.Callback {
                 mListener.onMenuDownClicked();
                 return true;
 
+            case R.id.select_all:
+                mListener.onSelectAll();
+                return true;
+
             case R.id.remove:
                 mListener.onMenuRemoveClicked();
                 return true;
@@ -61,5 +65,7 @@ public class ActionModeCallback implements ActionMode.Callback {
         void onMenuDownClicked();
 
         void onMenuRemoveClicked();
+
+        void onSelectAll();
     }
 }

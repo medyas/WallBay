@@ -27,4 +27,6 @@
     <string name="remove_succ">Image removed!</string>
     <string name="add_error">could not add images</string>
     <string name="add_succ">Images added to favorite</string>
+    <string name="select_all">Select all</string>
+    <string name="selected_images_preview">selected images preview</string>
 </resources>
