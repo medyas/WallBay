@@ -174,11 +174,12 @@ public class FavoriteFragment extends Fragment implements FavoriteAdapter.onFavI
 
         if (!binding.selectedSheet.isInflated()) {
             binding.selectedSheet.getViewStub().inflate();
-            binding.selectedSheet.getRoot().setVisibility(View.VISIBLE);
 
             sheetText = binding.selectedSheet.getRoot().findViewById(R.id.selected_items);
             sheetImage = binding.selectedSheet.getRoot().findViewById(R.id.selected_image);
         }
+        binding.selectedSheet.getRoot().setVisibility(View.VISIBLE);
+
         if (actionMode == null) {
             //actionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
             Toolbar toolbar = ((AppCompatActivity) getActivity()).findViewById(R.id.toolbar);
@@ -199,7 +200,7 @@ public class FavoriteFragment extends Fragment implements FavoriteAdapter.onFavI
                     .load(mAdapter.getLastSelectedItem())
                     .into(sheetImage);
 
-            actionMode.setTitle(String.valueOf(count));
+            //actionMode.setTitle(String.valueOf(count));
             actionMode.invalidate();
         }
     }
@@ -286,7 +287,7 @@ public class FavoriteFragment extends Fragment implements FavoriteAdapter.onFavI
         GlideApp.with(this)
                 .load(mAdapter.getLastSelectedItem())
                 .into(sheetImage);
-        actionMode.setTitle(String.valueOf(mAdapter.getSelectedItemCount()));
+        //actionMode.setTitle(String.valueOf(mAdapter.getSelectedItemCount()));
     }
 
     /**

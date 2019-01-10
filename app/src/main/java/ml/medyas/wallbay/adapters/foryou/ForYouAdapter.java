@@ -3,6 +3,7 @@ package ml.medyas.wallbay.adapters.foryou;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,21 +35,28 @@ public class ForYouAdapter extends SelectableClass {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         final ForYouViewHolder holder = (ForYouViewHolder) viewHolder;
 
-        if (getItem(i) == null) {
-
-        } else {
+        if (getItem(i) != null) {
             holder.imageEntityItemBinding.setImageItem(getItem(i));
 
+            if (isAddedToFav(getItem(holder.getAdapterPosition()).getId())) {
+                Log.d("mainactivity", getItem(holder.getAdapterPosition()).getId() + " - " + i);
+                holder.imageEntityItemBinding.itemAddToFav.setVisibility(View.GONE);
+            }
             holder.imageEntityItemBinding.itemAddToFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onItemAddToFavorite(getItem(holder.getAdapterPosition()));
+                    if (!isAddedToFav(getItem(holder.getAdapterPosition()).getId())) {
+                        mListener.onItemAddToFavorite(getItem(holder.getAdapterPosition()));
+                        addToFav(getItem(holder.getAdapterPosition()).getId(), holder.getAdapterPosition());
+                        holder.imageEntityItemBinding.itemAddToFav.setVisibility(View.GONE);
+                    }
                 }
             });
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Log.d("mainactivity", getItem(holder.getAdapterPosition()).getId() + " - " + holder.getAdapterPosition());
                     mListener.onItemClicked(getItem(holder.getAdapterPosition()), holder.imageEntityItemBinding.itemImage, holder.getAdapterPosition());
                     if (ForYouFragment.inSelection) {
                         holder.imageEntityItemBinding.itemAddToFav.setVisibility(View.GONE);

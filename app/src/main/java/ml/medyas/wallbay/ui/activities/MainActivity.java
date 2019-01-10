@@ -139,6 +139,16 @@ public void inflateViewStub(View view) {
     @Override
     public void onBackPressed() {
         hideToolbar(true);
+        if (favShown) {
+            getSupportActionBar().setTitle(getString(R.string.app_name));
+            binding.content.toolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
+            binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    binding.drawerLayout.openDrawer(Gravity.START);
+                }
+            });
+        }
         super.onBackPressed();
     }
 

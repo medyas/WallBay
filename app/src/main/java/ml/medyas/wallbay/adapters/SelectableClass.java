@@ -11,6 +11,7 @@ import ml.medyas.wallbay.entities.ImageEntity;
 
 public abstract class SelectableClass extends PagedListAdapter<ImageEntity, RecyclerView.ViewHolder> {
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
+    private List<String> addedToFav = new ArrayList<>();
     private PagedListAdapter adapter;
 
     protected SelectableClass() {
@@ -66,6 +67,9 @@ public abstract class SelectableClass extends PagedListAdapter<ImageEntity, Recy
     }
 
     public String getLastSelectedItem() {
+        if (getSelectedItems().size() == 0) {
+            return "";
+        }
         ImageEntity imageEntity = (ImageEntity) adapter.getCurrentList().get(selectedItems.keyAt(selectedItems.size() - 1));
         return imageEntity.getPreviewImage();
     }
@@ -103,7 +107,16 @@ public abstract class SelectableClass extends PagedListAdapter<ImageEntity, Recy
         return items;
     }
 
-    public void setSelectedItems(SparseBooleanArray selectedItems) {
-        this.selectedItems = selectedItems;
+    public void addToFav(String id, int position) {
+        addedToFav.add(id);
+        adapter.notifyItemChanged(position);
+    }
+
+    public boolean isAddedToFav(String id) {
+        return getAddedTofav().contains(id);
+    }
+
+    public List<String> getAddedTofav() {
+        return addedToFav;
     }
 }

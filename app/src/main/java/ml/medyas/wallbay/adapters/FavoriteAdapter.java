@@ -180,6 +180,9 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
     }
 
     public String getLastSelectedItem() {
+        if (getSelectedItems().size() == 0) {
+            return "";
+        }
         ImageEntity imageEntity = imageEntities.get(selectedItems.keyAt(selectedItems.size() - 1));
         return imageEntity.getPreviewImage();
     }

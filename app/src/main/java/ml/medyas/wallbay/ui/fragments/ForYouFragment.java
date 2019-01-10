@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
@@ -40,6 +41,7 @@ import ml.medyas.wallbay.databinding.FragmentForYouBinding;
 import ml.medyas.wallbay.entities.ImageEntity;
 import ml.medyas.wallbay.models.foryou.ForYouViewModel;
 import ml.medyas.wallbay.models.foryou.ForYouViewModelFactory;
+import ml.medyas.wallbay.services.NetworkChangeReceiver;
 import ml.medyas.wallbay.services.WallpaperService;
 import ml.medyas.wallbay.utils.GlideApp;
 import ml.medyas.wallbay.utils.Utils;
@@ -47,6 +49,7 @@ import ml.medyas.wallbay.utils.Utils;
 import static ml.medyas.wallbay.utils.Utils.INTEREST_CATEGORIES;
 import static ml.medyas.wallbay.utils.Utils.calculateNoOfColumns;
 import static ml.medyas.wallbay.utils.Utils.convertPixelsToDp;
+import static ml.medyas.wallbay.utils.Utils.getNetworkStatus;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,7 +59,8 @@ import static ml.medyas.wallbay.utils.Utils.convertPixelsToDp;
  * Use the {@link ForYouFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ForYouFragment extends Fragment implements ForYouAdapter.onImageItemClicked, ActionModeCallback.onActionModeInterface {
+public class ForYouFragment extends Fragment implements ForYouAdapter.onImageItemClicked, ActionModeCallback.onActionModeInterface,
+        java.util.Observer {
     private OnForYouFragmentInteractions mListener;
     private ForYouViewModel mViewModel;
     private ForYouAdapter mAdapter;
@@ -64,6 +68,7 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
     public static boolean inSelection = false;
     private ActionModeCallback actionModeCallback;
     private ActionMode actionMode;
+    private Snackbar snackbar;
 
     private TextView sheetText;
     private ImageView sheetImage;
@@ -160,16 +165,15 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
                     if (mAdapter.getCurrentList().size() == 0) {
                         binding.statusLayout.netError.setVisibility(View.VISIBLE);
                         binding.statusLayout.itemLoad.setVisibility(View.GONE);
-                        Snackbar.make(binding.statusLayout.netError, "Network Error", Snackbar.LENGTH_INDEFINITE)
+                        snackbar = Snackbar.make(binding.statusLayout.netError, "Network Error", Snackbar.LENGTH_INDEFINITE)
                                 .setAction("Retray", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
                                         binding.statusLayout.netError.setVisibility(View.GONE);
-                                        binding.statusLayout.itemLoad.setVisibility(View.VISIBLE);
-
                                         mListener.reCreateFragment(ForYouFragment.newInstance());
                                     }
-                                }).show();
+                                });
+                        snackbar.show();
                     } else {
                         Snackbar.make(binding.statusLayout.netError, "Failed to load more data", Snackbar.LENGTH_LONG).show();
                     }
@@ -210,10 +214,21 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
         mListener = null;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        NetworkChangeReceiver.getObservable().deleteObserver(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        NetworkChangeReceiver.getObservable().addObserver(this);
+    }
 
     /*
             Adapter callbacks
-     */
+    */
     @Override
     public void onItemClicked(ImageEntity imageEntity, ImageView itemImage, int adapterPosition) {
         if (inSelection) {
@@ -260,7 +275,7 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
                     .load(mAdapter.getLastSelectedItem())
                     .into(sheetImage);
 
-            actionMode.setTitle(String.valueOf(count));
+            //actionMode.setTitle(String.valueOf(count));
             actionMode.invalidate();
         }
     }
@@ -347,7 +362,15 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
         GlideApp.with(this)
                 .load(mAdapter.getLastSelectedItem())
                 .into(sheetImage);
-        actionMode.setTitle(String.valueOf(mAdapter.getSelectedItemCount()));
+        //actionMode.setTitle(String.valueOf(mAdapter.getSelectedItemCount()));
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        if (getNetworkStatus(getContext()) && binding.statusLayout.netError.getVisibility() == View.VISIBLE) {
+            mListener.reCreateFragment(ForYouFragment.newInstance());
+            snackbar.dismiss();
+        }
     }
 
     /**
