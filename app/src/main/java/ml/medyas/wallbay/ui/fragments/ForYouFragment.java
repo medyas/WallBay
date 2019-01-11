@@ -70,6 +70,8 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
     private ActionMode actionMode;
     private Snackbar snackbar;
 
+    public static final String TAG = "ml.medyas.wallbay.ui.fragments.ForYouFragment";
+
     private TextView sheetText;
     private ImageView sheetImage;
 
@@ -95,7 +97,7 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_for_you, container, false);
 
-        mAdapter = new ForYouAdapter(this);
+        mAdapter = new ForYouAdapter(this, getContext());
 
         actionModeCallback = new ActionModeCallback(this, true);
         binding.statusLayout.slideShowPlay.hide();
@@ -275,7 +277,6 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
                     .load(mAdapter.getLastSelectedItem())
                     .into(sheetImage);
 
-            //actionMode.setTitle(String.valueOf(count));
             actionMode.invalidate();
         }
     }
@@ -328,6 +329,7 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
             @Override
             public void onComplete() {
                 Toast.makeText(getContext(), getString(R.string.add_succ), Toast.LENGTH_SHORT).show();
+                mAdapter.addSelectedToFav();
                 actionMode.finish();
             }
 

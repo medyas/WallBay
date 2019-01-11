@@ -38,13 +38,13 @@ public class ForYouDataSource extends PageKeyedDataSource<Integer, ImageEntity> 
 
             @Override
             public void onNext(SearchEntity searchEntity) {
-
                 callback.onResult(searchEntity.getAll(), null, 2);
                 networkState.postValue(Utils.NetworkState.LOADED);
             }
 
             @Override
             public void onError(Throwable e) {
+                e.printStackTrace();
                 Log.d("mainactivity", "NetError: " + e.getMessage());
                 networkState.postValue(Utils.NetworkState.FAILED);
             }

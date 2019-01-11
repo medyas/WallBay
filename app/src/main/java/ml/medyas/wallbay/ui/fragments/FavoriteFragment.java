@@ -48,6 +48,8 @@ public class FavoriteFragment extends Fragment implements FavoriteAdapter.onFavI
     private ActionMode actionMode;
     private ActionModeCallback actionModeCallback;
 
+    public static final String TAG = "ml.medyas.wallbay.ui.fragments.FavoriteFragment";
+
     private TextView sheetText;
     private ImageView sheetImage;
 

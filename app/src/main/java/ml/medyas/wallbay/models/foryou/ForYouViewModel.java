@@ -38,7 +38,7 @@ public class ForYouViewModel extends ViewModel {
                 .setPageSize(30)
                 .build();
 
-        pagedListLiveData = new LivePagedListBuilder(forYouDataSourceFactory, config).build();
+        pagedListLiveData = new LivePagedListBuilder(forYouDataSourceFactory, config).setFetchExecutor(executor).build();
     }
 
 

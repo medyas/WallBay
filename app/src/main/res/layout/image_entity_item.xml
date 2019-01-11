@@ -41,22 +41,6 @@
             android:src="@drawable/ic_favorite_border_black_24dp"
             android:tint="@color/colorPrimaryLight" />
 
-        <!--<ImageView
-            android:id="@+id/item_added_to_fav"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_gravity="top|end"
-            android:visibility="gone"
-            android:background="@drawable/round_corners"
-            android:contentDescription="@string/add_image_to_favorite"
-            android:padding="4dp"
-            android:src="@drawable/ic_favorite_black_24dp"
-            android:tint="@color/colorPrimaryLight" />-->
-
-
     </FrameLayout>
 
 </layout>

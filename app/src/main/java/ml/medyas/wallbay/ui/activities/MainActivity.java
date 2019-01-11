@@ -68,10 +68,10 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
                 binding.content.coordinator.setVisibility(View.VISIBLE);
                 replaceFragment(ForYouFragment.newInstance(), false);
             }
-            hideToolbar(true);
+            showToolbar(true);
         } else {
             binding.content.coordinator.setVisibility(View.VISIBLE);
-            hideToolbar(savedInstanceState.getBoolean(TOOLBAR_VISIBILITY));
+            showToolbar(savedInstanceState.getBoolean(TOOLBAR_VISIBILITY));
             setUpToolbar(!savedInstanceState.getBoolean(FAVORITE_SHOWN));
         }
     }
@@ -97,7 +97,6 @@ public void inflateViewStub(View view) {
         if (setup) {
             favShown = false;
             getSupportActionBar().setTitle(getString(R.string.app_name));
-            binding.content.toolbar.inflateMenu(R.menu.main_activity_menu);
             binding.content.toolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
             binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -114,15 +113,14 @@ public void inflateViewStub(View view) {
                 @Override
                 public void onClick(View view) {
                     onBackPressed();
-
                     setUpToolbar(true);
                 }
             });
         }
     }
 
-    private void hideToolbar(boolean setup) {
-        if (setup) {
+    private void showToolbar(boolean show) {
+        if (show) {
             getSupportActionBar().show();
         } else {
             getSupportActionBar().hide();
@@ -138,17 +136,15 @@ public void inflateViewStub(View view) {
 
     @Override
     public void onBackPressed() {
-        hideToolbar(true);
-        if (favShown) {
-            getSupportActionBar().setTitle(getString(R.string.app_name));
-            binding.content.toolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
-            binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    binding.drawerLayout.openDrawer(Gravity.START);
-                }
-            });
+        String fragment = getSupportFragmentManager().findFragmentById(R.id.main_container).getClass().getName();
+        if (fragment.equals(ImageDetailsFragment.TAG)) {
+            showToolbar(true);
+        } else if (fragment.equals(FavoriteFragment.TAG)) {
+            setUpToolbar(favShown);
+            binding.content.toolbar.inflateMenu(R.menu.main_activity_menu);
         }
+
+
         super.onBackPressed();
     }
 
@@ -277,7 +273,7 @@ public void inflateViewStub(View view) {
 
     @Override
     public void onHideToolbar(boolean hide) {
-        hideToolbar(!hide);
+        showToolbar(!hide);
     }
 
     @Override
@@ -310,7 +306,7 @@ public void inflateViewStub(View view) {
             frag.setExitTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.move));
         }
 
-        hideToolbar(false);
+        showToolbar(false);
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.main_container, frag, frag.getClass().getName())
@@ -330,7 +326,7 @@ public void inflateViewStub(View view) {
                 .add(R.id.main_container, fragment, fragment.getClass().getName())
                 .addToBackStack(fragment.getClass().getName())
                 .commit();
-
+        favShown = true;
         setUpToolbar(false);
     }
 

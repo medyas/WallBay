@@ -65,6 +65,8 @@ public class ImageDetailsFragment extends Fragment {
     private boolean toggle = true;
     private Palette palette;
 
+    public static final String TAG = "ml.medyas.wallbay.ui.fragments.ImageDetailsFragment";
+
     public ImageDetailsFragment() {
         // Required empty public constructor
     }

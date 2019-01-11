@@ -11,7 +11,7 @@ import ml.medyas.wallbay.entities.ImageEntity;
 
 public abstract class SelectableClass extends PagedListAdapter<ImageEntity, RecyclerView.ViewHolder> {
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
-    private List<String> addedToFav = new ArrayList<>();
+    private SparseBooleanArray addedToFav = new SparseBooleanArray();
     private PagedListAdapter adapter;
 
     protected SelectableClass() {
@@ -33,7 +33,7 @@ public abstract class SelectableClass extends PagedListAdapter<ImageEntity, Recy
      * @return true if the item is selected, false otherwise
      */
     public boolean isSelected(int position) {
-        return getSelectedItems().contains(position);
+        return selectedItems.get(position);
     }
 
     /**
@@ -107,16 +107,30 @@ public abstract class SelectableClass extends PagedListAdapter<ImageEntity, Recy
         return items;
     }
 
-    public void addToFav(String id, int position) {
-        addedToFav.add(id);
-        adapter.notifyItemChanged(position);
+    /*
+            Added to Favorite items
+     */
+
+    public void addToFav(int position) {
+        addedToFav.put(position, true);
     }
 
-    public boolean isAddedToFav(String id) {
-        return getAddedTofav().contains(id);
+    public boolean isAddedToFav(int position) {
+        return addedToFav.get(position);
     }
 
-    public List<String> getAddedTofav() {
-        return addedToFav;
+    public void addSelectedToFav() {
+        for (int i = 0; i < selectedItems.size(); i++) {
+            addedToFav.put(selectedItems.keyAt(i), true);
+        }
+        notifySelection();
     }
+
+    private void notifySelection() {
+        List<Integer> selection = getSelectedItems();
+        for (Integer i : selection) {
+            adapter.notifyItemChanged(i);
+        }
+    }
+
 }

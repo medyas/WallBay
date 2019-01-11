@@ -1,9 +1,9 @@
 package ml.medyas.wallbay.adapters.foryou;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +18,13 @@ import ml.medyas.wallbay.ui.fragments.ForYouFragment;
 
 public class ForYouAdapter extends SelectableClass {
     private onImageItemClicked mListener;
+    private Context context;
 
-    public ForYouAdapter(onImageItemClicked listener) {
+    public ForYouAdapter(onImageItemClicked listener, Context context) {
         mListener = listener;
+        this.context = context;
         setAdapter(this);
+        setHasStableIds(true);
     }
 
     @NonNull
@@ -38,17 +41,13 @@ public class ForYouAdapter extends SelectableClass {
         if (getItem(i) != null) {
             holder.imageEntityItemBinding.setImageItem(getItem(i));
 
-            if (isAddedToFav(getItem(holder.getAdapterPosition()).getId())) {
-                Log.d("mainactivity", getItem(holder.getAdapterPosition()).getId() + " - " + i);
-                holder.imageEntityItemBinding.itemAddToFav.setVisibility(View.GONE);
-            }
             holder.imageEntityItemBinding.itemAddToFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (!isAddedToFav(getItem(holder.getAdapterPosition()).getId())) {
+                    if (!isAddedToFav(holder.getAdapterPosition())) {
                         mListener.onItemAddToFavorite(getItem(holder.getAdapterPosition()));
-                        addToFav(getItem(holder.getAdapterPosition()).getId(), holder.getAdapterPosition());
-                        holder.imageEntityItemBinding.itemAddToFav.setVisibility(View.GONE);
+                        addToFav(holder.getAdapterPosition());
+                        holder.imageEntityItemBinding.itemAddToFav.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_favorite_black_24dp));
                     }
                 }
             });
@@ -56,7 +55,6 @@ public class ForYouAdapter extends SelectableClass {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("mainactivity", getItem(holder.getAdapterPosition()).getId() + " - " + holder.getAdapterPosition());
                     mListener.onItemClicked(getItem(holder.getAdapterPosition()), holder.imageEntityItemBinding.itemImage, holder.getAdapterPosition());
                     if (ForYouFragment.inSelection) {
                         holder.imageEntityItemBinding.itemAddToFav.setVisibility(View.GONE);
@@ -93,9 +91,22 @@ public class ForYouAdapter extends SelectableClass {
                 }
                 holder.imageEntityItemBinding.itemImage.setLayoutParams(params);
             }
+
+            if (isAddedToFav(holder.getAdapterPosition())) {
+                holder.imageEntityItemBinding.itemAddToFav.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_favorite_black_24dp));
+            }
         }
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
     public interface onImageItemClicked {
 
