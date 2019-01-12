@@ -94,22 +94,6 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         super.onResume();
     }
 
-    /*
-    mBinding.viewStub.setOnInflateListener(new ViewStub.OnInflateListener() {
-    @Override
-    public void onInflate(ViewStub stub, View inflated) {
-        ViewStubBinding binding = DataBindingUtil.bind(inflated);
-        binding.setModel(model);
-    }
-});
-
-public void inflateViewStub(View view) {
-    if (!mBinding.viewStub.isInflated()) {
-        mBinding.viewStub.getViewStub().inflate();
-    }
-}
-     */
-
     private void setUpToolbar(final boolean setup) {
         if (setup) {
             favShown = false;
