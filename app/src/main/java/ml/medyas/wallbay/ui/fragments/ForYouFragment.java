@@ -168,7 +168,7 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
                         binding.statusLayout.netError.setVisibility(View.VISIBLE);
                         binding.statusLayout.itemLoad.setVisibility(View.GONE);
                         snackbar = Snackbar.make(binding.statusLayout.netError, "Network Error", Snackbar.LENGTH_INDEFINITE)
-                                .setAction("Retray", new View.OnClickListener() {
+                                .setAction("Retry", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
                                         binding.statusLayout.netError.setVisibility(View.GONE);
@@ -177,7 +177,12 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
                                 });
                         snackbar.show();
                     } else {
-                        Snackbar.make(binding.statusLayout.netError, "Failed to load more data", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(binding.statusLayout.netError, "Failed to load more data", Snackbar.LENGTH_LONG).setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                mListener.reCreateFragment(ForYouFragment.newInstance());
+                            }
+                        }).show();
                     }
                 }
             }
@@ -291,7 +296,7 @@ public class ForYouFragment extends Fragment implements ForYouAdapter.onImageIte
 
             @Override
             public void onComplete() {
-                Toast.makeText(getContext(), "Added to favorite", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.add_fav), Toast.LENGTH_SHORT).show();
             }
 
             @Override

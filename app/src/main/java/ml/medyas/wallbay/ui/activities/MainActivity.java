@@ -13,6 +13,7 @@ import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.ImageView;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import io.reactivex.Completable;
 import io.reactivex.disposables.Disposable;
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.databinding.ActivityMainBinding;
+import ml.medyas.wallbay.databinding.NavigationBaseLayoutBinding;
 import ml.medyas.wallbay.entities.ImageEntity;
 import ml.medyas.wallbay.entities.SearchEntity;
 import ml.medyas.wallbay.models.FavoriteViewModel;
@@ -74,8 +76,23 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             showToolbar(savedInstanceState.getBoolean(TOOLBAR_VISIBILITY));
             setUpToolbar(!savedInstanceState.getBoolean(FAVORITE_SHOWN));
         }
+
+        binding.navigation.setOnInflateListener(new ViewStub.OnInflateListener() {
+            @Override
+            public void onInflate(ViewStub viewStub, View view) {
+                NavigationBaseLayoutBinding b = DataBindingUtil.bind(view);
+                b.setActivity(MainActivity.this);
+            }
+        });
     }
 
+    @Override
+    protected void onResume() {
+        if(!binding.navigation.isInflated()) {
+            binding.navigation.getViewStub().inflate();
+        }
+        super.onResume();
+    }
 
     /*
     mBinding.viewStub.setOnInflateListener(new ViewStub.OnInflateListener() {
@@ -165,6 +182,10 @@ public void inflateViewStub(View view) {
                     .replace(R.id.main_container, fragment, fragment.getClass().getName())
                     .commit();
         }
+    }
+
+    public void onNavItemClicked(View view) {
+        Log.d("mainactivity", "item clicked");
     }
 
     private void getData() {

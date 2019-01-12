@@ -19,4 +19,14 @@
         <item name="android:layout_margin">8dp</item>
     </style>
 
+    <style name="MenuItemStyle">
+        <item name="android:fontFamily">@font/muli_bold</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+
 </resources>

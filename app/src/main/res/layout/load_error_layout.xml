@@ -25,6 +25,8 @@
             android:id="@+id/list_empty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:scaleX="2"
+            android:scaleY="2"
             android:alpha=".6"
             android:maxWidth="360dp"
             android:visibility="gone"
@@ -35,7 +37,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_rawRes="@raw/dislike_icon" />
+            app:lottie_rawRes="@raw/heart_break" />
 
 
         <com.airbnb.lottie.LottieAnimationView

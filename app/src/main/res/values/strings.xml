@@ -29,4 +29,13 @@
     <string name="add_succ">Images added to favorite</string>
     <string name="select_all">Select all</string>
     <string name="selected_images_preview">selected images preview</string>
+    <string name="add_fav">Added to favorite</string>
+    <string name="about">About</string>
+    <string name="rate_amp_review"><![CDATA[Rate & Review]]></string>
+    <string name="share">Share</string>
+    <string name="search">Search</string>
+    <string name="pexels">Pexels</string>
+    <string name="unsplash">Unsplash</string>
+    <string name="for_you">For You</string>
+    <string name="pixabay">Pixabay</string>
 </resources>

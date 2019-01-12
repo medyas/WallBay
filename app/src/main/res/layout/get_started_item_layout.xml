@@ -32,7 +32,7 @@
             android:visibility="@{safeUnbox(category.selected)? View.VISIBLE : View.GONE}"
             app:lottie_autoPlay="false"
             app:lottie_loop="false"
-            app:lottie_rawRes="@raw/checked_done_" />
+            app:lottie_rawRes="@raw/checked_done" />
 
         <TextView
             android:layout_width="match_parent"
