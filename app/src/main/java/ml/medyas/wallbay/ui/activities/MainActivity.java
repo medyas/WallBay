@@ -27,15 +27,23 @@ import ml.medyas.wallbay.entities.ImageEntity;
 import ml.medyas.wallbay.entities.SearchEntity;
 import ml.medyas.wallbay.models.FavoriteViewModel;
 import ml.medyas.wallbay.models.SearchViewModel;
+import ml.medyas.wallbay.ui.fragments.AboutFragment;
+import ml.medyas.wallbay.ui.fragments.BaseFragment;
 import ml.medyas.wallbay.ui.fragments.FavoriteFragment;
 import ml.medyas.wallbay.ui.fragments.ForYouFragment;
 import ml.medyas.wallbay.ui.fragments.GetStartedFragment;
 import ml.medyas.wallbay.ui.fragments.ImageDetailsFragment;
+import ml.medyas.wallbay.ui.fragments.PexelsFragment;
+import ml.medyas.wallbay.ui.fragments.PixabayFragment;
+import ml.medyas.wallbay.ui.fragments.SearchFragment;
+import ml.medyas.wallbay.ui.fragments.UnsplashFragment;
 
 import static ml.medyas.wallbay.utils.Utils.INTEREST_CATEGORIES;
 
-public class MainActivity extends AppCompatActivity implements GetStartedFragment.OnGetStartedFragmentInteractions, ForYouFragment.OnForYouFragmentInteractions,
-        ImageDetailsFragment.OnImageDetailsFragmentInteractions, FavoriteFragment.onFavoriteFragmentInteractions {
+public class MainActivity extends AppCompatActivity implements GetStartedFragment.OnGetStartedFragmentInteractions, BaseFragment.OnBaseFragmentInteractions,
+        ImageDetailsFragment.OnImageDetailsFragmentInteractions, FavoriteFragment.onFavoriteFragmentInteractions, PixabayFragment.OnPixabayFragmentInteractions,
+    UnsplashFragment.OnFragmentInteractionListener, PexelsFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener,
+    AboutFragment.OnFragmentInteractionListener, ForYouFragment.OnForYouFragmentInteractions {
 
     public static final String FIRST_START = "first_start";
     public static final String TOOLBAR_VISIBILITY = "toolbar_visibility";
@@ -169,7 +177,34 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     }
 
     public void onNavItemClicked(View view) {
-        Log.d("mainactivity", "item clicked");
+        int id = view.getId();
+        binding.drawerLayout.closeDrawers();
+
+        switch (id) {
+            case R.id.nav_for_you:
+                replaceFragment(ForYouFragment.newInstance(), false);
+                break;
+
+            case R.id.nav_pixabay:
+                replaceFragment(PixabayFragment.newInstance(), false);
+                break;
+
+            case R.id.nav_unsplash:
+                replaceFragment(UnsplashFragment.newInstance(), false);
+                break;
+
+            case R.id.nav_pexels:
+                replaceFragment(PexelsFragment.newInstance(), false);
+                break;
+
+            case R.id.nav_search:
+                replaceFragment(SearchFragment.newInstance(), false);
+                break;
+
+            case R.id.nav_about:
+                replaceFragment(AboutFragment.newInstance(), false);
+                break;
+        }
     }
 
     private void getData() {
@@ -273,12 +308,6 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         binding.content.coordinator.setVisibility(View.VISIBLE);
 
         replaceFragment(ForYouFragment.newInstance(), false);
-    }
-
-
-    @Override
-    public void onHideToolbar(boolean hide) {
-        showToolbar(!hide);
     }
 
     @Override

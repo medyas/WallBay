@@ -38,4 +38,8 @@
     <string name="unsplash">Unsplash</string>
     <string name="for_you">For You</string>
     <string name="pixabay">Pixabay</string>
+    <string name="type_you_search_term">Type you search term</string>
+    <string name="popular">Popular</string>
+    <string name="latest">Latest</string>
+    <string name="editors_choice">Editors Choice</string>
 </resources>

@@ -1,4 +1,4 @@
-package ml.medyas.wallbay.adapters.foryou;
+package ml.medyas.wallbay.adapters;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -11,16 +11,16 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import ml.medyas.wallbay.R;
-import ml.medyas.wallbay.adapters.SelectableClass;
 import ml.medyas.wallbay.databinding.ImageEntityItemBinding;
 import ml.medyas.wallbay.entities.ImageEntity;
+import ml.medyas.wallbay.ui.fragments.BaseFragment;
 import ml.medyas.wallbay.ui.fragments.ForYouFragment;
 
-public class ForYouAdapter extends SelectableClass {
+public class BaseAdapter extends SelectableClass {
     private onImageItemClicked mListener;
     private Context context;
 
-    public ForYouAdapter(onImageItemClicked listener, Context context) {
+    public BaseAdapter(onImageItemClicked listener, Context context) {
         mListener = listener;
         this.context = context;
         setAdapter(this);
@@ -72,7 +72,7 @@ public class ForYouAdapter extends SelectableClass {
                 }
             });
 
-            if (!ForYouFragment.inSelection) {
+            if (!BaseFragment.inSelection) {
                 holder.imageEntityItemBinding.itemAddToFav.setVisibility(View.VISIBLE);
                 FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 params.setMargins(0, 0, 0, 0);
