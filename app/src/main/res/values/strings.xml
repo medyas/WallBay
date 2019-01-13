@@ -42,4 +42,5 @@
     <string name="popular">Popular</string>
     <string name="latest">Latest</string>
     <string name="editors_choice">Editors Choice</string>
+    <string name="menu_divider">menu divider</string>
 </resources>
