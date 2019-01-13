@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.Observable;
 
@@ -86,7 +87,8 @@ public class ForYouFragment extends BaseFragment implements java.util.Observer {
                     getItemLoad().setVisibility(View.GONE);
                     getRecyclerView().setVisibility(View.VISIBLE);
 
-                } else if (networkState == Utils.NetworkState.LOADING) {
+                } else if (networkState == Utils.NetworkState.EMPTY) {
+                    Toast.makeText(getContext(), "Error retrieving more data!", Toast.LENGTH_SHORT).show();
 
                 } else if (networkState == Utils.NetworkState.FAILED) {
                     if (getAdapter().getCurrentList().size() == 0) {
@@ -123,7 +125,7 @@ public class ForYouFragment extends BaseFragment implements java.util.Observer {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_favorite) {
-            mListener.onShowFavoriteFragment();
+            mListener.onAddFragment(FavoriteFragment.newInstance());
         }
         return super.onOptionsItemSelected(item);
     }
@@ -167,7 +169,7 @@ public class ForYouFragment extends BaseFragment implements java.util.Observer {
     }
 
     public interface OnForYouFragmentInteractions {
-        void onShowFavoriteFragment();
+        void onAddFragment(Fragment fragment);
         void reCreateFragment(Fragment fragment);
     }
 

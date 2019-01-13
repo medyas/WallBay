@@ -20,6 +20,7 @@ import ml.medyas.wallbay.R;
  */
 public class PexelsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
+    public static final String TAG = "ml.medyas.wallbay.ui.fragments.PexelsFragment";
 
     public PexelsFragment() {
         // Required empty public constructor

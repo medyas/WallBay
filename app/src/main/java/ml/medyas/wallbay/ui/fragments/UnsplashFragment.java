@@ -20,6 +20,7 @@ import ml.medyas.wallbay.R;
  */
 public class UnsplashFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
+    public static final String TAG = "ml.medyas.wallbay.ui.fragments.UnsplashFragment";
 
     public UnsplashFragment() {
         // Required empty public constructor

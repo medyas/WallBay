@@ -202,7 +202,6 @@ public class FavoriteFragment extends Fragment implements FavoriteAdapter.onFavI
                     .load(mAdapter.getLastSelectedItem())
                     .into(sheetImage);
 
-            //actionMode.setTitle(String.valueOf(count));
             actionMode.invalidate();
         }
     }

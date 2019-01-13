@@ -133,7 +133,7 @@ public class Utils {
     }
 
     public enum NetworkState {
-        LOADING, LOADED, FAILED
+        LOADING, LOADED, FAILED, EMPTY
     }
 
 

@@ -10,7 +10,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewStub;
@@ -19,14 +18,11 @@ import android.widget.ImageView;
 import java.util.List;
 
 import io.reactivex.Completable;
-import io.reactivex.disposables.Disposable;
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.databinding.ActivityMainBinding;
 import ml.medyas.wallbay.databinding.NavigationBaseLayoutBinding;
 import ml.medyas.wallbay.entities.ImageEntity;
-import ml.medyas.wallbay.entities.SearchEntity;
 import ml.medyas.wallbay.models.FavoriteViewModel;
-import ml.medyas.wallbay.models.SearchViewModel;
 import ml.medyas.wallbay.ui.fragments.AboutFragment;
 import ml.medyas.wallbay.ui.fragments.BaseFragment;
 import ml.medyas.wallbay.ui.fragments.FavoriteFragment;
@@ -35,6 +31,7 @@ import ml.medyas.wallbay.ui.fragments.GetStartedFragment;
 import ml.medyas.wallbay.ui.fragments.ImageDetailsFragment;
 import ml.medyas.wallbay.ui.fragments.PexelsFragment;
 import ml.medyas.wallbay.ui.fragments.PixabayFragment;
+import ml.medyas.wallbay.ui.fragments.PixabayViewPagerFragment;
 import ml.medyas.wallbay.ui.fragments.SearchFragment;
 import ml.medyas.wallbay.ui.fragments.UnsplashFragment;
 
@@ -51,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
 
     private ActivityMainBinding binding;
     private FavoriteViewModel favoriteViewModel;
-    private boolean favShown = false;
+    private boolean addedFragmentShown = false;
 
     //TODO 1: Create fragments UI : For You
     //• Pixabay
@@ -92,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
                 b.setActivity(MainActivity.this);
             }
         });
+
     }
 
     @Override
@@ -104,8 +102,8 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
 
     private void setUpToolbar(final boolean setup) {
         if (setup) {
-            favShown = false;
-            getSupportActionBar().setTitle(getString(R.string.app_name));
+            addedFragmentShown = false;
+            //getSupportActionBar().setTitle(getString(R.string.app_name));
             binding.content.toolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
             binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -114,8 +112,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
                 }
             });
         } else {
-            favShown = true;
-            getSupportActionBar().setTitle(getString(R.string.favorite));
+            addedFragmentShown = true;
             binding.content.toolbar.getMenu().clear();
             binding.content.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
             binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -126,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
                 }
             });
         }
+
+        findToolbarTitle();
     }
 
     private void showToolbar(boolean show) {
@@ -140,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(TOOLBAR_VISIBILITY, binding.content.toolbar.getVisibility() == View.VISIBLE);
-        outState.putBoolean(FAVORITE_SHOWN, favShown);
+        outState.putBoolean(FAVORITE_SHOWN, addedFragmentShown);
     }
 
     @Override
@@ -148,13 +147,86 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         String fragment = getSupportFragmentManager().findFragmentById(R.id.main_container).getClass().getName();
         if (fragment.equals(ImageDetailsFragment.TAG)) {
             showToolbar(true);
-        } else if (fragment.equals(FavoriteFragment.TAG)) {
-            setUpToolbar(favShown);
+        } else if (fragment.equals(FavoriteFragment.TAG) || fragment.equals(PixabayViewPagerFragment.TAG)) {
+            setUpToolbar(addedFragmentShown);
             binding.content.toolbar.inflateMenu(R.menu.main_activity_menu);
         }
 
-
         super.onBackPressed();
+    }
+
+    private void findToolbarTitle() {
+        if(getSupportFragmentManager().findFragmentById(R.id.main_container) != null) {
+            String fragment = getSupportFragmentManager().findFragmentById(R.id.main_container).getClass().getName();
+            String title = "";
+            switch (fragment) {
+                case ForYouFragment.TAG:
+                    title = getResources().getString(R.string.for_you);
+                    break;
+
+                case PixabayFragment.TAG:
+                    title = getResources().getString(R.string.pixabay);
+                    break;
+
+                case UnsplashFragment.TAG:
+                    title = getResources().getString(R.string.unsplash);
+                    break;
+
+                case PexelsFragment.TAG:
+                    title = getResources().getString(R.string.pexels);
+                    break;
+
+                case SearchFragment.TAG:
+                    title = getResources().getString(R.string.search);
+                    break;
+
+                case AboutFragment.TAG:
+                    title = getResources().getString(R.string.about);
+                    break;
+
+                case FavoriteFragment.TAG:
+                    title = getResources().getString(R.string.favorite);
+                    break;
+            }
+
+            getSupportActionBar().setTitle(title);
+        }
+    }
+
+    private Fragment setToolbarTitle(Fragment fragment) {
+        String title = "";
+        switch (fragment.getClass().getName()) {
+            case ForYouFragment.TAG:
+                title = getResources().getString(R.string.for_you);
+                break;
+
+            case PixabayFragment.TAG:
+                title = getResources().getString(R.string.pixabay);
+                break;
+
+            case UnsplashFragment.TAG:
+                title = getResources().getString(R.string.unsplash);
+                break;
+
+            case PexelsFragment.TAG:
+                title = getResources().getString(R.string.pexels);
+                break;
+
+            case SearchFragment.TAG:
+                title = getResources().getString(R.string.search);
+                break;
+
+            case AboutFragment.TAG:
+                title = getResources().getString(R.string.about);
+                break;
+
+            case FavoriteFragment.TAG:
+                title = getResources().getString(R.string.favorite);
+                break;
+        }
+
+        getSupportActionBar().setTitle(title);
+        return fragment;
     }
 
     private void showStartFragment() {
@@ -171,15 +243,14 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
                 fragment.setExitTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.slide_left));
             }
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_container, fragment, fragment.getClass().getName())
+                    .replace(R.id.main_container, setToolbarTitle(fragment), fragment.getClass().getName())
                     .commit();
+
         }
     }
 
     public void onNavItemClicked(View view) {
         int id = view.getId();
-        binding.drawerLayout.closeDrawers();
-
         switch (id) {
             case R.id.nav_for_you:
                 replaceFragment(ForYouFragment.newInstance(), false);
@@ -205,39 +276,9 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
                 replaceFragment(AboutFragment.newInstance(), false);
                 break;
         }
+
+        binding.drawerLayout.closeDrawers();
     }
-
-    private void getData() {
-        final String tag = getClass().getName();
-        SearchViewModel mViewModel = ViewModelProviders.of(this)
-                .get(SearchViewModel.class);
-
-        int page = 1;
-        mViewModel.getSearchAllEndpoints("nature", page).subscribe(new io.reactivex.Observer<SearchEntity>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-                Log.d("mainactivity", "onSubscribe");
-            }
-
-            @Override
-            public void onNext(SearchEntity searchEntity) {
-                if (searchEntity != null) {
-                    Log.d("mainactivity", "Data total size: " + searchEntity.getAll().size());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                e.printStackTrace();
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
 
         /*mViewModel.getUnsplashPhotos("latest", page).observe(this, new Observer<List<ImageEntity>>() {
             @Override
@@ -294,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
                         }
                     }
                 });*/
-    }
+
 
     @Override
     public void onGetStartedDone(String categories) {
@@ -350,8 +391,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     }
 
     @Override
-    public void onShowFavoriteFragment() {
-        Fragment fragment = FavoriteFragment.newInstance();
+    public void onAddFragment(Fragment fragment) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             fragment.setSharedElementReturnTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.slide_right));
             fragment.setExitTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.slide_left));
@@ -360,8 +400,17 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
                 .add(R.id.main_container, fragment, fragment.getClass().getName())
                 .addToBackStack(fragment.getClass().getName())
                 .commit();
-        favShown = true;
+        addedFragmentShown = true;
         setUpToolbar(false);
+
+        if(fragment instanceof FavoriteFragment) {
+            getSupportActionBar().setTitle(getString(R.string.favorite));
+        }
+    }
+
+    @Override
+    public void updateToolbarTitle(String title) {
+        getSupportActionBar().setTitle(title);
     }
 
     @Override

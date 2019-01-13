@@ -29,4 +29,13 @@
         <item name="android:layout_marginTop">8dp</item>
     </style>
 
+    <style name="SearchDialogStyle" parent="@android:style/Theme.Dialog">
+        <item name="android:windowAnimationStyle">@style/CustomDialogAnimation</item>
+    </style>
+
+    <style name="CustomDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/translate_slide_down</item>
+        <item name="android:windowExitAnimation">@anim/translate_slide_up</item>
+    </style>
+
 </resources>

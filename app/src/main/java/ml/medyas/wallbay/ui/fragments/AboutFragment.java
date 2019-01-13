@@ -21,6 +21,7 @@ import ml.medyas.wallbay.R;
 public class AboutFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    public static final String TAG = "ml.medyas.wallbay.ui.fragments.AboutFragment";
 
     public AboutFragment() {
         // Required empty public constructor
