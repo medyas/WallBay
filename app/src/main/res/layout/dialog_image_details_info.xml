@@ -11,6 +11,11 @@
         <variable
             name="palette"
             type="android.support.v7.graphics.Palette" />
+
+        <variable
+            name="fragment"
+            type="ml.medyas.wallbay.ui.fragments.ImageDetailsInfoDialog" />
+
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -31,6 +36,7 @@
             android:layout_marginTop="16dp"
             android:contentDescription="@string/user_profile_image"
             android:loadRoundImage="@{imageDetails.userImg}"
+            android:onClick="@{fragment::onUserClicked}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,6 +47,7 @@
             android:layout_marginLeft="16dp"
             android:fontFamily="@font/breeserif_regular"
             android:text="@{imageDetails.userName}"
+            android:onClick="@{fragment::onUserClicked}"
             android:textColor="@color/colorPrimaryLight"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -97,12 +104,14 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_margin="4dp"
+                android:onClick="@{fragment::onPaletteClicked}"
                 android:setBackground="@{palette.darkMutedSwatch}" />
 
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_margin="4dp"
+                android:onClick="@{fragment::onPaletteClicked}"
                 android:setBackground="@{palette.darkVibrantSwatch}" />
 
 
@@ -110,6 +119,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_margin="4dp"
+                android:onClick="@{fragment::onPaletteClicked}"
                 android:setBackground="@{palette.dominantSwatch}" />
 
 
@@ -117,6 +127,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_margin="4dp"
+                android:onClick="@{fragment::onPaletteClicked}"
                 android:setBackground="@{palette.lightMutedSwatch}" />
 
 
@@ -124,6 +135,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_margin="4dp"
+                android:onClick="@{fragment::onPaletteClicked}"
                 android:setBackground="@{palette.lightVibrantSwatch}" />
         </LinearLayout>
 
@@ -145,10 +157,11 @@
             android:id="@+id/textView10"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"
+            android:onClick="@{fragment::onLinkClicked}"
             android:scrollHorizontally="true"
             android:singleLine="true"
             android:text="@{imageDetails.url}"
@@ -160,15 +173,13 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:contentDescription="@string/link_icon"
+            android:onClick="@{fragment::onLinkClicked}"
             android:src="@drawable/ic_link_black_24dp"
             app:layout_constraintBottom_toBottomOf="@+id/textView10"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView10"
             app:layout_constraintTop_toTopOf="@+id/textView10" />
 
         <TextView
@@ -184,15 +195,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
-        <LinearLayout
+        <HorizontalScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:tags="@{imageDetails.tags}"
             app:layout_constraintBottom_toBottomOf="@+id/textView9"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/textView9" />
+            app:layout_constraintTop_toTopOf="@+id/textView9">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:tags="@{imageDetails.tags}" />
+
+        </HorizontalScrollView>
 
         <TextView
             android:layout_width="wrap_content"
@@ -200,6 +216,7 @@
             android:layout_marginTop="32dp"
             android:fontFamily="@font/poppins_bold"
             android:provider="@{imageDetails.provider}"
+            android:onClick="@{fragment::onProviderClicked}"
             android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
