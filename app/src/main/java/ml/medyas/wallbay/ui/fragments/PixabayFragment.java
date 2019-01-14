@@ -15,8 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
-
-import com.airbnb.lottie.LottieAnimationView;
+import android.widget.ImageView;
 
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.adapters.pixabay.PixabayViewPagerAdapter;
@@ -31,8 +30,6 @@ import ml.medyas.wallbay.databinding.FragmentPixabayBinding;
  * create an instance of this fragment.
  */
 public class PixabayFragment extends Fragment {
-
-    private FragmentPixabayBinding binding;
 
     private OnPixabayFragmentInteractions mListener;
     public static final String TAG = "ml.medyas.wallbay.ui.fragments.PixabayFragment";
@@ -55,13 +52,13 @@ public class PixabayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_pixabay, container, false);
+        FragmentPixabayBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_pixabay, container, false);
 
-        binding.viewPager.setAdapter(new PixabayViewPagerAdapter(getChildFragmentManager(), getContext()));
-        binding.tabLayout.setupWithViewPager(binding.viewPager);
-        binding.viewPager.setCurrentItem(0);
+        binding.defaultLayout.viewPager.setAdapter(new PixabayViewPagerAdapter(getChildFragmentManager(), getContext()));
+        binding.defaultLayout.tabLayout.setupWithViewPager(binding.defaultLayout.viewPager);
+        binding.defaultLayout.viewPager.setCurrentItem(0);
 
-        binding.lottieSearch.setOnClickListener(new View.OnClickListener() {
+        binding.defaultLayout.lottieSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final Dialog dialog = new Dialog(getContext(), R.style.SearchDialogStyle);
@@ -73,7 +70,7 @@ public class PixabayFragment extends Fragment {
                 dialog.setCancelable(true);
 
                 final EditText text = dialog.findViewById(R.id.dialog_text);
-                LottieAnimationView search = dialog.findViewById(R.id.dialog_search);
+                ImageView search = dialog.findViewById(R.id.dialog_search);
 
                 text.setOnKeyListener(new View.OnKeyListener() {
                     @Override

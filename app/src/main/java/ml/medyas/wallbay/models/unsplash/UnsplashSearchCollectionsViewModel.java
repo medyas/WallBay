@@ -51,7 +51,7 @@ public class UnsplashSearchCollectionsViewModel extends ViewModel {
     }
 
 
-    public class UnsplashSearchCollectionsViewModelFactory implements ViewModelProvider.Factory {
+    public static class UnsplashSearchCollectionsViewModelFactory implements ViewModelProvider.Factory {
         private Context context;
         private String query;
 

@@ -12,35 +12,19 @@ import android.widget.Toast;
 
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.entities.ImageEntity;
-import ml.medyas.wallbay.models.pixabay.PixabayViewModel;
-import ml.medyas.wallbay.models.pixabay.PixabayViewModelFactory;
+import ml.medyas.wallbay.models.unsplash.UnsplashViewModel;
 import ml.medyas.wallbay.utils.Utils;
 
-public class PixabayViewPagerFragment extends BaseFragment {
-    public static final String FRAGMENT_POSITION = "FRAGMENT_POSITION";
-    public static final String SEARCH_QUERY = "SEARCH_QUERY";
-    private PixabayViewModel mViewModel;
+public class UnsplashDefaultVPFragment extends BaseFragment {
     private int position;
-    private String query;
+    private String orderBy;
 
-    public static final String TAG = "ml.medyas.wallbay.ui.fragments.PixabayViewPagerFragment";
-
-    public PixabayViewPagerFragment() {
-    }
+    public static final String FRAGMENT_POSITION = "FRAGMENT_POSITION";
 
     public static Fragment newInstance(int position) {
-        Fragment fragment = new PixabayViewPagerFragment();
+        Fragment fragment = new UnsplashDefaultVPFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(FRAGMENT_POSITION, position);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    public static Fragment newInstance(int position, String query) {
-        Fragment fragment = new PixabayViewPagerFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt(FRAGMENT_POSITION, position);
-        bundle.putString(SEARCH_QUERY, query);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -48,11 +32,23 @@ public class PixabayViewPagerFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if(getArguments() != null) {
             position = getArguments().getInt(FRAGMENT_POSITION);
-            if(getArguments().containsKey(SEARCH_QUERY)) {
-                query = getArguments().getString(SEARCH_QUERY);
-            }
+        }
+
+        switch (position) {
+            case 0:
+                orderBy = getResources().getString(R.string.popular);
+                break;
+
+            case 1:
+                orderBy = getResources().getString(R.string.latest);
+                break;
+
+            case 2:
+                orderBy = getResources().getString(R.string.oldest);
+                break;
         }
 
         setUpViewModel();
@@ -60,28 +56,15 @@ public class PixabayViewPagerFragment extends BaseFragment {
 
     @Override
     public void setUpViewModel() {
-        if(mViewModel == null) {
-            switch (position) {
-                case 0:
-                    mViewModel = ViewModelProviders.of(this, new PixabayViewModelFactory(getContext(),
-                            "", "", "", false, getResources().getString(R.string.popular))).get(PixabayViewModel.class);
-                    break;
+        UnsplashViewModel mViewModel = ViewModelProviders.of(this, new UnsplashViewModel.UnsplashViewModelFactory(getContext(), orderBy))
+                .get(UnsplashViewModel.class);
 
-                case 1:
-                    mViewModel = ViewModelProviders.of(this, new PixabayViewModelFactory(getContext(),
-                            "", "", "", false, getResources().getString(R.string.latest))).get(PixabayViewModel.class);
-                    break;
-
-                case 2:
-                    mViewModel = ViewModelProviders.of(this, new PixabayViewModelFactory(getContext(),
-                        "", "", "", true, "")).get(PixabayViewModel.class);
-                    break;
-                case 3:
-                    mViewModel = ViewModelProviders.of(this, new PixabayViewModelFactory(getContext(),
-                            query, "", "", false, "")).get(PixabayViewModel.class);
-                    break;
+        mViewModel.getPagedListLiveData().observe(this, new Observer<PagedList<ImageEntity>>() {
+            @Override
+            public void onChanged(@Nullable PagedList<ImageEntity> imageEntities) {
+                getAdapter().submitList(imageEntities);
             }
-        }
+        });
 
         mViewModel.getNetworkStateLiveData().observe(this, new Observer<Utils.NetworkState>() {
             @Override
@@ -94,7 +77,7 @@ public class PixabayViewPagerFragment extends BaseFragment {
                     Toast.makeText(getContext(), "Error retrieving more data!", Toast.LENGTH_SHORT).show();
 
                 } else if (networkState == Utils.NetworkState.FAILED) {
-                    if (getAdapter().getCurrentList() == null ||getAdapter().getCurrentList().size() == 0) {
+                    if (getAdapter().getCurrentList().size() == 0) {
                         getNetError().setVisibility(View.VISIBLE);
                         getItemLoad().setVisibility(View.GONE);
                         setSnackbar( Snackbar.make(getNetError(), "Network Error", Snackbar.LENGTH_INDEFINITE)
@@ -115,13 +98,6 @@ public class PixabayViewPagerFragment extends BaseFragment {
                         }).show();
                     }
                 }
-            }
-        });
-
-        mViewModel.getPagedListLiveData().observe(this, new Observer<PagedList<ImageEntity>>() {
-            @Override
-            public void onChanged(@Nullable PagedList<ImageEntity> imageEntities) {
-                getAdapter().submitList(imageEntities);
             }
         });
     }

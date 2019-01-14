@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="320dp"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
-    android:padding="16dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:padding="16dp">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieAnimationView"
         android:layout_width="match_parent"
-        android:layout_margin="8dp"
         android:layout_height="150dp"
+        android:layout_margin="8dp"
         android:scaleX="2"
         android:scaleY="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/veil" />
@@ -49,14 +54,13 @@
             android:inputType="text"
             tools:ignore="Autofill" />
 
-        <com.airbnb.lottie.LottieAnimationView
+        <ImageView
             android:id="@+id/dialog_search"
             android:layout_width="0dp"
             android:layout_height="25dp"
             android:layout_weight="1"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/search" />
+            android:contentDescription="@string/search_data"
+            android:src="@drawable/ic_search_black_24dp" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

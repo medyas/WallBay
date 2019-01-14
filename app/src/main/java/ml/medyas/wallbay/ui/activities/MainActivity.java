@@ -39,7 +39,7 @@ import static ml.medyas.wallbay.utils.Utils.INTEREST_CATEGORIES;
 
 public class MainActivity extends AppCompatActivity implements GetStartedFragment.OnGetStartedFragmentInteractions, BaseFragment.OnBaseFragmentInteractions,
         ImageDetailsFragment.OnImageDetailsFragmentInteractions, FavoriteFragment.onFavoriteFragmentInteractions, PixabayFragment.OnPixabayFragmentInteractions,
-    UnsplashFragment.OnFragmentInteractionListener, PexelsFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener,
+        UnsplashFragment.OnUnsplashFragmentInteractions, PexelsFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener,
     AboutFragment.OnFragmentInteractionListener, ForYouFragment.OnForYouFragmentInteractions {
 
     public static final String FIRST_START = "first_start";

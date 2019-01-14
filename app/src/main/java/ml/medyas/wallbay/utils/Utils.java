@@ -31,11 +31,6 @@ public class Utils {
 
     public static final String INTEREST_CATEGORIES = "interest_categories";
 
-
-    public static final String LATEST = "latest";
-    public static final String POPULAR = "popular";
-    public static final String OLDEST = "oldest";
-
     public static final int REQUEST_SIZE = 30;
 
 

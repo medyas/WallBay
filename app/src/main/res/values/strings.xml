@@ -42,6 +42,11 @@
     <string name="popular">Popular</string>
     <string name="latest">Latest</string>
     <string name="editors_choice">Editors Choice</string>
+    <string name="oldest">Oldest</string>
+    <string name="collections">collections</string>
+    <string name="featured">Featured</string>
     <string name="menu_divider">menu divider</string>
     <string name="choose_browser">Choose you browser</string>
+    <string name="search_data">Search data</string>
+    <string name="collection_image_previews">collection image previews</string>
 </resources>

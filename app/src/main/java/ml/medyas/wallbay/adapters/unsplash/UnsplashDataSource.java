@@ -53,7 +53,7 @@ public class UnsplashDataSource extends PageKeyedDataSource<Integer, ImageEntity
                                 item.getUrls().getRaw(),
                                 item.getLinks().getDownloadLocation(),
                                 item.getUrls().getRegular(),
-                                null);
+                                "");
                         list.add(imageEntity);
                     }
                     callback.onResult(list, null, 2);
@@ -110,7 +110,7 @@ public class UnsplashDataSource extends PageKeyedDataSource<Integer, ImageEntity
                                 item.getUrls().getRaw(),
                                 item.getLinks().getDownloadLocation(),
                                 item.getUrls().getRegular(),
-                                null);
+                                "");
                         list.add(imageEntity);
                     }
                     callback.onResult(list, params.key+1);

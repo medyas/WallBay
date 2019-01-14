@@ -55,7 +55,7 @@ public class UnsplashSearchDataSource extends PageKeyedDataSource<Integer, Image
                                 item.getUrls().getRaw(),
                                 item.getLinks().getDownloadLocation(),
                                 item.getUrls().getRegular(),
-                                null);
+                                "");
                         list.add(imageEntity);
                     }
 
@@ -113,7 +113,7 @@ public class UnsplashSearchDataSource extends PageKeyedDataSource<Integer, Image
                                 item.getUrls().getRaw(),
                                 item.getLinks().getDownloadLocation(),
                                 item.getUrls().getRegular(),
-                                null);
+                                "");
                         list.add(imageEntity);
                     }
 

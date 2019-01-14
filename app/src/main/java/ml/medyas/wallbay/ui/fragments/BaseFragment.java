@@ -120,6 +120,9 @@ public abstract class BaseFragment extends Fragment  implements BaseAdapter.onIm
     public Snackbar getSnackbar() {
         return  snackbar;
     }
+    public void setSnackbar(Snackbar snackbar) {
+        this.snackbar = snackbar;
+    }
     public BaseAdapter getAdapter() {
         return mAdapter;
     }

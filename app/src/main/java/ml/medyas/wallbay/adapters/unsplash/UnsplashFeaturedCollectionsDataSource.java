@@ -45,7 +45,7 @@ public class UnsplashFeaturedCollectionsDataSource extends PageKeyedDataSource<I
                                 item.getTotalPhotos(),
                                 item.getTags(),
                                 item.getUser().getUsername(),
-                                item.getUser().getLinks().getHtml(),
+                                item.getUser().getProfileImage().getMedium(),
                                 item.getPreviewPhotos()
                         );
                         list.add(collectionEntity);
@@ -95,7 +95,7 @@ public class UnsplashFeaturedCollectionsDataSource extends PageKeyedDataSource<I
                                 item.getTotalPhotos(),
                                 item.getTags(),
                                 item.getUser().getUsername(),
-                                item.getUser().getLinks().getHtml(),
+                                item.getUser().getProfileImage().getMedium(),
                                 item.getPreviewPhotos()
                         );
                         list.add(collectionEntity);

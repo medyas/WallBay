@@ -91,17 +91,17 @@ public class ForYouFragment extends BaseFragment implements java.util.Observer {
                     Toast.makeText(getContext(), "Error retrieving more data!", Toast.LENGTH_SHORT).show();
 
                 } else if (networkState == Utils.NetworkState.FAILED) {
-                    if (getAdapter().getCurrentList().size() == 0) {
+                    if (getAdapter().getCurrentList() == null ||getAdapter().getCurrentList().size() == 0) {
                         getNetError().setVisibility(View.VISIBLE);
                         getItemLoad().setVisibility(View.GONE);
-                        Snackbar.make(getNetError(), "Network Error", Snackbar.LENGTH_INDEFINITE)
+                        setSnackbar(Snackbar.make(getNetError(), "Network Error", Snackbar.LENGTH_INDEFINITE)
                                 .setAction("Retry", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
                                         getNetError().setVisibility(View.GONE);
                                         mListener.reCreateFragment(ForYouFragment.newInstance());
                                     }
-                                });
+                                }));
                         getSnackbar().show();
                     } else {
                         Snackbar.make(getNetError(), "Failed to load more data", Snackbar.LENGTH_LONG).setAction("Retry", new View.OnClickListener() {

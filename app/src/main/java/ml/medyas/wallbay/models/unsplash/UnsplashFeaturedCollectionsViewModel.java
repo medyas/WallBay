@@ -50,7 +50,7 @@ public class UnsplashFeaturedCollectionsViewModel extends ViewModel {
     }
 
 
-    public class UnsplashFeaturedCollectionsViewModelFactory implements ViewModelProvider.Factory {
+    public static class UnsplashFeaturedCollectionsViewModelFactory implements ViewModelProvider.Factory {
         private Context context;
 
         public UnsplashFeaturedCollectionsViewModelFactory(Context context) {

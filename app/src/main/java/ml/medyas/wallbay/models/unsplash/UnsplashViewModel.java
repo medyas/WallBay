@@ -50,7 +50,7 @@ public class UnsplashViewModel extends ViewModel {
         return pagedListLiveData;
     }
 
-    public class UnsplashViewModelFactory implements ViewModelProvider.Factory {
+    public static class UnsplashViewModelFactory implements ViewModelProvider.Factory {
         private Context context;
         private String orderBy;
 
