@@ -4,7 +4,6 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.PageKeyedDataSource;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,8 +82,6 @@ public class PixabayDataSource extends PageKeyedDataSource<Integer, ImageEntity>
 
             @Override
             public void onFailure(@NonNull Call<PixabayEntity> call, @NonNull Throwable t) {
-                t.printStackTrace();
-                Log.d("mainactivity", "NetError: " + t.getMessage());
                 networkState.postValue(Utils.NetworkState.FAILED);
             }
         });
@@ -135,8 +132,6 @@ public class PixabayDataSource extends PageKeyedDataSource<Integer, ImageEntity>
 
             @Override
             public void onFailure(@NonNull Call<PixabayEntity> call, @NonNull Throwable t) {
-                t.printStackTrace();
-                Log.d("mainactivity", "NetError: " + t.getMessage());
                 networkState.postValue(Utils.NetworkState.FAILED);
             }
         });

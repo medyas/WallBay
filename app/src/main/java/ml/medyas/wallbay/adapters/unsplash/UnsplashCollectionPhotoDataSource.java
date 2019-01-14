@@ -16,15 +16,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UnsplashDataSource extends PageKeyedDataSource<Integer, ImageEntity> {
+public class UnsplashCollectionPhotoDataSource extends PageKeyedDataSource<Integer, ImageEntity> {
     private UnsplashRepository unsplashRepository;
     private MutableLiveData<Utils.NetworkState> networkState;
-    private String orderBy;
+    private int id;
 
-    public UnsplashDataSource(Context context, String orderBy) {
+    public UnsplashCollectionPhotoDataSource(Context context, int id) {
+        this.id = id;
+        this.networkState = new MutableLiveData<>();
         this.unsplashRepository = new UnsplashRepository(context);
-        networkState = new MutableLiveData<>();
-        this.orderBy = orderBy;
     }
 
     public MutableLiveData<Utils.NetworkState> getNetworkState() {
@@ -34,7 +34,7 @@ public class UnsplashDataSource extends PageKeyedDataSource<Integer, ImageEntity
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull final LoadInitialCallback<Integer, ImageEntity> callback) {
         networkState.postValue(Utils.NetworkState.LOADING);
-        unsplashRepository.getPhotos(orderBy, 1).enqueue(new Callback<List<UnsplashPhotoEntity>>() {
+        unsplashRepository.getCollectionPhoto(id, 1).enqueue(new Callback<List<UnsplashPhotoEntity>>() {
             @Override
             public void onResponse(Call<List<UnsplashPhotoEntity>> call, Response<List<UnsplashPhotoEntity>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -91,7 +91,7 @@ public class UnsplashDataSource extends PageKeyedDataSource<Integer, ImageEntity
     @Override
     public void loadAfter(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, ImageEntity> callback) {
         networkState.postValue(Utils.NetworkState.LOADING);
-        unsplashRepository.getPhotos(orderBy, params.key).enqueue(new Callback<List<UnsplashPhotoEntity>>() {
+        unsplashRepository.getCollectionPhoto(id, params.key).enqueue(new Callback<List<UnsplashPhotoEntity>>() {
             @Override
             public void onResponse(Call<List<UnsplashPhotoEntity>> call, Response<List<UnsplashPhotoEntity>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -138,5 +138,30 @@ public class UnsplashDataSource extends PageKeyedDataSource<Integer, ImageEntity
                 callback.onResult(list, null);
             }
         });
+
+    }
+
+
+    public static class UnsplashCollectionPhotoDataSourceFactory extends android.arch.paging.DataSource.Factory {
+        private MutableLiveData<UnsplashCollectionPhotoDataSource> mutableLiveData;
+        private Context context;
+        private int id;
+
+        public UnsplashCollectionPhotoDataSourceFactory(Context context, int id) {
+            this.context = context;
+            this.id = id;
+            this.mutableLiveData = new MutableLiveData<>();
+        }
+
+        @Override
+        public android.arch.paging.DataSource create() {
+            UnsplashCollectionPhotoDataSource unsplashDataSource = new UnsplashCollectionPhotoDataSource(context, id);
+            mutableLiveData.postValue(unsplashDataSource);
+            return unsplashDataSource;
+        }
+
+        public MutableLiveData<UnsplashCollectionPhotoDataSource> getMutableLiveData() {
+            return mutableLiveData;
+        }
     }
 }

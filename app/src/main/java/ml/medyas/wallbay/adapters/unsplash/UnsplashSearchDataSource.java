@@ -1,6 +1,7 @@
 package ml.medyas.wallbay.adapters.unsplash;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.paging.DataSource;
 import android.arch.paging.PageKeyedDataSource;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,21 +11,22 @@ import java.util.List;
 
 import ml.medyas.wallbay.entities.ImageEntity;
 import ml.medyas.wallbay.entities.unsplash.UnsplashPhotoEntity;
+import ml.medyas.wallbay.entities.unsplash.UnsplashSearchEntity;
 import ml.medyas.wallbay.repositories.UnsplashRepository;
 import ml.medyas.wallbay.utils.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UnsplashDataSource extends PageKeyedDataSource<Integer, ImageEntity> {
+public class UnsplashSearchDataSource extends PageKeyedDataSource<Integer, ImageEntity> {
     private UnsplashRepository unsplashRepository;
     private MutableLiveData<Utils.NetworkState> networkState;
-    private String orderBy;
+    private String query;
 
-    public UnsplashDataSource(Context context, String orderBy) {
-        this.unsplashRepository = new UnsplashRepository(context);
-        networkState = new MutableLiveData<>();
-        this.orderBy = orderBy;
+    public UnsplashSearchDataSource(Context context, String query) {
+        unsplashRepository = new UnsplashRepository(context);
+        this.query = query;
+        this.networkState = new MutableLiveData<>();
     }
 
     public MutableLiveData<Utils.NetworkState> getNetworkState() {
@@ -34,12 +36,12 @@ public class UnsplashDataSource extends PageKeyedDataSource<Integer, ImageEntity
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull final LoadInitialCallback<Integer, ImageEntity> callback) {
         networkState.postValue(Utils.NetworkState.LOADING);
-        unsplashRepository.getPhotos(orderBy, 1).enqueue(new Callback<List<UnsplashPhotoEntity>>() {
+        unsplashRepository.getSearch(query, 1).enqueue(new Callback<UnsplashSearchEntity>() {
             @Override
-            public void onResponse(Call<List<UnsplashPhotoEntity>> call, Response<List<UnsplashPhotoEntity>> response) {
+            public void onResponse(Call<UnsplashSearchEntity> call, Response<UnsplashSearchEntity> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<ImageEntity> list = new ArrayList<>();
-                    for (UnsplashPhotoEntity item : response.body()) {
+                    for (UnsplashPhotoEntity item : response.body().getUnsplashPhotoEntitys()) {
                         ImageEntity imageEntity = new ImageEntity(item.getId(),
                                 item.getUser().getUsername(),
                                 item.getUser().getProfileImage().getMedium(),
@@ -56,8 +58,9 @@ public class UnsplashDataSource extends PageKeyedDataSource<Integer, ImageEntity
                                 null);
                         list.add(imageEntity);
                     }
-                    callback.onResult(list, null, 2);
+
                     networkState.postValue(Utils.NetworkState.LOADED);
+                    callback.onResult(list, null, 2);
 
                 } else {
                     ImageEntity item = new ImageEntity();
@@ -71,7 +74,7 @@ public class UnsplashDataSource extends PageKeyedDataSource<Integer, ImageEntity
             }
 
             @Override
-            public void onFailure(Call<List<UnsplashPhotoEntity>> call, Throwable t) {
+            public void onFailure(Call<UnsplashSearchEntity> call, Throwable t) {
                 ImageEntity item = new ImageEntity();
                 item.setProvider(Utils.webSite.ERROR);
                 List<ImageEntity> list = new ArrayList<>();
@@ -91,12 +94,12 @@ public class UnsplashDataSource extends PageKeyedDataSource<Integer, ImageEntity
     @Override
     public void loadAfter(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, ImageEntity> callback) {
         networkState.postValue(Utils.NetworkState.LOADING);
-        unsplashRepository.getPhotos(orderBy, params.key).enqueue(new Callback<List<UnsplashPhotoEntity>>() {
+        unsplashRepository.getSearch(query, params.key).enqueue(new Callback<UnsplashSearchEntity>() {
             @Override
-            public void onResponse(Call<List<UnsplashPhotoEntity>> call, Response<List<UnsplashPhotoEntity>> response) {
+            public void onResponse(Call<UnsplashSearchEntity> call, Response<UnsplashSearchEntity> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<ImageEntity> list = new ArrayList<>();
-                    for (UnsplashPhotoEntity item : response.body()) {
+                    for (UnsplashPhotoEntity item : response.body().getUnsplashPhotoEntitys()) {
                         ImageEntity imageEntity = new ImageEntity(item.getId(),
                                 item.getUser().getUsername(),
                                 item.getUser().getProfileImage().getMedium(),
@@ -113,8 +116,9 @@ public class UnsplashDataSource extends PageKeyedDataSource<Integer, ImageEntity
                                 null);
                         list.add(imageEntity);
                     }
-                    callback.onResult(list, params.key+1);
+
                     networkState.postValue(Utils.NetworkState.LOADED);
+                    callback.onResult(list, params.key+1);
 
                 } else {
                     ImageEntity item = new ImageEntity();
@@ -128,7 +132,7 @@ public class UnsplashDataSource extends PageKeyedDataSource<Integer, ImageEntity
             }
 
             @Override
-            public void onFailure(Call<List<UnsplashPhotoEntity>> call, Throwable t) {
+            public void onFailure(Call<UnsplashSearchEntity> call, Throwable t) {
                 ImageEntity item = new ImageEntity();
                 item.setProvider(Utils.webSite.ERROR);
                 List<ImageEntity> list = new ArrayList<>();
@@ -138,5 +142,28 @@ public class UnsplashDataSource extends PageKeyedDataSource<Integer, ImageEntity
                 callback.onResult(list, null);
             }
         });
+    }
+
+    public static class UnsplashSearchDataSourceFactory extends Factory {
+        private Context context;
+        private String query;
+        private MutableLiveData<UnsplashSearchDataSource> mutableLiveData;
+
+        public UnsplashSearchDataSourceFactory(Context context, String query) {
+            this.context = context;
+            this.query = query;
+            this.mutableLiveData = new MutableLiveData<>();
+        }
+
+        public MutableLiveData<UnsplashSearchDataSource> getMutableLiveData() {
+            return mutableLiveData;
+        }
+
+        @Override
+        public DataSource create() {
+            UnsplashSearchDataSource unsplashSearchDataSource = new UnsplashSearchDataSource(context, query);
+            mutableLiveData.postValue(unsplashSearchDataSource);
+            return unsplashSearchDataSource;
+        }
     }
 }
