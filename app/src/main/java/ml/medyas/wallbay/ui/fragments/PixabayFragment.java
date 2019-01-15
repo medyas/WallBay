@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.adapters.pixabay.PixabayViewPagerAdapter;
@@ -100,8 +101,12 @@ public class PixabayFragment extends Fragment {
     }
 
     private void searchQuery(String text) {
-        mListener.onAddFragment(PixabayViewPagerFragment.newInstance(3, text));
-        mListener.updateToolbarTitle(text);
+        if(!text.equals("")) {
+            mListener.onAddFragment(PixabayViewPagerFragment.newInstance(3, text));
+            mListener.updateToolbarTitle(text);
+        } else {
+            Toast.makeText(getContext(), "Please provide a search query!", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

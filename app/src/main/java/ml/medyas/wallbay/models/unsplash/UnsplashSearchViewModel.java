@@ -49,7 +49,7 @@ public class UnsplashSearchViewModel extends ViewModel {
         return pagedListLiveData;
     }
 
-    public class UnsplashSearchViewModelFactory implements ViewModelProvider.Factory {
+    public static class UnsplashSearchViewModelFactory implements ViewModelProvider.Factory {
         private Context context;
         private String query;
 
@@ -61,7 +61,7 @@ public class UnsplashSearchViewModel extends ViewModel {
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new UnsplashViewModel(context, query);
+            return (T) new UnsplashSearchViewModel(context, query);
         }
     }
 }

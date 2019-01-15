@@ -52,7 +52,7 @@ public class UnsplashCollectionPhotoViewModel extends ViewModel{
 
 
 
-    public class UnsplashCollectionPhotoViewModelFactory implements ViewModelProvider.Factory {
+    public static class UnsplashCollectionPhotoViewModelFactory implements ViewModelProvider.Factory {
         private Context context;
         private int id;
 

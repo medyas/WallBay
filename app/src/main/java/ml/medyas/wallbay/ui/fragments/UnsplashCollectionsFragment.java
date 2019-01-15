@@ -4,14 +4,15 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.paging.PagedList;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,13 +30,14 @@ import ml.medyas.wallbay.utils.Utils;
 import static ml.medyas.wallbay.utils.Utils.calculateNoOfColumns;
 import static ml.medyas.wallbay.utils.Utils.convertPixelsToDp;
 
-public class UnsplashCollectionsFragment extends Fragment {
+public class UnsplashCollectionsFragment extends Fragment implements CollectionRecyclerViewAdapter.CollectionInterface {
     public static final String FRAGMENT_POSITION = "FRAGMENT_POSITION";
     public static final String SEARCH_QUERY = "SEARCH_QUERY";
     private CollectionRecyclerViewAdapter mAdapter;
     private FragmentBaseBinding binding;
     private int position;
     private String query;
+    private UnsplashCollectionInterface mListener;
 
 
     public static Fragment newInstance(int position) {
@@ -66,7 +68,7 @@ public class UnsplashCollectionsFragment extends Fragment {
             }
         }
 
-        mAdapter = new CollectionRecyclerViewAdapter();
+        mAdapter = new CollectionRecyclerViewAdapter(this);
         setUpViewModel();
     }
 
@@ -178,8 +180,12 @@ public class UnsplashCollectionsFragment extends Fragment {
 
         binding.statusLayout.slideShowPlay.hide();
 
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(calculateNoOfColumns(getContext(), convertPixelsToDp(getResources().getDimension(R.dimen.collection_width), getContext())), StaggeredGridLayoutManager.VERTICAL);
-        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+        int spanCount = 1;
+        if(getResources().getDimension(R.dimen.collection_width) > 200) {
+            spanCount = calculateNoOfColumns(getContext(), convertPixelsToDp(getResources().getDimension(R.dimen.collection_width), getContext()));
+        }
+
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), spanCount);
 
         binding.baseRecyclerView.setLayoutManager(layoutManager);
         binding.baseRecyclerView.setHasFixedSize(false);
@@ -208,5 +214,36 @@ public class UnsplashCollectionsFragment extends Fragment {
         });
 
         return binding.getRoot();
+    }
+
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof UnsplashCollectionInterface) {
+            mListener = (UnsplashCollectionInterface) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+
+    public interface UnsplashCollectionInterface {
+        void onAddFragment(Fragment fragment);
+        void updateToolbarTitle(String title);
+    }
+
+    @Override
+    public void onCollectionItemClicked(CollectionEntity collectionEntity) {
+        mListener.onAddFragment(UnsplashDefaultVPFragment.newInstance(4, collectionEntity.getId()));
+        mListener.updateToolbarTitle(collectionEntity.getTitle());
     }
 }

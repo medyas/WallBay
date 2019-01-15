@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.adapters.unsplash.UnsplashViewPagerAdapter;
@@ -102,7 +103,12 @@ public class UnsplashFragment extends Fragment {
     }
 
     private void searchQuery(String s) {
-
+        if(!s.equals("")) {
+            mListener.onAddFragment(UnsplashDefaultVPFragment.newInstance(3, s));
+            mListener.updateToolbarTitle(s);
+        } else {
+            Toast.makeText(getContext(), "Please provide a search query!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -147,5 +153,6 @@ public class UnsplashFragment extends Fragment {
      */
     public interface OnUnsplashFragmentInteractions {
         void onAddFragment(Fragment fragment);
+        void updateToolbarTitle(String title);
     }
 }

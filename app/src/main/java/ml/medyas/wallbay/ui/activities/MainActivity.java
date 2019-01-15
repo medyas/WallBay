@@ -33,6 +33,8 @@ import ml.medyas.wallbay.ui.fragments.PexelsFragment;
 import ml.medyas.wallbay.ui.fragments.PixabayFragment;
 import ml.medyas.wallbay.ui.fragments.PixabayViewPagerFragment;
 import ml.medyas.wallbay.ui.fragments.SearchFragment;
+import ml.medyas.wallbay.ui.fragments.UnsplashCollectionsFragment;
+import ml.medyas.wallbay.ui.fragments.UnsplashDefaultVPFragment;
 import ml.medyas.wallbay.ui.fragments.UnsplashFragment;
 
 import static ml.medyas.wallbay.utils.Utils.INTEREST_CATEGORIES;
@@ -40,7 +42,7 @@ import static ml.medyas.wallbay.utils.Utils.INTEREST_CATEGORIES;
 public class MainActivity extends AppCompatActivity implements GetStartedFragment.OnGetStartedFragmentInteractions, BaseFragment.OnBaseFragmentInteractions,
         ImageDetailsFragment.OnImageDetailsFragmentInteractions, FavoriteFragment.onFavoriteFragmentInteractions, PixabayFragment.OnPixabayFragmentInteractions,
         UnsplashFragment.OnUnsplashFragmentInteractions, PexelsFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener,
-    AboutFragment.OnFragmentInteractionListener, ForYouFragment.OnForYouFragmentInteractions {
+    AboutFragment.OnFragmentInteractionListener, ForYouFragment.OnForYouFragmentInteractions, UnsplashCollectionsFragment.UnsplashCollectionInterface {
 
     public static final String FIRST_START = "first_start";
     public static final String TOOLBAR_VISIBILITY = "toolbar_visibility";
@@ -147,7 +149,9 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         String fragment = getSupportFragmentManager().findFragmentById(R.id.main_container).getClass().getName();
         if (fragment.equals(ImageDetailsFragment.TAG)) {
             showToolbar(true);
-        } else if (fragment.equals(FavoriteFragment.TAG) || fragment.equals(PixabayViewPagerFragment.TAG)) {
+        } else if (fragment.equals(FavoriteFragment.TAG) ||
+                        fragment.equals(PixabayViewPagerFragment.TAG) ||
+                        fragment.equals(UnsplashDefaultVPFragment.TAG) ) {
             setUpToolbar(addedFragmentShown);
             binding.content.toolbar.inflateMenu(R.menu.main_activity_menu);
         }
@@ -158,75 +162,39 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     private void findToolbarTitle() {
         if(getSupportFragmentManager().findFragmentById(R.id.main_container) != null) {
             String fragment = getSupportFragmentManager().findFragmentById(R.id.main_container).getClass().getName();
-            String title = "";
-            switch (fragment) {
-                case ForYouFragment.TAG:
-                    title = getResources().getString(R.string.for_you);
-                    break;
-
-                case PixabayFragment.TAG:
-                    title = getResources().getString(R.string.pixabay);
-                    break;
-
-                case UnsplashFragment.TAG:
-                    title = getResources().getString(R.string.unsplash);
-                    break;
-
-                case PexelsFragment.TAG:
-                    title = getResources().getString(R.string.pexels);
-                    break;
-
-                case SearchFragment.TAG:
-                    title = getResources().getString(R.string.search);
-                    break;
-
-                case AboutFragment.TAG:
-                    title = getResources().getString(R.string.about);
-                    break;
-
-                case FavoriteFragment.TAG:
-                    title = getResources().getString(R.string.favorite);
-                    break;
-            }
-
-            getSupportActionBar().setTitle(title);
+            getSupportActionBar().setTitle(getToolbarTitle(fragment));
         }
     }
 
     private Fragment setToolbarTitle(Fragment fragment) {
-        String title = "";
-        switch (fragment.getClass().getName()) {
+        getSupportActionBar().setTitle(getToolbarTitle(fragment.getClass().getName()));
+        return fragment;
+    }
+
+    private String getToolbarTitle( String name) {
+        switch (name) {
             case ForYouFragment.TAG:
-                title = getResources().getString(R.string.for_you);
-                break;
+                return getResources().getString(R.string.for_you);
 
             case PixabayFragment.TAG:
-                title = getResources().getString(R.string.pixabay);
-                break;
+                return getResources().getString(R.string.pixabay);
 
             case UnsplashFragment.TAG:
-                title = getResources().getString(R.string.unsplash);
-                break;
+                return getResources().getString(R.string.unsplash);
 
             case PexelsFragment.TAG:
-                title = getResources().getString(R.string.pexels);
-                break;
+                return getResources().getString(R.string.pexels);
 
             case SearchFragment.TAG:
-                title = getResources().getString(R.string.search);
-                break;
+                return getResources().getString(R.string.search);
 
             case AboutFragment.TAG:
-                title = getResources().getString(R.string.about);
-                break;
+                return getResources().getString(R.string.about);
 
             case FavoriteFragment.TAG:
-                title = getResources().getString(R.string.favorite);
-                break;
+                return getResources().getString(R.string.favorite);
         }
-
-        getSupportActionBar().setTitle(title);
-        return fragment;
+        return "";
     }
 
     private void showStartFragment() {
@@ -279,63 +247,6 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
 
         binding.drawerLayout.closeDrawers();
     }
-
-        /*mViewModel.getUnsplashPhotos("latest", page).observe(this, new Observer<List<ImageEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<ImageEntity> imageEntities) {
-                if (!imageEntities.isEmpty() && imageEntities != null) {
-                    Log.d(tag, "UserName is : "+imageEntities.get(0).getUserName() + imageEntities.size());
-                    if(imageEntities.get(0).getProvider() == Utils.webSite.EMPTY) {
-                        Log.d(tag, "Found Empty Data");
-                    } else if(imageEntities.get(0).getProvider() == Utils.webSite.ERROR) {
-                        Log.d(tag, "Error Could not get Data !");
-                    }
-                } else {
-                    Log.d(tag, "Null");
-                }
-            }
-        });
-
-        if (mViewModel.getUnsplashSearch("nature", page - 1).hasObservers()) {
-            mViewModel.getUnsplashSearch("nature", page - 1).removeObservers(this);
-        }
-        mViewModel.getPexelsSearch("back", page).observe(this, new Observer<List<ImageEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<ImageEntity> imageEntities) {
-                if (!imageEntities.isEmpty() && imageEntities != null) {
-                    Log.d(tag, "UserName is : " + imageEntities.get(0).getUserName() + " " + imageEntities.size());
-                    if (imageEntities.get(0).getProvider() == Utils.webSite.EMPTY) {
-                        Log.d(tag, "Found Empty Data");
-                    } else if (imageEntities.get(0).getProvider() == Utils.webSite.ERROR) {
-                        Log.d(tag, "Error Could not get Data !");
-                    }
-                } else {
-                    Log.d(tag, "Null");
-                    Log.d(tag, imageEntities.toString());
-                }
-            }
-        });
-
-
-        mViewModel.getPixabaySearch("", page, "", "", false, "")
-                .observe(this, new Observer<List<ImageEntity>>() {
-                    @Override
-                    public void onChanged(@Nullable List<ImageEntity> imageEntities) {
-                        if (!imageEntities.isEmpty() && imageEntities != null) {
-                            if (imageEntities.get(0).getProvider() == Utils.webSite.EMPTY) {
-                                Log.d(tag, "Found Empty Data");
-                            } else if (imageEntities.get(0).getProvider() == Utils.webSite.ERROR) {
-                                Log.d(tag, "Error Could not get Data !");
-                            } else {
-
-                                Log.d(tag, "UserName is : " + imageEntities.get(0).getUserName() + " " + imageEntities.size());
-                            }
-                        } else {
-                            Log.d(tag, "Null");
-                        }
-                    }
-                });*/
-
 
     @Override
     public void onGetStartedDone(String categories) {
