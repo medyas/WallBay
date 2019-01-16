@@ -1,25 +1,35 @@
 package ml.medyas.wallbay.adapters.unsplash;
 
 import android.arch.paging.PagedListAdapter;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.databinding.CollectionItemLayoutBinding;
 import ml.medyas.wallbay.entities.CollectionEntity;
+import ml.medyas.wallbay.entities.unsplash.Tag;
 
 import static ml.medyas.wallbay.entities.CollectionEntity.DIFF_CALLBACK;
 
 public class CollectionRecyclerViewAdapter extends PagedListAdapter<CollectionEntity, CollectionRecyclerViewAdapter.CollectionViewHolder> {
     private CollectionInterface mListener;
+    private TagsRecyclerViewAdapter.OnTagItemClicked tagListener;
+    private Context context;
 
-    public CollectionRecyclerViewAdapter(CollectionInterface listener) {
+    public CollectionRecyclerViewAdapter(CollectionInterface listener, TagsRecyclerViewAdapter.OnTagItemClicked tagListener, Context context) {
         super(DIFF_CALLBACK);
         this.mListener = listener;
+        this.tagListener = tagListener;
+        this.context = context;
     }
 
     public interface CollectionInterface {
@@ -44,6 +54,18 @@ public class CollectionRecyclerViewAdapter extends PagedListAdapter<CollectionEn
                     mListener.onCollectionItemClicked(getItem(holder.getAdapterPosition()));
                 }
             });
+
+            if(getItem(i).getTags() != null) {
+                List<String> list = new ArrayList<>();
+                for (Tag tag : getItem(i).getTags()) {
+                    list.add(tag.getTitle());
+                }
+                TagsRecyclerViewAdapter mAdapter = new TagsRecyclerViewAdapter(list, tagListener);
+                holder.itemLayoutBinding.collectionTags.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+                holder.itemLayoutBinding.collectionTags.setHasFixedSize(true);
+                holder.itemLayoutBinding.collectionTags.setAdapter(mAdapter);
+
+            }
         }
     }
 

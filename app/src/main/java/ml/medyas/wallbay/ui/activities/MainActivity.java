@@ -6,8 +6,10 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionInflater;
 import android.view.Gravity;
@@ -47,10 +49,12 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     public static final String FIRST_START = "first_start";
     public static final String TOOLBAR_VISIBILITY = "toolbar_visibility";
     public static final String FAVORITE_SHOWN = "FAVORITE_SHOWN";
+    public static final String FRAGMENT_STACK = "FRAGMENT_STACK";
 
     private ActivityMainBinding binding;
     private FavoriteViewModel favoriteViewModel;
     private boolean addedFragmentShown = false;
+    private int fragmentStack =  0;
 
     //TODO 1: Create fragments UI : For You
     //• Pixabay
@@ -82,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             binding.content.coordinator.setVisibility(View.VISIBLE);
             showToolbar(savedInstanceState.getBoolean(TOOLBAR_VISIBILITY));
             setUpToolbar(!savedInstanceState.getBoolean(FAVORITE_SHOWN));
+            fragmentStack = savedInstanceState.getInt(FRAGMENT_STACK);
         }
 
         binding.navigation.setOnInflateListener(new ViewStub.OnInflateListener() {
@@ -105,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     private void setUpToolbar(final boolean setup) {
         if (setup) {
             addedFragmentShown = false;
-            //getSupportActionBar().setTitle(getString(R.string.app_name));
             binding.content.toolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
             binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -121,7 +125,6 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
                 @Override
                 public void onClick(View view) {
                     onBackPressed();
-                    setUpToolbar(true);
                 }
             });
         }
@@ -142,21 +145,46 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         super.onSaveInstanceState(outState);
         outState.putBoolean(TOOLBAR_VISIBILITY, binding.content.toolbar.getVisibility() == View.VISIBLE);
         outState.putBoolean(FAVORITE_SHOWN, addedFragmentShown);
+
+        if(fragmentStack < 0)
+            fragmentStack = 0;
+        outState.putInt(FRAGMENT_STACK, fragmentStack);
     }
 
     @Override
     public void onBackPressed() {
-        String fragment = getSupportFragmentManager().findFragmentById(R.id.main_container).getClass().getName();
-        if (fragment.equals(ImageDetailsFragment.TAG)) {
-            showToolbar(true);
-        } else if (fragment.equals(FavoriteFragment.TAG) ||
-                        fragment.equals(PixabayViewPagerFragment.TAG) ||
-                        fragment.equals(UnsplashDefaultVPFragment.TAG) ) {
-            setUpToolbar(addedFragmentShown);
-            binding.content.toolbar.inflateMenu(R.menu.main_activity_menu);
-        }
+        Fragment fragment  = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        String className = fragment.getClass().getName();
 
         super.onBackPressed();
+        fragmentStack-=1;
+
+        if (className.equals(ImageDetailsFragment.TAG)) {
+            showToolbar(true);
+        } else if (className.equals(FavoriteFragment.TAG) ||
+                        className.equals(PixabayViewPagerFragment.TAG) ||
+                        className.equals(UnsplashDefaultVPFragment.TAG) ) {
+            if(fragmentStack == 0) {
+                setUpToolbar(addedFragmentShown);
+            }
+        }
+
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                Fragment frag = getSupportFragmentManager().findFragmentById(R.id.main_container);
+                setToolbarElevation(frag);
+                if(frag instanceof PixabayFragment || frag instanceof UnsplashFragment || frag instanceof PexelsFragment) {
+                    binding.content.toolbar.inflateMenu(R.menu.search_menu);
+                    setUpToolbar(true);
+                } else if(frag instanceof SearchFragment || frag instanceof ForYouFragment || frag instanceof AboutFragment){
+                    binding.content.toolbar.inflateMenu(R.menu.main_activity_menu);
+                    setUpToolbar(true);
+                }
+            }
+        }, 10);
     }
 
     private void findToolbarTitle() {
@@ -197,6 +225,14 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         return "";
     }
 
+    private void setToolbarElevation(Fragment fragment) {
+        if(fragment instanceof PixabayFragment || fragment instanceof UnsplashFragment || fragment instanceof PexelsFragment || fragment instanceof SearchFragment) {
+            ViewCompat.setElevation(binding.content.appBar, 0);
+        } else {
+            ViewCompat.setElevation(binding.content.appBar, 4 * getResources().getDisplayMetrics().density);
+        }
+    }
+
     private void showStartFragment() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.start_container, GetStartedFragment.newInstance())
@@ -215,6 +251,8 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
                     .commit();
 
         }
+
+        setToolbarElevation(fragment);
     }
 
     public void onNavItemClicked(View view) {
@@ -313,10 +351,13 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
                 .commit();
         addedFragmentShown = true;
         setUpToolbar(false);
+        fragmentStack+=1;
 
         if(fragment instanceof FavoriteFragment) {
             getSupportActionBar().setTitle(getString(R.string.favorite));
         }
+
+        setToolbarElevation(fragment);
     }
 
     @Override

@@ -5,13 +5,14 @@
         android:id="@+id/coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/white"
         android:visibility="gone">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/app_bar"
-            app:elevation="4dp">
+            app:elevation="4dp"
+            android:id="@+id/app_bar">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"

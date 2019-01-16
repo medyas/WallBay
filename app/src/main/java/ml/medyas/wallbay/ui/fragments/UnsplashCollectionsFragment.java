@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.adapters.unsplash.CollectionRecyclerViewAdapter;
+import ml.medyas.wallbay.adapters.unsplash.TagsRecyclerViewAdapter;
 import ml.medyas.wallbay.databinding.FragmentBaseBinding;
 import ml.medyas.wallbay.entities.CollectionEntity;
 import ml.medyas.wallbay.models.unsplash.UnsplashCollectionsViewModel;
@@ -30,7 +31,7 @@ import ml.medyas.wallbay.utils.Utils;
 import static ml.medyas.wallbay.utils.Utils.calculateNoOfColumns;
 import static ml.medyas.wallbay.utils.Utils.convertPixelsToDp;
 
-public class UnsplashCollectionsFragment extends Fragment implements CollectionRecyclerViewAdapter.CollectionInterface {
+public class UnsplashCollectionsFragment extends Fragment implements CollectionRecyclerViewAdapter.CollectionInterface, TagsRecyclerViewAdapter.OnTagItemClicked {
     public static final String FRAGMENT_POSITION = "FRAGMENT_POSITION";
     public static final String SEARCH_QUERY = "SEARCH_QUERY";
     private CollectionRecyclerViewAdapter mAdapter;
@@ -68,7 +69,7 @@ public class UnsplashCollectionsFragment extends Fragment implements CollectionR
             }
         }
 
-        mAdapter = new CollectionRecyclerViewAdapter(this);
+        mAdapter = new CollectionRecyclerViewAdapter(this, this, getContext());
         setUpViewModel();
     }
 
@@ -235,15 +236,23 @@ public class UnsplashCollectionsFragment extends Fragment implements CollectionR
         mListener = null;
     }
 
-
-    public interface UnsplashCollectionInterface {
-        void onAddFragment(Fragment fragment);
-        void updateToolbarTitle(String title);
+    @Override
+    public void onTagItemClicked(String query) {
+        mListener.onAddFragment(UnsplashCollectionsFragment.newInstance(5, query));
+        mListener.updateToolbarTitle(query);
     }
 
     @Override
     public void onCollectionItemClicked(CollectionEntity collectionEntity) {
         mListener.onAddFragment(UnsplashDefaultVPFragment.newInstance(4, collectionEntity.getId()));
         mListener.updateToolbarTitle(collectionEntity.getTitle());
+    }
+
+
+
+
+    public interface UnsplashCollectionInterface {
+        void onAddFragment(Fragment fragment);
+        void updateToolbarTitle(String title);
     }
 }

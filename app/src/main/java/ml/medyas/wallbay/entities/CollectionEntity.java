@@ -2,17 +2,12 @@ package ml.medyas.wallbay.entities;
 
 import android.arch.persistence.room.Ignore;
 import android.databinding.BindingAdapter;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v7.util.DiffUtil;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -70,6 +65,7 @@ public class CollectionEntity implements Parcelable {
         text.setText(String.format("%d\nPhotos", number));
     }
 
+    /*
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @BindingAdapter({"android:load_tags"})
     public static void setTags(LinearLayout view, List<Tag> tags) {
@@ -93,7 +89,7 @@ public class CollectionEntity implements Parcelable {
                 view.addView(textView);
             }
         }
-    }
+    }*/
 
 
     public CollectionEntity() {

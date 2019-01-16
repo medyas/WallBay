@@ -31,7 +31,7 @@ public class Utils {
 
     public static final String INTEREST_CATEGORIES = "interest_categories";
 
-    public static final int REQUEST_SIZE = 30;
+    public static final int REQUEST_SIZE = 15;
 
 
     public enum webSite {
