@@ -44,7 +44,7 @@ import static ml.medyas.wallbay.utils.Utils.INTEREST_CATEGORIES;
 
 public class MainActivity extends AppCompatActivity implements GetStartedFragment.OnGetStartedFragmentInteractions, BaseFragment.OnBaseFragmentInteractions,
         ImageDetailsFragment.OnImageDetailsFragmentInteractions, FavoriteFragment.onFavoriteFragmentInteractions, PixabayFragment.OnPixabayFragmentInteractions,
-        UnsplashFragment.OnUnsplashFragmentInteractions, PexelsFragment.OnPexelsFragmentInteractions, SearchFragment.OnFragmentInteractionListener,
+        UnsplashFragment.OnUnsplashFragmentInteractions, PexelsFragment.OnPexelsFragmentInteractions, SearchFragment.OnSearchFragmentInteractions,
     AboutFragment.OnFragmentInteractionListener, ForYouFragment.OnForYouFragmentInteractions, UnsplashCollectionsFragment.UnsplashCollectionInterface,
         ImageDetailsInfoDialog.OnImageDialogInteractions {
 

@@ -20,8 +20,8 @@ import java.util.Observable;
 
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.entities.ImageEntity;
-import ml.medyas.wallbay.models.foryou.ForYouViewModel;
-import ml.medyas.wallbay.models.foryou.ForYouViewModelFactory;
+import ml.medyas.wallbay.models.search.SearchViewModel;
+import ml.medyas.wallbay.models.search.SearchViewModelFactory;
 import ml.medyas.wallbay.services.NetworkChangeReceiver;
 import ml.medyas.wallbay.utils.Utils;
 
@@ -37,7 +37,7 @@ import static ml.medyas.wallbay.utils.Utils.getNetworkStatus;
  */
 public class ForYouFragment extends BaseFragment implements java.util.Observer {
     private OnForYouFragmentInteractions mListener;
-    private ForYouViewModel mViewModel;
+    private SearchViewModel mViewModel;
 
     public static final String TAG = "ml.medyas.wallbay.ui.fragments.ForYouFragment";
 
@@ -68,7 +68,7 @@ public class ForYouFragment extends BaseFragment implements java.util.Observer {
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
             String interests = pref.getString(INTEREST_CATEGORIES, "");
             if (interests != null && !interests.equals("")) {
-                mViewModel = ViewModelProviders.of(this, new ForYouViewModelFactory(interests)).get(ForYouViewModel.class);
+                mViewModel = ViewModelProviders.of(this, new SearchViewModelFactory(interests)).get(SearchViewModel.class);
             }
         }
 

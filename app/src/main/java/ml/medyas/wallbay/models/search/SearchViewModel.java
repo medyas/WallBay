@@ -1,4 +1,4 @@
-package ml.medyas.wallbay.models.foryou;
+package ml.medyas.wallbay.models.search;
 
 import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
@@ -10,26 +10,26 @@ import android.arch.paging.PagedList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import ml.medyas.wallbay.adapters.foryou.ForYouDataSource;
-import ml.medyas.wallbay.adapters.foryou.ForYouDataSourceFactory;
+import ml.medyas.wallbay.adapters.search.SearchDataSource;
+import ml.medyas.wallbay.adapters.search.SearchDataSourceFactory;
 import ml.medyas.wallbay.entities.ImageEntity;
 import ml.medyas.wallbay.utils.Utils;
 
 import static ml.medyas.wallbay.utils.Utils.PREFETCH_DISTANCE;
 import static ml.medyas.wallbay.utils.Utils.REQUEST_SIZE;
 
-public class ForYouViewModel extends ViewModel {
+public class SearchViewModel extends ViewModel {
     private LiveData<Utils.NetworkState> networkStateLiveData;
     private LiveData<PagedList<ImageEntity>> pagedListLiveData;
 
-    public ForYouViewModel(String query) {
+    public SearchViewModel(String query) {
         Executor executor = Executors.newFixedThreadPool(3);
 
-        ForYouDataSourceFactory forYouDataSourceFactory = new ForYouDataSourceFactory(query);
+        SearchDataSourceFactory searchDataSourceFactory = new SearchDataSourceFactory(query);
 
-        networkStateLiveData = Transformations.switchMap(forYouDataSourceFactory.getMutableLiveData(), new Function<ForYouDataSource, LiveData<Utils.NetworkState>>() {
+        networkStateLiveData = Transformations.switchMap(searchDataSourceFactory.getMutableLiveData(), new Function<SearchDataSource, LiveData<Utils.NetworkState>>() {
             @Override
-            public LiveData<Utils.NetworkState> apply(ForYouDataSource input) {
+            public LiveData<Utils.NetworkState> apply(SearchDataSource input) {
                 return input.getNetworkState();
             }
         });
@@ -41,7 +41,7 @@ public class ForYouViewModel extends ViewModel {
                 .setPageSize(REQUEST_SIZE)
                 .build();
 
-        pagedListLiveData = new LivePagedListBuilder(forYouDataSourceFactory, config).setFetchExecutor(executor).build();
+        pagedListLiveData = new LivePagedListBuilder(searchDataSourceFactory, config).setFetchExecutor(executor).build();
     }
 
 

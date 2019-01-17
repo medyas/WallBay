@@ -1,66 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="320dp"
-    android:layout_height="wrap_content"
-    android:background="@android:color/white"
-    android:padding="16dp">
+<layout>
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottieAnimationView"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_margin="8dp"
-        android:scaleX="2"
-        android:scaleY="2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/veil" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="280dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/search_rounded"
-        android:gravity="center_vertical"
-        android:maxWidth="250dp"
-        android:orientation="horizontal"
-        android:padding="8dp"
-        app:elevation="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/lottieAnimationView"
-        app:layout_constraintEnd_toEndOf="@+id/lottieAnimationView"
-        app:layout_constraintStart_toStartOf="@+id/lottieAnimationView"
-        app:layout_constraintTop_toTopOf="parent">
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:padding="16dp">
 
-        <EditText
-            android:id="@+id/dialog_text"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimationView"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_margin="8dp"
+            android:scaleX="2"
+            android:scaleY="2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/veil" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_weight="4"
-            android:background="@android:color/transparent"
-            android:hint="@string/type_you_search_term"
-            android:inputType="text"
-            tools:ignore="Autofill" />
+            android:layout_height="50dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/search_rounded"
+            android:gravity="center_vertical"
+            android:maxWidth="250dp"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            app:elevation="4dp"
+            app:layout_constraintBottom_toBottomOf="@+id/lottieAnimationView"
+            app:layout_constraintEnd_toEndOf="@+id/lottieAnimationView"
+            app:layout_constraintStart_toStartOf="@+id/lottieAnimationView"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/dialog_search"
-            android:layout_width="0dp"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:contentDescription="@string/search_data"
-            android:src="@drawable/ic_search_black_24dp" />
-    </LinearLayout>
+            <EditText
+                android:id="@+id/dialog_text"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_weight="4"
+                android:background="@android:color/transparent"
+                android:hint="@string/type_you_search_term"
+                android:inputType="text"
+                tools:ignore="Autofill" />
 
-</android.support.constraint.ConstraintLayout>
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/dialog_search"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                app:lottie_rawRes="@raw/search"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

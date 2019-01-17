@@ -1,4 +1,4 @@
-package ml.medyas.wallbay.adapters.foryou;
+package ml.medyas.wallbay.adapters.search;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.PageKeyedDataSource;
@@ -12,12 +12,12 @@ import ml.medyas.wallbay.entities.SearchEntity;
 import ml.medyas.wallbay.repositories.SearchRepository;
 import ml.medyas.wallbay.utils.Utils;
 
-public class ForYouDataSource extends PageKeyedDataSource<Integer, ImageEntity> {
+public class SearchDataSource extends PageKeyedDataSource<Integer, ImageEntity> {
     private MutableLiveData<Utils.NetworkState> networkState;
     private SearchRepository searchRepository;
     private String query;
 
-    public ForYouDataSource(String query) {
+    public SearchDataSource(String query) {
         this.networkState = new MutableLiveData<Utils.NetworkState>();
         this.searchRepository = new SearchRepository();
         this.query = query;
@@ -72,7 +72,6 @@ public class ForYouDataSource extends PageKeyedDataSource<Integer, ImageEntity> 
 
             @Override
             public void onNext(SearchEntity searchEntity) {
-                Log.d("mainactivity", String.format("loaded page %d", params.key));
                 callback.onResult(searchEntity.getAll(), params.key + 1);
                 networkState.postValue(Utils.NetworkState.LOADED);
             }

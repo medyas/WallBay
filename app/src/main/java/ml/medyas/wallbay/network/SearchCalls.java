@@ -93,13 +93,11 @@ public class SearchCalls {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
 
-        Observable<SearchEntity> combinedCalls = Observable.zip(pexelsSearch, pixabaySearch, unsplashSearch, new Function3<PexelsEntity, PixabayEntity, UnsplashSearchEntity, SearchEntity>() {
+        return Observable.zip(pexelsSearch, pixabaySearch, unsplashSearch, new Function3<PexelsEntity, PixabayEntity, UnsplashSearchEntity, SearchEntity>() {
             @Override
             public SearchEntity apply(PexelsEntity pexelsEntity, PixabayEntity pixabayEntity, UnsplashSearchEntity unsplashSearchEntity) {
                 return new SearchEntity(pixabayEntity, unsplashSearchEntity, pexelsEntity);
             }
         });
-
-        return combinedCalls;
     }
 }
