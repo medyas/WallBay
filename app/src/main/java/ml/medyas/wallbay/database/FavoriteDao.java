@@ -23,6 +23,9 @@ public interface FavoriteDao {
     @Query("select * from favorite")
     LiveData<List<ImageEntity>> getFavoriteList();
 
+    @Query("select * from favorite")
+    List<ImageEntity> getObservableFavoriteList();
+
     @Delete
     void deleteFavorite(ImageEntity imageEntity);
 

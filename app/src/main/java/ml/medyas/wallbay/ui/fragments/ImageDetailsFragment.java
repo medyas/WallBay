@@ -71,7 +71,7 @@ public class ImageDetailsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    //TODO create info sheet with color palette-image details-tags... provided by
+    //TODO add image editing
 
     public static ImageDetailsFragment newInstance(ImageEntity imageEntity) {
         ImageDetailsFragment frag = new ImageDetailsFragment();

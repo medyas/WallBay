@@ -39,6 +39,7 @@ import ml.medyas.wallbay.ui.fragments.SearchFragment;
 import ml.medyas.wallbay.ui.fragments.UnsplashCollectionsFragment;
 import ml.medyas.wallbay.ui.fragments.UnsplashDefaultVPFragment;
 import ml.medyas.wallbay.ui.fragments.UnsplashFragment;
+import ml.medyas.wallbay.widget.WallbayWidget;
 
 import static ml.medyas.wallbay.utils.Utils.INTEREST_CATEGORIES;
 
@@ -315,11 +316,13 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
 
     @Override
     public Completable onAddToFavorite(ImageEntity imageEntity) {
+        WallbayWidget.sendRefreshBroadcast(this);
         return favoriteViewModel.insertFavorite(imageEntity);
     }
 
     @Override
     public Completable onAddToFavorite(List<ImageEntity> imageEntities) {
+        WallbayWidget.sendRefreshBroadcast(this);
         return favoriteViewModel.insertFavorite(imageEntities);
     }
 

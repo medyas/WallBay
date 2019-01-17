@@ -50,4 +50,7 @@
     <string name="choose_browser">Choose you browser</string>
     <string name="search_data">Search data</string>
     <string name="collection_image_previews">collection image previews</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="widget_item_lading">widget item lading</string>
 </resources>

@@ -23,19 +23,8 @@ import ml.medyas.wallbay.utils.Utils;
 
 @Entity(tableName = "favorite")
 public class ImageEntity implements Parcelable {
+
     @Ignore
-    public static final Creator<ImageEntity> CREATOR = new Creator<ImageEntity>() {
-        @Override
-        public ImageEntity createFromParcel(Parcel in) {
-            return new ImageEntity(in);
-        }
-
-        @Override
-        public ImageEntity[] newArray(int size) {
-            return new ImageEntity[size];
-        }
-    };
-
     public static DiffUtil.ItemCallback<ImageEntity> DIFF_CALLBACK = new DiffUtil.ItemCallback<ImageEntity>() {
         @Override
         public boolean areItemsTheSame(@NonNull ImageEntity imageEntity, @NonNull ImageEntity t1) {
@@ -88,6 +77,35 @@ public class ImageEntity implements Parcelable {
         this.tags = tags;
     }
 
+    protected ImageEntity(Parcel in) {
+        id = in.readString();
+        userName = in.readString();
+        userImg = in.readString();
+        likes = in.readInt();
+        views = in.readInt();
+        downloads = in.readInt();
+        width = in.readInt();
+        height = in.readInt();
+        url = in.readString();
+        originalImage = in.readString();
+        originalUrl = in.readString();
+        previewImage = in.readString();
+        tags = in.readString();
+        provider = (Utils.webSite) in.readSerializable();
+    }
+
+    public static final Creator<ImageEntity> CREATOR = new Creator<ImageEntity>() {
+        @Override
+        public ImageEntity createFromParcel(Parcel in) {
+            return new ImageEntity(in);
+        }
+
+        @Override
+        public ImageEntity[] newArray(int size) {
+            return new ImageEntity[size];
+        }
+    };
+
     @Ignore
     @BindingAdapter({"android:loadImage"})
     public static void loadImage(ImageView view, String imageUrl) {
@@ -132,23 +150,6 @@ public class ImageEntity implements Parcelable {
         view.setText(String.format("%d", num));
     }
 
-
-    @Ignore
-    protected ImageEntity(Parcel in) {
-        id = in.readString();
-        userName = in.readString();
-        userImg = in.readString();
-        likes = in.readInt();
-        views = in.readInt();
-        downloads = in.readInt();
-        width = in.readInt();
-        height = in.readInt();
-        url = in.readString();
-        originalImage = in.readString();
-        previewImage = in.readString();
-        tags = in.readString();
-        originalUrl = in.readString();
-    }
 
     @NonNull
     public String getId() {
@@ -263,13 +264,11 @@ public class ImageEntity implements Parcelable {
         this.originalUrl = originalUrl;
     }
 
-    @Ignore
     @Override
     public int describeContents() {
         return 0;
     }
 
-    @Ignore
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(id);
@@ -282,8 +281,9 @@ public class ImageEntity implements Parcelable {
         parcel.writeInt(height);
         parcel.writeString(url);
         parcel.writeString(originalImage);
+        parcel.writeString(originalUrl);
         parcel.writeString(previewImage);
         parcel.writeString(tags);
-        parcel.writeString(originalUrl);
+        parcel.writeSerializable(provider);
     }
 }

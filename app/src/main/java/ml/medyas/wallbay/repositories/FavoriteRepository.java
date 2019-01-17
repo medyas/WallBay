@@ -2,6 +2,7 @@ package ml.medyas.wallbay.repositories;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
+import android.content.Context;
 
 import java.util.List;
 
@@ -23,8 +24,19 @@ public class FavoriteRepository {
         imageEntities = favoriteDao.getFavoriteList();
     }
 
+    public FavoriteRepository(Context context) {
+        FavoriteDatabase db = FavoriteDatabase.getDatabaseInstance(context);
+        favoriteDao = db.getFavoriteDao();
+        imageEntities = favoriteDao.getFavoriteList();
+    }
+
+
     public LiveData<List<ImageEntity>> getImageEntities() {
         return imageEntities;
+    }
+
+    public List<ImageEntity> getImageEntitiesList() {
+        return favoriteDao.getObservableFavoriteList();
     }
 
     public Completable insertFavorite(final ImageEntity imageEntity) {

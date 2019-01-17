@@ -32,6 +32,7 @@ import ml.medyas.wallbay.entities.ImageEntity;
 import ml.medyas.wallbay.models.FavoriteViewModel;
 import ml.medyas.wallbay.services.WallpaperService;
 import ml.medyas.wallbay.utils.GlideApp;
+import ml.medyas.wallbay.widget.WallbayWidget;
 
 import static ml.medyas.wallbay.utils.Utils.calculateNoOfColumns;
 import static ml.medyas.wallbay.utils.Utils.convertPixelsToDp;
@@ -217,6 +218,7 @@ public class FavoriteFragment extends Fragment implements FavoriteAdapter.onFavI
             @Override
             public void onComplete() {
                 Toast.makeText(getContext(), getString(R.string.remove_succ), Toast.LENGTH_SHORT).show();
+                WallbayWidget.sendRefreshBroadcast(getContext());
             }
 
             @Override
