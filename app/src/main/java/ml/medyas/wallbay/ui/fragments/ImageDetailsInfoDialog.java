@@ -88,10 +88,10 @@ public class ImageDetailsInfoDialog extends DialogFragment implements TagsRecycl
         binding.setPalette(palette);
         binding.setFragment(this);
 
-        binding.dialogRecyclerView.setHasFixedSize(true);
-        binding.dialogRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-
         if(!imageEntity.getTags().equals("")) {
+            binding.dialogRecyclerView.setHasFixedSize(true);
+            binding.dialogRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
             String[] tags = imageEntity.getTags().split(",");
             if (tags.length != 0) {
                 List<String> list = new ArrayList<>();

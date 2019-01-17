@@ -1,37 +1,35 @@
-package ml.medyas.wallbay.models.pixabay;
+package ml.medyas.wallbay.models.pexels;
 
 import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import ml.medyas.wallbay.adapters.pixabay.PixabayDataSource;
-import ml.medyas.wallbay.adapters.pixabay.PixabayDataSourceFactory;
+import ml.medyas.wallbay.adapters.pexels.PexelsSearchDataSource;
 import ml.medyas.wallbay.entities.ImageEntity;
 import ml.medyas.wallbay.utils.Utils;
 
 import static ml.medyas.wallbay.utils.Utils.PREFETCH_DISTANCE;
 import static ml.medyas.wallbay.utils.Utils.REQUEST_SIZE;
 
-public class PixabayViewModel extends ViewModel {
+public class PexelsSearchViewModel extends ViewModel {
     private LiveData<Utils.NetworkState> networkStateLiveData;
     private LiveData<PagedList<ImageEntity>> pagedListLiveData;
 
-    public PixabayViewModel(Context context, String query, String category, String colors, boolean editorsChoice, String orderBy) {
-
+    public PexelsSearchViewModel(Context context, String query) {
         Executor executor = Executors.newFixedThreadPool(3);
-
-        PixabayDataSourceFactory pixabayDataSourceFactory = new PixabayDataSourceFactory(context, query, category, colors, editorsChoice, orderBy);
-
-        networkStateLiveData = Transformations.switchMap(pixabayDataSourceFactory.getMutableLiveData(), new Function<PixabayDataSource, LiveData<Utils.NetworkState>>() {
+        PexelsSearchDataSource.PexelsSearchDataSourceFactory dataSourceFactory = new PexelsSearchDataSource.PexelsSearchDataSourceFactory(context, query);
+        networkStateLiveData = Transformations.switchMap(dataSourceFactory.getMutableLiveData(), new Function<PexelsSearchDataSource, LiveData<Utils.NetworkState>>() {
             @Override
-            public LiveData<Utils.NetworkState> apply(PixabayDataSource input) {
+            public LiveData<Utils.NetworkState> apply(PexelsSearchDataSource input) {
                 return input.getNetworkState();
             }
         });
@@ -43,7 +41,7 @@ public class PixabayViewModel extends ViewModel {
                 .setPageSize(REQUEST_SIZE)
                 .build();
 
-        pagedListLiveData = new LivePagedListBuilder(pixabayDataSourceFactory, config).setFetchExecutor(executor).build();
+        pagedListLiveData = new LivePagedListBuilder(dataSourceFactory, config).setFetchExecutor(executor).build();
     }
 
     public LiveData<Utils.NetworkState> getNetworkStateLiveData() {
@@ -52,5 +50,23 @@ public class PixabayViewModel extends ViewModel {
 
     public LiveData<PagedList<ImageEntity>> getPagedListLiveData() {
         return pagedListLiveData;
+    }
+
+
+
+    public static class PexelsSearchViewModelFactory implements ViewModelProvider.Factory {
+        private Context context;
+        private String query;
+
+        public PexelsSearchViewModelFactory(Context context, String query) {
+            this.context = context;
+            this.query = query;
+        }
+
+        @NonNull
+        @Override
+        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+            return (T) new PexelsSearchViewModel(context, query);
+        }
     }
 }

@@ -45,6 +45,7 @@
     <string name="oldest">Oldest</string>
     <string name="collections">collections</string>
     <string name="featured">Featured</string>
+    <string name="curated">Curated</string>
     <string name="menu_divider">menu divider</string>
     <string name="choose_browser">Choose you browser</string>
     <string name="search_data">Search data</string>

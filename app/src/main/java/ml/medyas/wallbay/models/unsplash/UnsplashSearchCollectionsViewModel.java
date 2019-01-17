@@ -17,6 +17,9 @@ import ml.medyas.wallbay.adapters.unsplash.UnsplashSearchCollectionsDataSource;
 import ml.medyas.wallbay.entities.CollectionEntity;
 import ml.medyas.wallbay.utils.Utils;
 
+import static ml.medyas.wallbay.utils.Utils.PREFETCH_DISTANCE;
+import static ml.medyas.wallbay.utils.Utils.REQUEST_SIZE;
+
 public class UnsplashSearchCollectionsViewModel extends ViewModel {
     private LiveData<Utils.NetworkState> networkStateLiveData;
     private LiveData<PagedList<CollectionEntity>> pagedListLiveData;
@@ -34,9 +37,9 @@ public class UnsplashSearchCollectionsViewModel extends ViewModel {
 
         PagedList.Config config = new PagedList.Config.Builder()
                 .setEnablePlaceholders(false)
-                .setInitialLoadSizeHint(30 * 2)
-                .setPrefetchDistance(60)
-                .setPageSize(30)
+                .setInitialLoadSizeHint(REQUEST_SIZE * 2)
+                .setPrefetchDistance(PREFETCH_DISTANCE)
+                .setPageSize(REQUEST_SIZE)
                 .build();
 
         pagedListLiveData = new LivePagedListBuilder(unsplashDataSource, config).setFetchExecutor(executor).build();

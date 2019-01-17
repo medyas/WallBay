@@ -16,9 +16,10 @@ import ml.medyas.wallbay.models.pixabay.PixabayViewModel;
 import ml.medyas.wallbay.models.pixabay.PixabayViewModelFactory;
 import ml.medyas.wallbay.utils.Utils;
 
+import static ml.medyas.wallbay.utils.Utils.FRAGMENT_POSITION;
+import static ml.medyas.wallbay.utils.Utils.SEARCH_QUERY;
+
 public class PixabayViewPagerFragment extends BaseFragment {
-    public static final String FRAGMENT_POSITION = "FRAGMENT_POSITION";
-    public static final String SEARCH_QUERY = "SEARCH_QUERY";
     private PixabayViewModel mViewModel;
     private int position;
     private String query;

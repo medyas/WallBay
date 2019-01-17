@@ -8,6 +8,10 @@ import retrofit2.http.Query;
 
 public interface PexelsService {
 
+
+    @GET("popular")
+    Call<PexelsEntity> popular(@Query("per_page") int perPage, @Query("page") int page);
+
     @GET("search")
     Call<PexelsEntity> search(@Query("query") String query, @Query("per_page") int perPage, @Query("page") int page);
 

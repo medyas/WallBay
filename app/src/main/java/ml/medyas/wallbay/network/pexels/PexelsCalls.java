@@ -51,6 +51,11 @@ public class PexelsCalls {
                 .build();
     }
 
+    public Call<PexelsEntity> getPopular(int page) {
+        return builder().create(PexelsService.class).
+                popular(REQUEST_SIZE, page);
+    }
+
     public Call<PexelsEntity> getSearch(String query, int page) {
         return builder().create(PexelsService.class).
                 search(query, REQUEST_SIZE, page);

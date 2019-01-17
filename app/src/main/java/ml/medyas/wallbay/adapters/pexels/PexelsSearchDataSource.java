@@ -18,13 +18,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PexelsDataSource extends PageKeyedDataSource<Integer, ImageEntity> {
+public class PexelsSearchDataSource extends PageKeyedDataSource<Integer, ImageEntity> {
     private PexelsRepository pexelsRepository;
     private String query;
     private MutableLiveData<Utils.NetworkState> networkState;
 
-    public PexelsDataSource(Context context) {
+    public PexelsSearchDataSource(Context context, String query) {
         pexelsRepository = new PexelsRepository(context);
+        this.query = query;
         networkState = new MutableLiveData<>();
     }
 
@@ -35,7 +36,7 @@ public class PexelsDataSource extends PageKeyedDataSource<Integer, ImageEntity> 
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull final LoadInitialCallback<Integer, ImageEntity> callback) {
         networkState.postValue(Utils.NetworkState.LOADING);
-        pexelsRepository.getPopular(1).enqueue(new Callback<PexelsEntity>() {
+        pexelsRepository.getSearch(query, 1).enqueue(new Callback<PexelsEntity>() {
             @Override
             public void onResponse(Call<PexelsEntity> call, Response<PexelsEntity> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -87,7 +88,7 @@ public class PexelsDataSource extends PageKeyedDataSource<Integer, ImageEntity> 
     @Override
     public void loadAfter(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, ImageEntity> callback) {
         networkState.postValue(Utils.NetworkState.LOADING);
-        pexelsRepository.getPopular(params.key).enqueue(new Callback<PexelsEntity>() {
+        pexelsRepository.getSearch(query, params.key).enqueue(new Callback<PexelsEntity>() {
             @Override
             public void onResponse(Call<PexelsEntity> call, Response<PexelsEntity> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -132,24 +133,26 @@ public class PexelsDataSource extends PageKeyedDataSource<Integer, ImageEntity> 
     }
 
 
-    public static class PexelsDataSourceFactory extends DataSource.Factory {
+    public static class PexelsSearchDataSourceFactory extends Factory {
         private Context context;
-        private PexelsDataSource dataSource;
-        private MutableLiveData<PexelsDataSource> mutableLiveData;
+        private String query;
+        private PexelsSearchDataSource dataSource;
+        private MutableLiveData<PexelsSearchDataSource> mutableLiveData;
 
-        public PexelsDataSourceFactory(Context context) {
+        public PexelsSearchDataSourceFactory(Context context, String query) {
             this.context = context;
+            this.query = query;
             mutableLiveData = new MutableLiveData<>();
         }
 
         @Override
         public DataSource create() {
-            dataSource = new PexelsDataSource(context);
+            dataSource = new PexelsSearchDataSource(context, query);
             mutableLiveData.postValue(dataSource);
             return dataSource;
         }
 
-        public MutableLiveData<PexelsDataSource> getMutableLiveData() {
+        public MutableLiveData<PexelsSearchDataSource> getMutableLiveData() {
             return mutableLiveData;
         }
     }

@@ -99,9 +99,9 @@ public class PixabayFragment extends Fragment {
         int id = item.getItemId();
         if (id == R.id.menu_favorite) {
             mListener.onAddFragment(FavoriteFragment.newInstance());
-        } else if(id == R.id.menu_search) {
-
+            return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 

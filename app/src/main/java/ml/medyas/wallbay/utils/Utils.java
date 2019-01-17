@@ -31,7 +31,12 @@ public class Utils {
 
     public static final String INTEREST_CATEGORIES = "interest_categories";
 
+
+    public static final String FRAGMENT_POSITION = "FRAGMENT_POSITION";
+    public static final String SEARCH_QUERY = "SEARCH_QUERY";
+
     public static final int REQUEST_SIZE = 15;
+    public static final int PREFETCH_DISTANCE = 10;
 
 
     public enum webSite {

@@ -28,12 +28,12 @@ import ml.medyas.wallbay.models.unsplash.UnsplashFeaturedCollectionsViewModel;
 import ml.medyas.wallbay.models.unsplash.UnsplashSearchCollectionsViewModel;
 import ml.medyas.wallbay.utils.Utils;
 
+import static ml.medyas.wallbay.utils.Utils.FRAGMENT_POSITION;
+import static ml.medyas.wallbay.utils.Utils.SEARCH_QUERY;
 import static ml.medyas.wallbay.utils.Utils.calculateNoOfColumns;
 import static ml.medyas.wallbay.utils.Utils.convertPixelsToDp;
 
 public class UnsplashCollectionsFragment extends Fragment implements CollectionRecyclerViewAdapter.CollectionInterface, TagsRecyclerViewAdapter.OnTagItemClicked {
-    public static final String FRAGMENT_POSITION = "FRAGMENT_POSITION";
-    public static final String SEARCH_QUERY = "SEARCH_QUERY";
     private CollectionRecyclerViewAdapter mAdapter;
     private FragmentBaseBinding binding;
     private int position;
