@@ -31,6 +31,7 @@ import ml.medyas.wallbay.ui.fragments.FavoriteFragment;
 import ml.medyas.wallbay.ui.fragments.ForYouFragment;
 import ml.medyas.wallbay.ui.fragments.GetStartedFragment;
 import ml.medyas.wallbay.ui.fragments.ImageDetailsFragment;
+import ml.medyas.wallbay.ui.fragments.ImageDetailsInfoDialog;
 import ml.medyas.wallbay.ui.fragments.PexelsFragment;
 import ml.medyas.wallbay.ui.fragments.PixabayFragment;
 import ml.medyas.wallbay.ui.fragments.PixabayViewPagerFragment;
@@ -44,7 +45,8 @@ import static ml.medyas.wallbay.utils.Utils.INTEREST_CATEGORIES;
 public class MainActivity extends AppCompatActivity implements GetStartedFragment.OnGetStartedFragmentInteractions, BaseFragment.OnBaseFragmentInteractions,
         ImageDetailsFragment.OnImageDetailsFragmentInteractions, FavoriteFragment.onFavoriteFragmentInteractions, PixabayFragment.OnPixabayFragmentInteractions,
         UnsplashFragment.OnUnsplashFragmentInteractions, PexelsFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener,
-    AboutFragment.OnFragmentInteractionListener, ForYouFragment.OnForYouFragmentInteractions, UnsplashCollectionsFragment.UnsplashCollectionInterface {
+    AboutFragment.OnFragmentInteractionListener, ForYouFragment.OnForYouFragmentInteractions, UnsplashCollectionsFragment.UnsplashCollectionInterface,
+        ImageDetailsInfoDialog.OnImageDialogInteractions {
 
     public static final String FIRST_START = "first_start";
     public static final String TOOLBAR_VISIBILITY = "toolbar_visibility";
@@ -176,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             public void run() {
                 Fragment frag = getSupportFragmentManager().findFragmentById(R.id.main_container);
                 setToolbarElevation(frag);
+                binding.content.toolbar.getMenu().clear();
                 if(frag instanceof PixabayFragment || frag instanceof UnsplashFragment || frag instanceof PexelsFragment) {
                     binding.content.toolbar.inflateMenu(R.menu.search_menu);
                     setUpToolbar(true);
@@ -330,13 +333,13 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             frag.setExitTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.move));
         }
 
-        showToolbar(false);
-
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.main_container, frag, frag.getClass().getName())
                 .addToBackStack(frag.getClass().getName())
                 .addSharedElement(imageView, String.format("transition %s", imageEntity.getId()))
                 .commit();
+
+        showToolbar(false);
     }
 
     @Override
@@ -358,6 +361,14 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         }
 
         setToolbarElevation(fragment);
+    }
+
+    @Override
+    public void onTagItemPressed(Fragment fragment, String query) {
+        onBackPressed();
+
+        onAddFragment(fragment);
+        updateToolbarTitle(query);
     }
 
     @Override

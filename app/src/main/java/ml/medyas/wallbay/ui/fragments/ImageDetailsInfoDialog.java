@@ -8,22 +8,25 @@ import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ml.medyas.wallbay.R;
+import ml.medyas.wallbay.adapters.unsplash.TagsRecyclerViewAdapter;
 import ml.medyas.wallbay.databinding.DialogImageDetailsInfoBinding;
 import ml.medyas.wallbay.entities.ImageEntity;
 import ml.medyas.wallbay.utils.Utils;
@@ -35,10 +38,11 @@ import static ml.medyas.wallbay.utils.Utils.PIXABAY_URL;
 import static ml.medyas.wallbay.utils.Utils.UNSPLASH_PROFILE_URL;
 import static ml.medyas.wallbay.utils.Utils.UNSPLASH_URL;
 
-public class ImageDetailsInfoDialog extends DialogFragment {
+public class ImageDetailsInfoDialog extends DialogFragment implements TagsRecyclerViewAdapter.OnTagItemClicked {
     public static final String IMAGE_ENTITY = "IMAGE_ENTITY";
     private ImageEntity imageEntity;
     private Palette palette;
+    private OnImageDialogInteractions mListener;
 
     public static ImageDetailsInfoDialog newInstance(ImageEntity imageEntity) {
         ImageDetailsInfoDialog dialog = new ImageDetailsInfoDialog();
@@ -46,32 +50,6 @@ public class ImageDetailsInfoDialog extends DialogFragment {
         bundle.putParcelable(IMAGE_ENTITY, imageEntity);
         dialog.setArguments(bundle);
         return dialog;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    @BindingAdapter({"android:tags"})
-    public static void setTags(LinearLayout view, String tags) {
-        if (!tags.equals("")) {
-            String[] temp = tags.split(",");
-            for (String txt : temp) {
-                final TextView textView = new TextView(view.getContext());
-                textView.setText(txt.trim());
-                textView.setPadding(16, 16, 16, 16);
-                textView.setTextColor(view.getContext().getResources().getColor(R.color.splashBackground));
-                textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                textView.setBackgroundResource(R.drawable.tags_round_background);
-                textView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(view.getContext(), textView.getText().toString(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                params.setMargins(4, 4, 4, 4);
-                textView.setLayoutParams(params);
-                view.addView(textView);
-            }
-        }
     }
 
     @BindingAdapter({"android:setDimensions"})
@@ -110,7 +88,39 @@ public class ImageDetailsInfoDialog extends DialogFragment {
         binding.setPalette(palette);
         binding.setFragment(this);
 
+        binding.dialogRecyclerView.setHasFixedSize(true);
+        binding.dialogRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        if(!imageEntity.getTags().equals("")) {
+            String[] tags = imageEntity.getTags().split(",");
+            if (tags.length != 0) {
+                List<String> list = new ArrayList<>();
+                for(String tag: tags) {
+                    list.add(tag.trim());
+                }
+                binding.dialogRecyclerView.setAdapter(new TagsRecyclerViewAdapter(list, this));
+            }
+        }
+
         return binding.getRoot();
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnImageDialogInteractions) {
+            mListener = (OnImageDialogInteractions) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     public void setPalette(Palette palette) {
@@ -177,5 +187,29 @@ public class ImageDetailsInfoDialog extends DialogFragment {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         Intent chooser = Intent.createChooser(intent, getString(R.string.choose_browser));
         startActivity(chooser);
+    }
+
+    @Override
+    public void onTagItemClicked(String query) {
+
+        switch (imageEntity.getProvider()) {
+            case PEXELS:
+                break;
+
+            case PIXABAY:
+                mListener.onTagItemPressed(PixabayViewPagerFragment.newInstance(3, query), query);
+                break;
+
+            case UNSPLASH:
+                mListener.onTagItemPressed(UnsplashDefaultVPFragment.newInstance(4, query), query);
+                break;
+        }
+
+        dismiss();
+    }
+
+
+    public interface OnImageDialogInteractions {
+        void onTagItemPressed(Fragment fragment, String query);
     }
 }
