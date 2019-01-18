@@ -3,7 +3,6 @@ package ml.medyas.wallbay.widget;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.widget.RemoteViews;
 
 import com.bumptech.glide.request.FutureTarget;
@@ -15,47 +14,27 @@ import java.util.concurrent.ExecutionException;
 
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.entities.ImageEntity;
-import ml.medyas.wallbay.repositories.FavoriteRepository;
 import ml.medyas.wallbay.utils.GlideApp;
 
-import static ml.medyas.wallbay.widget.WallbayWidget.IMAGE_LIST;
+import static ml.medyas.wallbay.ui.activities.MainActivity.IMAGE_ITEM;
+import static ml.medyas.wallbay.ui.activities.MainActivity.LAUNCH_IMAGE_DETAILS;
 
 public class WallbayWidgetRemoteViewsFactory implements android.widget.RemoteViewsService.RemoteViewsFactory {
     private Context context;
-    private List<String> imageEntities = new ArrayList<>();
+    private List<ImageEntity> imageEntities = new ArrayList<>();
 
-    public WallbayWidgetRemoteViewsFactory(Context context, Intent intent) {
+    public WallbayWidgetRemoteViewsFactory(final Context context, Intent intent) {
         this.context = context;
-        imageEntities = intent.getStringArrayListExtra(IMAGE_LIST);
     }
 
     @Override
     public void onCreate() {
+        this.imageEntities = WallbayWidget.imageEntities;
     }
 
     @Override
     public void onDataSetChanged() {
-        new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-                FavoriteRepository repository = new FavoriteRepository(context);
-                List<ImageEntity> list = repository.getImageEntitiesList();
-                ArrayList<String> images = new ArrayList<>();
-                for(ImageEntity img: list) {
-                    images.add(img.getPreviewImage());
-                }
-                if(imageEntities != null)
-                    imageEntities.clear();
-                imageEntities = images;
-
-                if(images.size() != imageEntities.size()) {
-                    onDataSetChanged();
-                }
-                return null;
-            }
-        }.execute();
-
+        this.imageEntities = WallbayWidget.imageEntities;
     }
 
     @Override
@@ -74,9 +53,14 @@ public class WallbayWidgetRemoteViewsFactory implements android.widget.RemoteVie
     public RemoteViews getViewAt(int i) {
         RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_item);
 
+        Intent fillInIntent = new Intent();
+        fillInIntent.setAction(LAUNCH_IMAGE_DETAILS);
+        fillInIntent.putExtra(IMAGE_ITEM, imageEntities.get(i));
+        rv.setOnClickFillInIntent(R.id.widget_container, fillInIntent);
+
         FutureTarget<Bitmap> futureTarget = GlideApp.with(context)
                 .asBitmap()
-                .load(imageEntities.get(i))
+                .load(imageEntities.get(i).getPreviewImage())
                 .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
         try {
             rv.setImageViewBitmap(R.id.widget_image, futureTarget.get());

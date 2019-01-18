@@ -1,6 +1,7 @@
 package ml.medyas.wallbay.ui.activities;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionInflater;
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     public static final String TOOLBAR_VISIBILITY = "toolbar_visibility";
     public static final String FAVORITE_SHOWN = "FAVORITE_SHOWN";
     public static final String FRAGMENT_STACK = "FRAGMENT_STACK";
+    public static final String IMAGE_ITEM = "IMAGE_ITEM";
+    public static final String LAUNCH_IMAGE_DETAILS = "MainActivity.LAUNCH_IMAGE_DETAILS";
 
     private ActivityMainBinding binding;
     private FavoriteViewModel favoriteViewModel;
@@ -100,6 +104,28 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             }
         });
 
+        if(getIntent().getAction().equals(LAUNCH_IMAGE_DETAILS)) {
+            ImageEntity imgItem = getIntent().getParcelableExtra(IMAGE_ITEM);
+            displayImageDetails(imgItem);
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        if(intent.getAction().equals(LAUNCH_IMAGE_DETAILS)) {
+            ImageEntity imgItem = intent.getParcelableExtra(IMAGE_ITEM);
+            displayImageDetails(imgItem);
+        }
+    }
+
+    private void displayImageDetails(ImageEntity imageEntity) {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if(fragment instanceof ImageDetailsFragment) {
+            onBackPressed();
+        }
+        onItemClicked(imageEntity, 0, null);
     }
 
     @Override
@@ -336,11 +362,14 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             frag.setExitTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.move));
         }
 
-        getSupportFragmentManager().beginTransaction()
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
                 .add(R.id.main_container, frag, frag.getClass().getName())
-                .addToBackStack(frag.getClass().getName())
-                .addSharedElement(imageView, String.format("transition %s", imageEntity.getId()))
-                .commit();
+                .addToBackStack(frag.getClass().getName());
+
+        if(imageView != null) {
+            transaction.addSharedElement(imageView, String.format("transition %s", imageEntity.getId()));
+        }
+        transaction.commit();
 
         showToolbar(false);
     }

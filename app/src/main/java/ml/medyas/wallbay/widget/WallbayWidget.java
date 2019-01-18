@@ -1,11 +1,13 @@
 package ml.medyas.wallbay.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.TaskStackBuilder;
 import android.widget.RemoteViews;
 
 import java.util.ArrayList;
@@ -14,13 +16,14 @@ import java.util.List;
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.entities.ImageEntity;
 import ml.medyas.wallbay.repositories.FavoriteRepository;
+import ml.medyas.wallbay.ui.activities.MainActivity;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class WallbayWidget extends AppWidgetProvider {
 
-    public static final String IMAGE_LIST = "IMAGE_LIST";
+    public static List<ImageEntity> imageEntities = new ArrayList<>();
 
     static void updateAppWidget(final Context context, final AppWidgetManager appWidgetManager,
                                 final int appWidgetId) {
@@ -34,14 +37,18 @@ public class WallbayWidget extends AppWidgetProvider {
                         context.getPackageName(),
                         R.layout.wallbay_widget
                 );
+                imageEntities = repository.getImageEntitiesList();
+
                 Intent intent = new Intent(context, WallbayWidgetRemoteViewsService.class);
-                List<ImageEntity> list = repository.getImageEntitiesList();
-                ArrayList<String> images = new ArrayList<>();
-                for(ImageEntity img: list) {
-                    images.add(img.getPreviewImage());
-                }
-                intent.putStringArrayListExtra(IMAGE_LIST, images);
+
                 views.setRemoteAdapter(R.id.widget_listview, intent);
+                // template to handle the click listener for each item
+                Intent clickIntentTemplate = new Intent(context, MainActivity.class);
+                PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
+                        .addNextIntentWithParentStack(clickIntentTemplate)
+                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                views.setPendingIntentTemplate(R.id.widget_listview, clickPendingIntentTemplate);
+
 
                 appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_listview);
                 // Instruct the widget manager to update the widget
@@ -50,14 +57,6 @@ public class WallbayWidget extends AppWidgetProvider {
                 return null;
             }
         }.execute();
-
-        // template to handle the click listener for each item
-        /*Intent clickIntentTemplate = new Intent(context, MainActivity.class);
-        PendingIntent clickPendingIntentTemplate = PendingIntent.getBroadcast(context, 0, clickIntentTemplate,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setPendingIntentTemplate(R.id.widget_listview, clickPendingIntentTemplate);*/
-
-
     }
 
     @Override
@@ -83,6 +82,7 @@ public class WallbayWidget extends AppWidgetProvider {
             AppWidgetManager mgr = AppWidgetManager.getInstance(context);
             ComponentName cn = new ComponentName(context, WallbayWidget.class);
             mgr.notifyAppWidgetViewDataChanged(mgr.getAppWidgetIds(cn), R.id.widget_listview);
+            onUpdate(context, mgr, mgr.getAppWidgetIds(cn));
         }
         super.onReceive(context, intent);
     }

@@ -2,6 +2,7 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/item_width"
+    android:id="@+id/widget_container"
     android:layout_height="wrap_content">
 
     <ImageView
