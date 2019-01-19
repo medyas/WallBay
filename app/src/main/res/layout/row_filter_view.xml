@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="url"
+            type="String"/>
+        <variable
+            name="text"
+            type="String"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="2dp">
+
+        <ja.burhanrashid52.photoeditor.PhotoEditorView
+            android:id="@+id/imgFilterView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:loadEditorImage="@{url}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="h,1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/image_filter_preview" />
+
+        <TextView
+            android:id="@+id/txtFilterName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#90000000"
+            android:gravity="center"
+            android:padding="4dp"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgFilterView"
+            app:layout_constraintEnd_toEndOf="@+id/imgFilterView"
+            app:layout_constraintStart_toStartOf="@+id/imgFilterView"
+            android:text="@{text}" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

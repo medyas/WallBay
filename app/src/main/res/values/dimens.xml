@@ -4,6 +4,10 @@
     <dimen name="match_parent">-1px</dimen>
     <dimen name="collection_width">@dimen/match_parent</dimen>
 
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="editor_size">35dp</dimen>
+    <dimen name="normal_margin">8dp</dimen>
+    <dimen name="large_margin">16dp</dimen>
     <!--
 Refer to App Widget Documentation for margin information
 http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout

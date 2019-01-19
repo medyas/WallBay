@@ -4,6 +4,7 @@ import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -42,10 +43,12 @@ import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.databinding.FragmentImageDetailsBinding;
 import ml.medyas.wallbay.entities.ImageEntity;
 import ml.medyas.wallbay.services.WallpaperService;
+import ml.medyas.wallbay.ui.photoEditor.EditImageActivity;
 import ml.medyas.wallbay.utils.GlideApp;
 import ml.medyas.wallbay.utils.Utils;
 
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
+import static ml.medyas.wallbay.ui.activities.MainActivity.IMAGE_ITEM;
 import static ml.medyas.wallbay.utils.Utils.drawableToBitmap;
 import static ml.medyas.wallbay.utils.Utils.getProviders;
 
@@ -70,8 +73,6 @@ public class ImageDetailsFragment extends Fragment {
     public ImageDetailsFragment() {
         // Required empty public constructor
     }
-
-    //TODO add image editing
 
     public static ImageDetailsFragment newInstance(ImageEntity imageEntity) {
         ImageDetailsFragment frag = new ImageDetailsFragment();
@@ -171,6 +172,14 @@ public class ImageDetailsFragment extends Fragment {
                 break;
 
             case R.id.fab_edit:
+                Intent intent = new Intent(getContext(), EditImageActivity.class);
+                intent.putExtra(IMAGE_ITEM, imageEntity);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    startActivity(intent,
+                            ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+                } else {
+                    startActivity(intent);
+                }
                 break;
 
             case R.id.fab_wall:
@@ -189,12 +198,16 @@ public class ImageDetailsFragment extends Fragment {
                 return;
 
             case R.id.image_share:
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_TITLE, "Photo by: " + imageEntity.getUserName())
-                        .putExtra(Intent.EXTRA_TEXT, "Provided by: " + getProviders(imageEntity.getProvider()) + " - " + imageEntity.getUrl())
-                        .setType("image/jpeg")
-                        .putExtra(Intent.EXTRA_STREAM, Uri.parse(MediaStore.Images.Media.insertImage(getContext().getContentResolver(), drawableToBitmap(binding.photoView.getDrawable()), imageEntity.getUserName(), null)));
-                startActivity(Intent.createChooser(intent, "Share with"));
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TITLE, "Photo by: " + imageEntity.getUserName())
+                        .putExtra(Intent.EXTRA_TEXT, "Provided by: " + getProviders(imageEntity.getProvider()) + " - " + imageEntity.getUrl());
+                if(checkSelfPermission(getContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    shareIntent.setType("image/jpeg")
+                            .putExtra(Intent.EXTRA_STREAM, Uri.parse(MediaStore.Images.Media.insertImage(getContext().getContentResolver(), drawableToBitmap(binding.photoView.getDrawable()),
+                                    imageEntity.getUserName(), null)));
+                }
+
+                startActivity(Intent.createChooser(shareIntent, "Share with"));
                 return;
 
             case R.id.item_plus:
@@ -391,9 +404,6 @@ public class ImageDetailsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnImageDetailsFragmentInteractions {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-
         Completable onAddToFavorite(ImageEntity imageEntity);
         void onImageBackPressed();
     }

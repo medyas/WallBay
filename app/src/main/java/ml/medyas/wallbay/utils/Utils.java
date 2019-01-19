@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import ja.burhanrashid52.photoeditor.PhotoFilter;
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.entities.GetStartedEntity;
 
@@ -37,6 +38,11 @@ public class Utils {
 
     public static final int REQUEST_SIZE = 15;
     public static final int PREFETCH_DISTANCE = 10;
+
+    public static PhotoFilter[] photoFilters = {PhotoFilter.NONE, PhotoFilter.AUTO_FIX,  PhotoFilter.BRIGHTNESS,PhotoFilter.CONTRAST, PhotoFilter.DOCUMENTARY, PhotoFilter.DUE_TONE,
+            PhotoFilter.FILL_LIGHT,PhotoFilter.FISH_EYE, PhotoFilter.GRAIN, PhotoFilter.GRAY_SCALE, PhotoFilter.LOMISH,PhotoFilter.NEGATIVE, PhotoFilter.POSTERIZE,PhotoFilter.SATURATE,
+    PhotoFilter.SEPIA,PhotoFilter.SHARPEN, PhotoFilter.TEMPERATURE, PhotoFilter.TINT, PhotoFilter.VIGNETTE, PhotoFilter.CROSS_PROCESS,
+    PhotoFilter.BLACK_WHITE, PhotoFilter.FLIP_HORIZONTAL, PhotoFilter.FLIP_VERTICAL, PhotoFilter.ROTATE};
 
 
     public enum webSite {

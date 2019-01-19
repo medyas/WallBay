@@ -15,18 +15,26 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-
+        android:theme="@style/AppTheme"
+        android:fullBackupContent="@xml/backup_descriptor">
         <activity
-            android:launchMode="singleTop"
             android:name=".ui.activities.MainActivity"
+            android:launchMode="singleTop"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW"/>
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <activity
+            android:name=".ui.photoEditor.EditImageActivity"
+            android:theme="@style/EditImageTheme" />
+
+        <activity android:name=".ui.photoEditor.base.BaseActivity" />
 
         <service
             android:name=".services.WallpaperService"
@@ -49,7 +57,6 @@
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".widget.WallbayWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -60,9 +67,15 @@
                 android:resource="@xml/wallbay_widget_info" />
         </receiver>
 
-        <service android:name=".widget.WallbayWidgetRemoteViewsService"
-            android:permission="android.permission.BIND_REMOTEVIEWS">
-        </service>
+        <service
+            android:name=".widget.WallbayWidgetRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
+
     </application>
 
 </manifest>

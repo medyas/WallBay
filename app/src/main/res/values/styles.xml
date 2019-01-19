@@ -10,6 +10,15 @@
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
+    <style name="EditImageTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowBackground">@color/colorPrimaryDarker</item>
+    </style>
+
 
     <style name="FabStyles">
         <item name="android:tint">@android:color/white</item>
@@ -29,13 +38,13 @@
         <item name="android:layout_marginTop">8dp</item>
     </style>
 
-    <style name="SearchDialogStyle" parent="@android:style/Theme.Dialog">
-        <item name="android:windowAnimationStyle">@style/CustomDialogAnimation</item>
-    </style>
 
-    <style name="CustomDialogAnimation">
-        <item name="android:windowEnterAnimation">@anim/translate_slide_down</item>
-        <item name="android:windowExitAnimation">@anim/translate_slide_up</item>
+    <style name="EditText">
+        <item name="android:singleLine">true</item>
+        <item name="colorControlNormal">#FFFFFF</item>
+        <item name="colorControlActivated">#FFFFFF</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
 </resources>

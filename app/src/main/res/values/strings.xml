@@ -2,7 +2,6 @@
     <string name="app_name">WallBay</string>
     <string name="favorite">Favorite</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="get_started">get started</string>
     <string name="what_kind_of_categories_are_interested_in">What kind of categories are interested in?</string>
@@ -53,4 +52,29 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="widget_item_lading">widget item lading</string>
+    <string name="image_palette">image palette</string>
+    
+    <string name="label_brush">Brush</string>
+    <string name="label_emoji">Emoji</string>
+    <string name="label_sticker">Sticker</string>
+    <string name="label_eraser">Eraser</string>
+    <string name="label_text">Text</string>
+    <string name="label_filter">Filter</string>
+    <string name="label_adjust">Adjust</string>
+    <string name="save_edited_image">save edited image</string>
+    <string name="close_editing">close editing</string>
+    <string name="take_a_picture_to_edit">take a picture to edit</string>
+    <string name="choose_a_picture_to_edit">choose a picture to edit</string>
+    <string name="redo_task">redo task</string>
+    <string name="undo_task">undo task</string>
+    <string name="done">Done</string>
+    <string name="close">Close</string>
+    <string name="edit_tool_icon">edit tool icon</string>
+    <string name="image_filter_preview">image filter preview</string>
+    <string name="sticker_preview">sticker preview</string>
+    <string name="exit_msg">Are you want to exit without saving image ?</string>
+    <string name="save">Save</string>
+    <string name="discard">Discard</string>
+    <string name="image_succ">Image Saved Successfully</string>
+    <string name="image_fail">Failed to save Image</string>
 </resources>

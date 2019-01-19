@@ -105,22 +105,16 @@
                 android:layout_height="20dp"
                 android:layout_margin="4dp"
                 android:onClick="@{fragment::onPaletteClicked}"
-                android:setBackground="@{palette.darkMutedSwatch}" />
+                android:setBackground="@{palette.darkMutedSwatch}"
+                android:contentDescription="@string/image_palette" />
 
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_margin="4dp"
                 android:onClick="@{fragment::onPaletteClicked}"
-                android:setBackground="@{palette.darkVibrantSwatch}" />
-
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_margin="4dp"
-                android:onClick="@{fragment::onPaletteClicked}"
-                android:setBackground="@{palette.dominantSwatch}" />
+                android:setBackground="@{palette.darkVibrantSwatch}"
+                android:contentDescription="@string/image_palette" />
 
 
             <ImageView
@@ -128,7 +122,8 @@
                 android:layout_height="20dp"
                 android:layout_margin="4dp"
                 android:onClick="@{fragment::onPaletteClicked}"
-                android:setBackground="@{palette.lightMutedSwatch}" />
+                android:setBackground="@{palette.dominantSwatch}"
+                android:contentDescription="@string/image_palette" />
 
 
             <ImageView
@@ -136,7 +131,17 @@
                 android:layout_height="20dp"
                 android:layout_margin="4dp"
                 android:onClick="@{fragment::onPaletteClicked}"
-                android:setBackground="@{palette.lightVibrantSwatch}" />
+                android:setBackground="@{palette.lightMutedSwatch}"
+                android:contentDescription="@string/image_palette" />
+
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="4dp"
+                android:onClick="@{fragment::onPaletteClicked}"
+                android:setBackground="@{palette.lightVibrantSwatch}"
+                android:contentDescription="@string/image_palette" />
         </LinearLayout>
 
 

@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.ImageView;
 
+import com.google.android.gms.ads.MobileAds;
+
 import java.util.List;
 
 import io.reactivex.Completable;
@@ -63,12 +65,6 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     private boolean addedFragmentShown = false;
     private int fragmentStack =  0;
 
-    //TODO 1: Create fragments UI : For You
-    //• Pixabay
-    //• Pexels
-    //• Unsplash
-    //• Search
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +104,10 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             ImageEntity imgItem = getIntent().getParcelableExtra(IMAGE_ITEM);
             displayImageDetails(imgItem);
         }
+
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+
     }
 
     @Override
