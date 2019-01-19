@@ -9,9 +9,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionInflater;
 import android.view.Gravity;
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             } else {
                 binding.content.coordinator.setVisibility(View.VISIBLE);
                 replaceFragment(ForYouFragment.newInstance(), false);
+                getSupportActionBar().setTitle(getResources().getString(R.string.for_you));
             }
             showToolbar(true);
         } else {
@@ -105,6 +108,30 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             displayImageDetails(imgItem);
         }
 
+        binding.drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View view, float v) {
+                if(!binding.navigation.isInflated()) {
+                    binding.navigation.getViewStub().inflate();
+                }
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View view) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View view) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int i) {
+
+            }
+        });
+
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
         MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
 
@@ -126,11 +153,6 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             onBackPressed();
         }
         onItemClicked(imageEntity, 0, null);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     private void setUpToolbar(final boolean setup) {
@@ -183,21 +205,18 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     @Override
     public void onBackPressed() {
         Fragment fragment  = getSupportFragmentManager().findFragmentById(R.id.main_container);
-        String className = fragment.getClass().getName();
-
         super.onBackPressed();
         fragmentStack-=1;
 
-        if (className.equals(ImageDetailsFragment.TAG)) {
+        if (fragment instanceof ImageDetailsFragment) {
             showToolbar(true);
-        } else if (className.equals(FavoriteFragment.TAG) ||
-                        className.equals(PixabayViewPagerFragment.TAG) ||
-                        className.equals(UnsplashDefaultVPFragment.TAG) ) {
+        } else if (fragment instanceof FavoriteFragment ||
+                        fragment instanceof PixabayViewPagerFragment ||
+                        fragment instanceof UnsplashDefaultVPFragment ) {
             if(fragmentStack == 0) {
                 setUpToolbar(addedFragmentShown);
             }
         }
-
 
         new Handler().postDelayed(new Runnable() {
 
@@ -219,40 +238,39 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
 
     private void findToolbarTitle() {
         if(getSupportFragmentManager().findFragmentById(R.id.main_container) != null) {
-            String fragment = getSupportFragmentManager().findFragmentById(R.id.main_container).getClass().getName();
-            getSupportActionBar().setTitle(getToolbarTitle(fragment));
+            getSupportActionBar().setTitle(getToolbarTitle(getSupportFragmentManager().findFragmentById(R.id.main_container)));
         }
     }
 
     private Fragment setToolbarTitle(Fragment fragment) {
-        getSupportActionBar().setTitle(getToolbarTitle(fragment.getClass().getName()));
+        getSupportActionBar().setTitle(getToolbarTitle(fragment));
         return fragment;
     }
 
-    private String getToolbarTitle( String name) {
-        switch (name) {
-            case ForYouFragment.TAG:
-                return getResources().getString(R.string.for_you);
+    private String getToolbarTitle(Fragment fragment) {
+        if(fragment instanceof ForYouFragment)
+            return getResources().getString(R.string.for_you);
 
-            case PixabayFragment.TAG:
-                return getResources().getString(R.string.pixabay);
+        else if(fragment instanceof PixabayFragment)
+            return getResources().getString(R.string.pixabay);
 
-            case UnsplashFragment.TAG:
-                return getResources().getString(R.string.unsplash);
+        else if(fragment instanceof UnsplashFragment)
+            return getResources().getString(R.string.unsplash);
 
-            case PexelsFragment.TAG:
-                return getResources().getString(R.string.pexels);
+        else if(fragment instanceof PexelsFragment)
+            return getResources().getString(R.string.pexels);
 
-            case SearchFragment.TAG:
-                return getResources().getString(R.string.search);
+        else if(fragment instanceof SearchFragment)
+            return getResources().getString(R.string.search);
 
-            case AboutFragment.TAG:
-                return getResources().getString(R.string.about);
+        else if(fragment instanceof AboutFragment)
+            return getResources().getString(R.string.about);
 
-            case FavoriteFragment.TAG:
-                return getResources().getString(R.string.favorite);
-        }
-        return "";
+        else if(fragment instanceof FavoriteFragment)
+            return getResources().getString(R.string.favorite);
+
+        else
+            return "";
     }
 
     private void setToolbarElevation(Fragment fragment) {
