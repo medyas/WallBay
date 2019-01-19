@@ -6,11 +6,8 @@
     <string name="get_started">get started</string>
     <string name="what_kind_of_categories_are_interested_in">What kind of categories are interested in?</string>
     <string name="categories_images">categories images</string>
-    <string name="selection_checkbox">selection checkbox</string>
     <string name="item_image">item image</string>
     <string name="add_image_to_favorite">add image to favorite</string>
-    <string name="download_image">download image</string>
-    <string name="onback_button">onback button</string>
     <string name="share_image">share image</string>
     <string name="load_original">load original image</string>
     <string name="image_loading_gif">image loading gif</string>
@@ -45,12 +42,8 @@
     <string name="collections">collections</string>
     <string name="featured">Featured</string>
     <string name="curated">Curated</string>
-    <string name="menu_divider">menu divider</string>
     <string name="choose_browser">Choose you browser</string>
-    <string name="search_data">Search data</string>
     <string name="collection_image_previews">collection image previews</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
     <string name="widget_item_lading">widget item lading</string>
     <string name="image_palette">image palette</string>
     
@@ -60,7 +53,6 @@
     <string name="label_eraser">Eraser</string>
     <string name="label_text">Text</string>
     <string name="label_filter">Filter</string>
-    <string name="label_adjust">Adjust</string>
     <string name="save_edited_image">save edited image</string>
     <string name="close_editing">close editing</string>
     <string name="take_a_picture_to_edit">take a picture to edit</string>
