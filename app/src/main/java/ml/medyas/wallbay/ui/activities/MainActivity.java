@@ -130,9 +130,6 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
 
     @Override
     protected void onResume() {
-        if(!binding.navigation.isInflated()) {
-            binding.navigation.getViewStub().inflate();
-        }
         super.onResume();
     }
 
@@ -143,6 +140,9 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if(!binding.navigation.isInflated()) {
+                        binding.navigation.getViewStub().inflate();
+                    }
                     binding.drawerLayout.openDrawer(Gravity.START);
                 }
             });

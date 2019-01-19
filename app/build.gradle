@@ -1,12 +1,17 @@
 apply plugin: 'com.android.application'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+
 android {
     signingConfigs {
         medyas {
-            keyAlias 'medyas_key0'
-            keyPassword '051095yAs#'
-            storeFile file('D:/medyas/medyas_key.jks')
-            storePassword '50532193yasmedsab'
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
         }
         config {
         }
@@ -23,12 +28,12 @@ android {
         buildConfigField 'String', "PixabayApiKey", PIXABAY_KEY
         buildConfigField 'String', "PexelsApiKey", PEXELS_KEY
         buildConfigField 'String', "UnsplashApiKey", UNSPLASH_KEY
-        signingConfig signingConfigs.medyas
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.medyas
         }
     }
     dataBinding {
