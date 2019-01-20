@@ -21,7 +21,9 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.ImageView;
 
+import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.List;
 
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     private FavoriteViewModel favoriteViewModel;
     private boolean addedFragmentShown = false;
     private int fragmentStack =  0;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 
     @Override
@@ -73,6 +76,10 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel.class);
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
 
         setSupportActionBar(binding.content.toolbar);
         setUpToolbar(true);
@@ -132,8 +139,14 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             }
         });
 
-        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        AdRequest adRequest = new AdRequest.Builder().build();
+        binding.content.admobLayout.adView.loadAd(adRequest);
+        binding.content.admobLayout.closeAdmob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.content.admobLayout.getRoot().setVisibility(View.GONE);
+            }
+        });
 
     }
 
@@ -158,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     private void setUpToolbar(final boolean setup) {
         if (setup) {
             addedFragmentShown = false;
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             binding.content.toolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
             binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -170,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             });
         } else {
             addedFragmentShown = true;
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             binding.content.toolbar.getMenu().clear();
             binding.content.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
             binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -390,6 +405,11 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         transaction.commit();
 
         showToolbar(false);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, imageEntity.getId());
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, imageEntity.getProvider().name());
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
     @Override

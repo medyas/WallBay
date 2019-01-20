@@ -69,4 +69,5 @@
     <string name="discard">Discard</string>
     <string name="image_succ">Image Saved Successfully</string>
     <string name="image_fail">Failed to save Image</string>
+    <string name="admob_close_button">admob close button</string>
 </resources>

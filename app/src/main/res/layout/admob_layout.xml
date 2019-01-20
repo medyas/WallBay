@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/close_admob"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:tint="@color/colorPrimaryDark"
+            android:background="@drawable/round_corners"
+            android:src="@drawable/ic_close_black_24dp"
+            app:layout_constraintBottom_toTopOf="@+id/adView"
+            app:layout_constraintEnd_toEndOf="@+id/adView"
+            app:layout_constraintTop_toTopOf="@+id/adView"
+            android:contentDescription="@string/admob_close_button" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>
