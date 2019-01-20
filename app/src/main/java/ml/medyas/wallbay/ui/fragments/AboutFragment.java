@@ -1,6 +1,7 @@
 package ml.medyas.wallbay.ui.fragments;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,7 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.request.RequestOptions;
+
 import ml.medyas.wallbay.R;
+import ml.medyas.wallbay.databinding.FragmentAboutBinding;
+import ml.medyas.wallbay.utils.GlideApp;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,7 +45,17 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_about, container, false);
+        FragmentAboutBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_about, container, false);
+
+        GlideApp.with(this)
+                .load(R.drawable.wallbay_icon)
+                .apply(new RequestOptions().circleCrop())
+                .into(binding.imageView);
+
+        binding.aboutText.setText("Capstone project, part of the Udacity Android Developer Nanodegreee.\n the project is \"" +
+                "skh ksgks ksdk ks gbkjd bkjsd bkjsdb");
+
+        return binding.getRoot();
     }
 
 

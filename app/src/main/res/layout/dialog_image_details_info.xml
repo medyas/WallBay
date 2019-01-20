@@ -182,7 +182,7 @@
             android:layout_marginRight="8dp"
             android:contentDescription="@string/link_icon"
             android:onClick="@{fragment::onLinkClicked}"
-            android:src="@drawable/ic_link_black_24dp"
+            app:srcCompat="@drawable/ic_link_black_24dp"
             app:layout_constraintBottom_toBottomOf="@+id/textView10"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textView10" />

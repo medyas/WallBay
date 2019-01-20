@@ -69,4 +69,7 @@
     <string name="image_fail">Failed to save Image</string>
     <string name="admob_close_button">admob close button</string>
     <string name="continue_to_the_app">continue to the app</string>
+    <string name="_0">0</string>
+    <string name="opacity">Opacity</string>
+    <string name="app_icon">app icon</string>
 </resources>

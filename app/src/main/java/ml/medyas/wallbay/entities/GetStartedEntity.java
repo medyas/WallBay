@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import ml.medyas.wallbay.utils.GlideApp;
 
 public class GetStartedEntity implements Parcelable {
@@ -49,7 +51,8 @@ public class GetStartedEntity implements Parcelable {
 
     @BindingAdapter({"android:toCap"})
     public static void toCap(TextView view, String text) {
-        view.setText(String.format("%s%s", text.substring(0, 1).toUpperCase(), text.substring(1)));
+        Locale locale = view.getContext().getResources().getConfiguration().locale;
+        view.setText(String.format(locale, "%s%s", text.substring(0, 1).toUpperCase(locale), text.substring(1)));
     }
 
 

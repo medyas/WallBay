@@ -147,7 +147,7 @@ public class ImageEntity implements Parcelable {
             view.setText(String.format("%sK", temp.substring(0, temp.length() - 3)));
             return;
         }
-        view.setText(String.format("%d", num));
+        view.setText(String.format(view.getContext().getResources().getConfiguration().locale, "%d", num));
     }
 
 

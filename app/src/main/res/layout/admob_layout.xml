@@ -27,7 +27,7 @@
             android:layout_marginRight="4dp"
             android:tint="@color/colorPrimaryDark"
             android:background="@drawable/round_corners"
-            android:src="@drawable/ic_close_black_24dp"
+            app:srcCompat="@drawable/ic_close_black_24dp"
             app:layout_constraintBottom_toTopOf="@+id/adView"
             app:layout_constraintEnd_toEndOf="@+id/adView"
             app:layout_constraintTop_toTopOf="@+id/adView"

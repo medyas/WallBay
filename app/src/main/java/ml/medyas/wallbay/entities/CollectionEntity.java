@@ -62,34 +62,8 @@ public class CollectionEntity implements Parcelable {
 
     @BindingAdapter({"totalPhotos"})
     public static void setTotalPhotosNumber(TextView text, int number) {
-        text.setText(String.format("%d\nPhotos", number));
+        text.setText(String.format(text.getContext().getResources().getConfiguration().locale, "%d\nPhotos", number));
     }
-
-    /*
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    @BindingAdapter({"android:load_tags"})
-    public static void setTags(LinearLayout view, List<Tag> tags) {
-        if (tags != null) {
-            for (Tag txt : tags) {
-                final TextView textView = new TextView(view.getContext());
-                textView.setText(txt.getTitle());
-                textView.setPadding(16, 16, 16, 16);
-                textView.setTextColor(view.getContext().getResources().getColor(R.color.splashBackground));
-                textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                textView.setBackgroundResource(R.drawable.tags_round_background);
-                textView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(view.getContext(), textView.getText().toString(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                params.setMargins(4, 4, 4, 4);
-                textView.setLayoutParams(params);
-                view.addView(textView);
-            }
-        }
-    }*/
 
 
     public CollectionEntity() {

@@ -54,12 +54,12 @@ public class ImageDetailsInfoDialog extends DialogFragment implements TagsRecycl
 
     @BindingAdapter({"android:setDimensions"})
     public static void setDimensions(TextView view, ImageEntity imageEntity) {
-        view.setText(String.format("%d X %d px", imageEntity.getWidth(), imageEntity.getHeight()));
+        view.setText(String.format(view.getContext().getResources().getConfiguration().locale, "%d X %d px", imageEntity.getWidth(), imageEntity.getHeight()));
     }
 
     @BindingAdapter({"android:provider"})
     public static void providedBy(TextView view, Utils.webSite provider) {
-        view.setText(Utils.getProviders(provider).toUpperCase());
+        view.setText(Utils.getProviders(provider).toUpperCase(view.getContext().getResources().getConfiguration().locale));
     }
 
     @BindingAdapter({"android:setBackground"})

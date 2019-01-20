@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:onClick="@{fragment::onFabClicked}"
-            android:src="@drawable/ic_set_as_wallpaper"
+            app:srcCompat="@drawable/ic_set_as_wallpaper"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/fab_edit"
             app:layout_constraintHorizontal_bias="0.5"
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:onClick="@{fragment::onFabClicked}"
-            android:src="@drawable/ic_file_download_black_24dp"
+            app:srcCompat="@drawable/ic_file_download_black_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/fab_fav"
             app:layout_constraintHorizontal_bias="0.5"
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:onClick="@{fragment::onFabClicked}"
-            android:src="@drawable/ic_favorite_border_black_24dp"
+            app:srcCompat="@drawable/ic_favorite_border_black_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:onClick="@{fragment::onFabClicked}"
-            android:src="@drawable/ic_edit_tool"
+            app:srcCompat="@drawable/ic_edit_tool"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/fab_info"
             app:layout_constraintHorizontal_bias="0.5"
@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:onClick="@{fragment::onFabClicked}"
-            android:src="@drawable/ic_info_black_24dp"
+            app:srcCompat="@drawable/ic_info_black_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/fab_download"
             app:layout_constraintHorizontal_bias="0.5"
@@ -123,7 +123,7 @@
             android:clickable="true"
             android:focusable="true"
             android:onClick="@{fragment::onFabClicked}"
-            android:src="@drawable/ic_add_circle_outline_black_24dp"
+            app:srcCompat="@drawable/ic_add_circle_outline_black_24dp"
             app:backgroundTint="@color/colorPrimaryLight"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -201,7 +201,7 @@
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/load_original"
                 android:onClick="@{fragment::onFabClicked}"
-                android:src="@drawable/ic_show_original"
+                app:srcCompat="@drawable/ic_show_original"
                 android:tint="@android:color/white" />
 
             <ImageButton
@@ -214,7 +214,7 @@
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/share_image"
                 android:onClick="@{fragment::onFabClicked}"
-                android:src="@drawable/ic_share_black_24dp"
+                app:srcCompat="@drawable/ic_share_black_24dp"
                 android:tint="@android:color/white" />
 
         </android.support.v7.widget.Toolbar>

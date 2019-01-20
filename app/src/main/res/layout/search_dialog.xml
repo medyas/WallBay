@@ -49,7 +49,6 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
                 android:layout_weight="4"
-                android:focusedByDefault="true"
                 android:background="@android:color/transparent"
                 android:hint="@string/type_you_search_term"
                 android:inputType="text"
