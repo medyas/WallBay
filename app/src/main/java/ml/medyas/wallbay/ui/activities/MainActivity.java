@@ -54,7 +54,7 @@ import static ml.medyas.wallbay.utils.Utils.INTEREST_CATEGORIES;
 public class MainActivity extends AppCompatActivity implements GetStartedFragment.OnGetStartedFragmentInteractions, BaseFragment.OnBaseFragmentInteractions,
         ImageDetailsFragment.OnImageDetailsFragmentInteractions, FavoriteFragment.onFavoriteFragmentInteractions, PixabayFragment.OnPixabayFragmentInteractions,
         UnsplashFragment.OnUnsplashFragmentInteractions, PexelsFragment.OnPexelsFragmentInteractions, SearchFragment.OnSearchFragmentInteractions,
-    AboutFragment.OnFragmentInteractionListener, ForYouFragment.OnForYouFragmentInteractions, UnsplashCollectionsFragment.UnsplashCollectionInterface,
+        AboutFragment.OnFragmentInteractionListener, ForYouFragment.OnForYouFragmentInteractions, UnsplashCollectionsFragment.UnsplashCollectionInterface,
         ImageDetailsInfoDialog.OnImageDialogInteractions {
 
     public static final String FIRST_START = "first_start";
@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     public static final String FRAGMENT_STACK = "FRAGMENT_STACK";
     public static final String IMAGE_ITEM = "IMAGE_ITEM";
     public static final String LAUNCH_IMAGE_DETAILS = "MainActivity.LAUNCH_IMAGE_DETAILS";
+    public static final String CAPSTONE_PROJECT = "https://github.com/medyas/Capstone-Project";
 
     private ActivityMainBinding binding;
     private FavoriteViewModel favoriteViewModel;
@@ -139,12 +140,12 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             }
         });
 
-        AdRequest adRequest = new AdRequest.Builder().build();
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("94956D314FBB41CFF09E4CE159A1A73E").build();
         binding.content.admobLayout.adView.loadAd(adRequest);
         binding.content.admobLayout.closeAdmob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.content.admobLayout.getRoot().setVisibility(View.GONE);
+                binding.content.admobLayout.admobContainer.setVisibility(View.GONE);
             }
         });
 
@@ -289,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     }
 
     private void setToolbarElevation(Fragment fragment) {
-        if(fragment instanceof PixabayFragment || fragment instanceof UnsplashFragment || fragment instanceof PexelsFragment || fragment instanceof SearchFragment) {
+        if(fragment instanceof PixabayFragment || fragment instanceof UnsplashFragment || fragment instanceof PexelsFragment) {
             ViewCompat.setElevation(binding.content.appBar, 0);
         } else {
             ViewCompat.setElevation(binding.content.appBar, 4 * getResources().getDisplayMetrics().density);
@@ -320,6 +321,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
 
     public void onNavItemClicked(View view) {
         int id = view.getId();
+        Intent shareIntent;
         switch (id) {
             case R.id.nav_for_you:
                 replaceFragment(ForYouFragment.newInstance(), false);
@@ -341,11 +343,24 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
                 replaceFragment(SearchFragment.newInstance(), false);
                 break;
 
+            case R.id.nav_share:
+                shareIntent = new Intent(Intent.ACTION_VIEW);
+                shareIntent.setData(Uri.parse(CAPSTONE_PROJECT));
+                startActivity(shareIntent);
+                break;
+
+            case R.id.nav_rate:
+                shareIntent = new Intent(Intent.ACTION_VIEW);
+                shareIntent.setData(Uri.parse(CAPSTONE_PROJECT));
+                startActivity(shareIntent);
+                break;
+
             case R.id.nav_about:
                 replaceFragment(AboutFragment.newInstance(), false);
                 break;
         }
 
+        binding.content.admobLayout.admobContainer.setVisibility(View.VISIBLE);
         binding.drawerLayout.closeDrawers();
     }
 
@@ -361,6 +376,11 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         binding.content.coordinator.setVisibility(View.VISIBLE);
 
         replaceFragment(ForYouFragment.newInstance(), false);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "categories");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, categories);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
     @Override

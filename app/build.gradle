@@ -92,3 +92,6 @@ dependencies {
     // PhotoView - upgrade will result in manifest merge conflict
     implementation 'com.github.chrisbanes:PhotoView:2.1.4'
 }
+
+
+apply plugin: 'com.google.gms.google-services'

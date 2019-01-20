@@ -2,4 +2,5 @@
 <resources>
     <dimen name="item_width">240dp</dimen>
     <dimen name="collection_width">320dp</dimen>
+    <dimen name="get_started_card_width">120dp</dimen>
 </resources>

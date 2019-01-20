@@ -21,6 +21,7 @@ import ml.medyas.wallbay.databinding.FragmentGetStartedBinding;
 import ml.medyas.wallbay.entities.GetStartedEntity;
 
 import static ml.medyas.wallbay.utils.Utils.calculateNoOfColumns;
+import static ml.medyas.wallbay.utils.Utils.convertPixelsToDp;
 import static ml.medyas.wallbay.utils.Utils.getCategoriesFromList;
 import static ml.medyas.wallbay.utils.Utils.getCategoriesList;
 
@@ -80,7 +81,8 @@ public class GetStartedFragment extends Fragment {
         });
 
         binding.getStartedRecyclerView.setHasFixedSize(true);
-        binding.getStartedRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), calculateNoOfColumns(getContext(), 128)));
+        binding.getStartedRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),
+                calculateNoOfColumns(getContext(), convertPixelsToDp(getResources().getDimension(R.dimen.get_started_card_width), getContext()))));
         binding.getStartedRecyclerView.setAdapter(new GetStartedAdapter(mList));
 
 

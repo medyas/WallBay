@@ -14,7 +14,7 @@ import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.databinding.GetStartedItemLayoutBinding;
 import ml.medyas.wallbay.entities.GetStartedEntity;
 
-public class GetStartedAdapter extends RecyclerView.Adapter<GetStartedAdapter.GetStartedItemViewholder> {
+public class GetStartedAdapter extends RecyclerView.Adapter<GetStartedAdapter.GetStartedItemViewHolder> {
     private List<GetStartedEntity> items;
 
     public GetStartedAdapter(List<GetStartedEntity> items) {
@@ -23,25 +23,19 @@ public class GetStartedAdapter extends RecyclerView.Adapter<GetStartedAdapter.Ge
 
     @NonNull
     @Override
-    public GetStartedItemViewholder onCreateViewHolder(@NonNull ViewGroup parent,
+    public GetStartedItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                        int viewType) {
         GetStartedItemLayoutBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.get_started_item_layout, parent, false);
-        return new GetStartedItemViewholder(binding);
+        return new GetStartedItemViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final GetStartedItemViewholder holder, int position) {
+    public void onBindViewHolder(@NonNull final GetStartedItemViewHolder holder, int position) {
         final GetStartedEntity item = items.get(position);
         holder.itemLayoutBinding.setCategory(item);
         if (item.isSelected()) {
             holder.itemLayoutBinding.lottieCheckAnimation.setProgress(1.0f);
         }
-        //holder.itemLayoutBinding.lottieCheckAnimation.setScaleX(1.5f);
-        //holder.itemLayoutBinding.lottieCheckAnimation.setScaleY(1.5f);
-        /*holder.itemLayoutBinding.lottieCheckAnimation.addValueCallback(
-                new KeyPath("**"),
-                LottieProperty.COLOR_FILTER,
-                new LottieValueCallback<ColorFilter>(new SimpleColorFilter(Color.GREEN)));*/
         holder.itemLayoutBinding.categoryItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,10 +77,10 @@ public class GetStartedAdapter extends RecyclerView.Adapter<GetStartedAdapter.Ge
         return items.size();
     }
 
-    public class GetStartedItemViewholder extends RecyclerView.ViewHolder {
+    public class GetStartedItemViewHolder extends RecyclerView.ViewHolder {
         private GetStartedItemLayoutBinding itemLayoutBinding;
 
-        public GetStartedItemViewholder(GetStartedItemLayoutBinding itemView) {
+        public GetStartedItemViewHolder(GetStartedItemLayoutBinding itemView) {
             super(itemView.getRoot());
             itemLayoutBinding = itemView;
         }

@@ -57,6 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:onClick="@{activity::onNavItemClicked}"
+                    android:nextFocusDown="@id/nav_pixabay"
                     android:text="@string/for_you" />
 
                 <TextView
@@ -65,6 +66,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:onClick="@{activity::onNavItemClicked}"
+                    android:nextFocusDown="@id/nav_unsplash"
+                    android:nextFocusUp="@id/nav_for_you"
                     android:text="@string/pixabay" />
 
                 <TextView
@@ -73,6 +76,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:onClick="@{activity::onNavItemClicked}"
+                    android:nextFocusDown="@id/nav_pexels"
+                    android:nextFocusUp="@id/nav_pixabay"
                     android:text="@string/unsplash" />
 
                 <TextView
@@ -81,6 +86,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:onClick="@{activity::onNavItemClicked}"
+                    android:nextFocusDown="@id/nav_search"
+                    android:nextFocusUp="@id/nav_unsplash"
                     android:text="@string/pexels" />
 
 
@@ -90,6 +97,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:onClick="@{activity::onNavItemClicked}"
+                    android:nextFocusDown="@id/nav_share"
+                    android:nextFocusUp="@id/nav_pexels"
                     android:text="@string/search" />
 
                 <View
@@ -106,6 +115,8 @@
                     android:onClick="@{activity::onNavItemClicked}"
                     android:drawableStart="@drawable/ic_share_black_24dp"
                     android:drawableLeft="@drawable/ic_share_black_24dp"
+                    android:nextFocusDown="@id/nav_rate"
+                    android:nextFocusUp="@id/nav_search"
                     android:drawablePadding="16dp"
                     android:text="@string/share" />
 
@@ -115,6 +126,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:onClick="@{activity::onNavItemClicked}"
+                    android:nextFocusDown="@id/nav_about"
+                    android:nextFocusUp="@id/nav_share"
                     android:drawableStart="@drawable/ic_rate_review_black_24dp"
                     android:drawableLeft="@drawable/ic_rate_review_black_24dp"
                     android:drawablePadding="16dp"
@@ -126,6 +139,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:onClick="@{activity::onNavItemClicked}"
+                    android:nextFocusUp="@id/nav_rate"
                     android:drawableStart="@drawable/ic_info_black_24dp"
                     android:drawableLeft="@drawable/ic_info_black_24dp"
                     android:drawablePadding="16dp"

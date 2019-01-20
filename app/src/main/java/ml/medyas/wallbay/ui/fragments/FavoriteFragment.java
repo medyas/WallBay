@@ -272,6 +272,8 @@ public class FavoriteFragment extends Fragment implements FavoriteAdapter.onFavI
             @Override
             public void onComplete() {
                 Toast.makeText(getContext(), getString(R.string.remove_succ), Toast.LENGTH_SHORT).show();
+
+                WallbayWidget.sendRefreshBroadcast(getContext());
                 actionMode.finish();
             }
 
