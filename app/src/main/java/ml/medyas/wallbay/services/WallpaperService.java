@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.bumptech.glide.load.DecodeFormat;
@@ -51,6 +50,7 @@ public class WallpaperService extends IntentService {
 
     private static final String EXTRA_PARAM1 = "ml.medyas.wallbay.services.extra.IMAGE_ITEM";
     private static final String EXTRA_PARAM2 = "ml.medyas.wallbay.services.extra.IMAGE_PROVIDER";
+    public static final String UNSPLASH_COM = "https://api.unsplash.com";
 
     public WallpaperService() {
         super("WallpaperService");
@@ -104,7 +104,7 @@ public class WallpaperService extends IntentService {
 
     private void handleBulkDownload(List<String> urls) {
         for (String url : urls) {
-            if (url.contains("https://api.unsplash.com")) {
+            if (url.contains(UNSPLASH_COM)) {
                 retrieveUrl(url);
             } else {
                 downloadImage(url);
@@ -121,8 +121,8 @@ public class WallpaperService extends IntentService {
         final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         String CHANNEL_ID = "WALLPAPER_DOWNLOAD";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Wallpaper Download";
-            String description = "notification for downloading wallpaper in background";
+            CharSequence name = getString(R.string.wallpaper_download);
+            String description = getString(R.string.notify_download);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
@@ -132,8 +132,8 @@ public class WallpaperService extends IntentService {
         }
 
         final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID);
-        mBuilder.setContentTitle("Wallpaper Download")
-                .setContentText("Download in progress...")
+        mBuilder.setContentTitle(getString(R.string.notification_title))
+                .setContentText(getString(R.string.notification_text))
                 .setSmallIcon(R.drawable.ic_set_as_wallpaper)
                 .setColor(getResources().getColor(R.color.colorPrimaryDark))
                 .setPriority(NotificationCompat.PRIORITY_LOW)
@@ -154,36 +154,31 @@ public class WallpaperService extends IntentService {
 
         } catch (ExecutionException e) {
             e.printStackTrace();
-            Log.d("mainactivity", e.getMessage());
-            Toast.makeText(getApplicationContext(), "Could not set image", Toast.LENGTH_SHORT).show();
-            mBuilder.setContentText("Could not get the image")
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.could_not_set_image), Toast.LENGTH_SHORT).show();
+            mBuilder.setContentText(getResources().getString(R.string.could_not_get_image))
                     .setProgress(0, 0, false);
             notificationManager.notify(notificationId, mBuilder.build());
 
         } catch (InterruptedException e) {
             e.printStackTrace();
-            Log.d("mainactivity", e.getMessage());
-            Toast.makeText(getApplicationContext(), "Could not set image", Toast.LENGTH_SHORT).show();
-            mBuilder.setContentText("Could not get the image")
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.could_not_set_image), Toast.LENGTH_SHORT).show();
+            mBuilder.setContentText(getResources().getString(R.string.could_not_get_image))
                     .setProgress(0, 0, false);
             notificationManager.notify(notificationId, mBuilder.build());
 
         }
 
-        Toast.makeText(getApplicationContext(), "Image loaded", Toast.LENGTH_SHORT).show();
-        Log.d("mainactivity", "onResourceReady !!");
+        Toast.makeText(getApplicationContext(), getResources().getString(R.string.image_loaded), Toast.LENGTH_SHORT).show();
         WallpaperManager myWallpaperManager
                 = WallpaperManager.getInstance(getApplicationContext());
-        String text = "Could not get the image";
+        String text = getResources().getString(R.string.could_not_get_image);
         if (resource != null) {
             try {
                 myWallpaperManager.setBitmap(resource);
-                Toast.makeText(getApplicationContext(), "Image set as wallpaper", Toast.LENGTH_SHORT).show();
-                Log.d("mainactivity", "finished load of image");
-                text = "Download complete";
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.image_set), Toast.LENGTH_SHORT).show();
+                text = getResources().getString(R.string.dwonload_complete);
             } catch (IOException e) {
                 e.printStackTrace();
-                Log.d("mainactivity", e.getMessage());
             }
         }
 
@@ -213,7 +208,7 @@ public class WallpaperService extends IntentService {
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setTitle("Downloading Image");
+        request.setTitle(getString(R.string.downloading_image));
         request.setVisibleInDownloadsUi(true);
 
         Boolean isSDPresent = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
@@ -243,8 +238,8 @@ public class WallpaperService extends IntentService {
                     NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
                     String CHANNEL_ID = "WALLPAPER_DOWNLOAD";
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        CharSequence name = "Wallpaper Download";
-                        String description = "notification for downloading wallpaper in background";
+                        CharSequence name = getString(R.string.wallpaper_download);
+                        String description = getString(R.string.notify_download);
                         int importance = NotificationManager.IMPORTANCE_DEFAULT;
                         NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
                         channel.setDescription(description);
@@ -254,9 +249,9 @@ public class WallpaperService extends IntentService {
                     }
 
                     final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID);
-                    mBuilder.setContentTitle("Image Download")
+                    mBuilder.setContentTitle(getString(R.string.wallpaper_download))
                             .setColor(getResources().getColor(R.color.colorLightTransparent))
-                            .setContentText("Failed to download the image")
+                            .setContentText(getString(R.string.download_failed))
                             .setSmallIcon(R.drawable.ic_error_black_24dp)
                             .setPriority(NotificationCompat.PRIORITY_LOW);
                     int notificationId = 124521;

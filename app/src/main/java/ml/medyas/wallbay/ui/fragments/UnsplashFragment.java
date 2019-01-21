@@ -58,44 +58,6 @@ public class UnsplashFragment extends Fragment {
         binding.defaultLayout.viewPager.setCurrentItem(0);
         ViewCompat.setElevation(binding.defaultLayout.viewPager, 4 * getResources().getDisplayMetrics().density);
 
-        /*binding.defaultLayout.lottieSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Dialog dialog = new Dialog(getContext(), R.style.SearchDialogStyle);
-
-                dialog.getWindow().setGravity(Gravity.TOP);
-                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.search_dialog);
-                dialog.setCancelable(true);
-
-                final EditText text = dialog.findViewById(R.id.dialog_text);
-                ImageView search = dialog.findViewById(R.id.dialog_search);
-
-                text.setOnKeyListener(new View.OnKeyListener() {
-                    @Override
-                    public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                        if(i == KeyEvent.KEYCODE_ENTER) {
-                            searchQuery(text.getText().toString());
-                            dialog.dismiss();
-                            return true;
-                        }
-                        return false;
-                    }
-                });
-
-                search.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        searchQuery(text.getText().toString());
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
-            }
-        });*/
-
         return binding.getRoot();
     }
 
@@ -104,7 +66,7 @@ public class UnsplashFragment extends Fragment {
             mListener.onAddFragment(UnsplashDefaultVPFragment.newInstance(3, s));
             mListener.updateToolbarTitle(s);
         } else {
-            Toast.makeText(getContext(), "Please provide a search query!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.provide_query), Toast.LENGTH_SHORT).show();
         }
     }
 

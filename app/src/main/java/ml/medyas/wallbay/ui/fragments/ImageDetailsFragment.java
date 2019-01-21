@@ -218,7 +218,7 @@ public class ImageDetailsFragment extends Fragment {
     }
 
     private void setWallpaper() {
-        Toast.makeText(getContext(), "Loading image ...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), getString(R.string.loading_image), Toast.LENGTH_SHORT).show();
         WallpaperService.setWallpaper(getContext(), imageEntity.getOriginalUrl());
     }
 
@@ -232,12 +232,12 @@ public class ImageDetailsFragment extends Fragment {
 
             @Override
             public void onComplete() {
-                Toast.makeText(getContext(), "Image added to Favorite", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.image_added), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(Throwable e) {
-                Toast.makeText(getContext(), "could not added image to Favorite", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.could_not_add), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -274,7 +274,7 @@ public class ImageDetailsFragment extends Fragment {
     }
 
     private void downloadImage() {
-        Toast.makeText(getContext(), "Downloading...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), getString(R.string.downloading), Toast.LENGTH_SHORT).show();
 
         binding.imageDetailInfo.lottieDownload.setVisibility(View.VISIBLE);
         binding.imageDetailInfo.lottieDownload.playAnimation();
@@ -324,7 +324,7 @@ public class ImageDetailsFragment extends Fragment {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 downloadImage();
             } else {
-                Toast.makeText(getContext(), "Could not get permission", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.permission_erro), Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -18,6 +18,8 @@ import ml.medyas.wallbay.entities.ImageEntity;
 import ml.medyas.wallbay.repositories.FavoriteRepository;
 import ml.medyas.wallbay.ui.activities.MainActivity;
 
+import static ml.medyas.wallbay.ui.activities.MainActivity.LAUNCH_APP;
+
 /**
  * Implementation of App Widget functionality.
  */
@@ -40,14 +42,19 @@ public class WallbayWidget extends AppWidgetProvider {
                 imageEntities = repository.getImageEntitiesList();
 
                 Intent intent = new Intent(context, WallbayWidgetRemoteViewsService.class);
-
                 views.setRemoteAdapter(R.id.widget_listview, intent);
+
                 // template to handle the click listener for each item
                 Intent clickIntentTemplate = new Intent(context, MainActivity.class);
                 PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
                         .addNextIntentWithParentStack(clickIntentTemplate)
                         .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
                 views.setPendingIntentTemplate(R.id.widget_listview, clickPendingIntentTemplate);
+
+                Intent appIntent = new Intent(context, MainActivity.class);
+                appIntent.setAction(LAUNCH_APP);
+                PendingIntent appPendingIntent = PendingIntent.getActivity(context, 0, appIntent, 0);
+                views.setOnClickPendingIntent(R.id.widget_app, appPendingIntent);
 
 
                 appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_listview);

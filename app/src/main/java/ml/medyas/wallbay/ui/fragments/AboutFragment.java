@@ -2,10 +2,12 @@ package ml.medyas.wallbay.ui.fragments;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -39,6 +41,7 @@ public class AboutFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -52,10 +55,22 @@ public class AboutFragment extends Fragment {
                 .apply(new RequestOptions().circleCrop())
                 .into(binding.imageView);
 
-        binding.aboutText.setText("Capstone project, part of the Udacity Android Developer Nanodegreee.\n the project is \"" +
-                "skh ksgks ksdk ks gbkjd bkjsd bkjsdb");
+        binding.aboutText.setText(getString(R.string.about_text));
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main_activity_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_favorite) {
+            mListener.onAddFragment(FavoriteFragment.newInstance());
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -87,7 +102,7 @@ public class AboutFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+
+        void onAddFragment(Fragment newInstance);
     }
 }

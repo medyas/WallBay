@@ -148,25 +148,24 @@ public class UnsplashCollectionsFragment extends Fragment implements CollectionR
             binding.baseRecyclerView.setVisibility(View.VISIBLE);
 
         } else if (networkState == Utils.NetworkState.EMPTY) {
-            Toast.makeText(getContext(), "Error retrieving more data!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.error_getting_data), Toast.LENGTH_SHORT).show();
 
         } else if (networkState == Utils.NetworkState.FAILED) {
             if (mAdapter.getCurrentList() == null || mAdapter.getCurrentList().size() == 0) {
                 binding.statusLayout.netError.setVisibility(View.VISIBLE);
                 binding.statusLayout.itemLoad.setVisibility(View.GONE);
-                Snackbar.make(binding.statusLayout.netError, "Network Error", Snackbar.LENGTH_INDEFINITE)
+                Snackbar.make(binding.statusLayout.netError, getResources().getString(R.string.net_error), Snackbar.LENGTH_INDEFINITE)
                         .setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 binding.statusLayout.netError.setVisibility(View.GONE);
-                                //mListener.reCreateFragment(ForYouFragment.newInstance());
                             }
                         }).show();
             } else {
-                Snackbar.make(binding.statusLayout.netError, "Failed to load more data", Snackbar.LENGTH_LONG).setAction("Retry", new View.OnClickListener() {
+                Snackbar.make(binding.statusLayout.netError, getResources().getString(R.string.faild_to_load), Snackbar.LENGTH_LONG).setAction(getResources().getString(R.string.retry), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //mListener.reCreateFragment(ForYouFragment.newInstance());
+
                     }
                 }).show();
             }
@@ -207,9 +206,9 @@ public class UnsplashCollectionsFragment extends Fragment implements CollectionR
             @Override
             public void onClick(View view) {
                 if (mAdapter.getCurrentList().size() == 0) {
-                    Toast.makeText(getContext(), "Wait for images to load!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.wait_for_load), Toast.LENGTH_SHORT).show();
                 } else {
-
+                    Toast.makeText(getContext(), getResources().getString(R.string.not_implemented), Toast.LENGTH_SHORT).show();
                 }
             }
         });

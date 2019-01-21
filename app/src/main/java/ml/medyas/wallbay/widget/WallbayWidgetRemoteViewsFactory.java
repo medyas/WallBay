@@ -73,7 +73,7 @@ public class WallbayWidgetRemoteViewsFactory implements android.widget.RemoteVie
 
     @Override
     public RemoteViews getLoadingView() {
-        return  null; //new RemoteViews(context.getPackageName(), R.layout.widget_item_loading);
+        return  null;
     }
 
     @Override

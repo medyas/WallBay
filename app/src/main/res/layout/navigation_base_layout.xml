@@ -105,7 +105,7 @@
                     android:layout_width="80dp"
                     android:layout_height="1dp"
                     android:layout_gravity="center"
-                    android:background="@color/colorAccent"/>
+                    android:background="@color/colorPrimaryLight"/>
 
                 <TextView
                     android:id="@+id/nav_share"

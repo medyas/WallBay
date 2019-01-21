@@ -8,13 +8,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.Observable;
 
@@ -83,35 +81,7 @@ public class ForYouFragment extends BaseFragment implements java.util.Observer {
         mViewModel.getNetworkStateLiveData().observe(this, new Observer<Utils.NetworkState>() {
             @Override
             public void onChanged(@Nullable Utils.NetworkState networkState) {
-                if (networkState == Utils.NetworkState.LOADED) {
-                    getItemLoad().setVisibility(View.GONE);
-                    getRecyclerView().setVisibility(View.VISIBLE);
-
-                } else if (networkState == Utils.NetworkState.EMPTY) {
-                    Toast.makeText(getContext(), "Error retrieving more data!", Toast.LENGTH_SHORT).show();
-
-                } else if (networkState == Utils.NetworkState.FAILED) {
-                    if (getAdapter().getCurrentList() == null ||getAdapter().getCurrentList().size() == 0) {
-                        getNetError().setVisibility(View.VISIBLE);
-                        getItemLoad().setVisibility(View.GONE);
-                        setSnackbar(Snackbar.make(getNetError(), "Network Error", Snackbar.LENGTH_INDEFINITE)
-                                .setAction("Retry", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        getNetError().setVisibility(View.GONE);
-                                        mListener.reCreateFragment(ForYouFragment.newInstance());
-                                    }
-                                }));
-                        getSnackbar().show();
-                    } else {
-                        Snackbar.make(getNetError(), "Failed to load more data", Snackbar.LENGTH_LONG).setAction("Retry", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                mListener.reCreateFragment(ForYouFragment.newInstance());
-                            }
-                        }).show();
-                    }
-                }
+                checkNetworkStatus(networkState, true);
             }
         });
     }

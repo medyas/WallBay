@@ -72,10 +72,13 @@ public class GetStartedFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 List<GetStartedEntity> list = new ArrayList<>(getSelectedList());
-                if (!list.isEmpty()) {
-                    mListener.onGetStartedDone(getCategoriesFromList(list));
+                if(list.isEmpty()) {
+                    Toast.makeText(getContext(), getString(R.string.set_category), Toast.LENGTH_SHORT).show();
+                }
+                else if (list.size() > 8) {
+                    Toast.makeText(getContext(), getString(R.string.no_more_then), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), "Please select a category !", Toast.LENGTH_SHORT).show();
+                    mListener.onGetStartedDone(getCategoriesFromList(list));
                 }
             }
         });

@@ -88,7 +88,7 @@ public class PexelsFragment extends Fragment {
             mListener.onAddFragment(PexelsViewPagerFragment.newInstance(2, text));
             mListener.updateToolbarTitle(text);
         } else {
-            Toast.makeText(getContext(), "Please provide a search query!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.provide_query), Toast.LENGTH_SHORT).show();
         }
     }
 

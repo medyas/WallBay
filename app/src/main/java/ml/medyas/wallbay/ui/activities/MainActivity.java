@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.ImageView;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -63,7 +64,9 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     public static final String FRAGMENT_STACK = "FRAGMENT_STACK";
     public static final String IMAGE_ITEM = "IMAGE_ITEM";
     public static final String LAUNCH_IMAGE_DETAILS = "MainActivity.LAUNCH_IMAGE_DETAILS";
+    public static final String LAUNCH_APP = "MainActivity.LAUNCH_APP";
     public static final String CAPSTONE_PROJECT = "https://github.com/medyas/Capstone-Project";
+    public static final String CATEGORIES = "categories";
 
     private ActivityMainBinding binding;
     private FavoriteViewModel favoriteViewModel;
@@ -77,10 +80,11 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel.class);
+        WallbayWidget.sendRefreshBroadcast(this);
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        MobileAds.initialize(this);
 
         setSupportActionBar(binding.content.toolbar);
         setUpToolbar(true);
@@ -111,10 +115,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             }
         });
 
-        if(getIntent().getAction().equals(LAUNCH_IMAGE_DETAILS)) {
-            ImageEntity imgItem = getIntent().getParcelableExtra(IMAGE_ITEM);
-            displayImageDetails(imgItem);
-        }
+        checkIntent(getIntent().getAction());
 
         binding.drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
@@ -140,8 +141,38 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             }
         });
 
+        binding.content.admobLayout.closeAdmob.setVisibility(View.GONE);
         AdRequest adRequest = new AdRequest.Builder().addTestDevice("94956D314FBB41CFF09E4CE159A1A73E").build();
         binding.content.admobLayout.adView.loadAd(adRequest);
+        binding.content.admobLayout.adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+                binding.content.admobLayout.closeAdmob.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when when the user is about to return
+                // to the app after tapping on an ad.
+            }
+        });
         binding.content.admobLayout.closeAdmob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,9 +186,16 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-        if(intent.getAction().equals(LAUNCH_IMAGE_DETAILS)) {
-            ImageEntity imgItem = intent.getParcelableExtra(IMAGE_ITEM);
-            displayImageDetails(imgItem);
+        checkIntent(intent.getAction());
+    }
+
+    private void checkIntent(String action) {
+        if(action != null) {
+
+            if(action.equals(LAUNCH_IMAGE_DETAILS)) {
+                ImageEntity imgItem = getIntent().getParcelableExtra(IMAGE_ITEM);
+                displayImageDetails(imgItem);
+            }
         }
     }
 
@@ -166,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         if(fragment instanceof ImageDetailsFragment) {
             onBackPressed();
         }
+
         onItemClicked(imageEntity, 0, null);
     }
 
@@ -300,6 +339,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     private void showStartFragment() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.start_container, GetStartedFragment.newInstance())
+                .addToBackStack(null)
                 .commit();
     }
 
@@ -378,7 +418,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         replaceFragment(ForYouFragment.newInstance(), false);
 
         Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "categories");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, CATEGORIES);
         bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, categories);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
@@ -386,11 +426,6 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     @Override
     public void reCreateFragment(Fragment fragment) {
         replaceFragment(fragment, true);
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 
     @Override

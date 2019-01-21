@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryLight">#af36eb</color>
-    <color name="colorPrimary">#784dfb</color>
+    <!--
+    <color name="colorPrimary">#4e2161</color>
     <color name="colorPrimaryDark">#222149</color>
     <color name="colorPrimaryDarker">#1f1b40</color>
     <color name="colorAccent">#ffc0c2</color>
+    <color name="colorPrimaryLight">#af36eb</color>
+    -->
+    <color name="colorPrimaryLight">#f185b3</color>
+    <color name="colorPrimary">#90007f</color>
+    <color name="colorPrimaryDark">#3d0043</color>
+    <color name="colorPrimaryDarker">#1e001d</color>
+    <color name="colorAccent">#d52484</color>
 
     <color name="colorLightTransparent">#44222149</color>
     <color name="splashBackground">#ebeff2</color>
+    <color name="tagItemColor">#b9bdbf</color>
 
 
     <color name="blue_color_picker">#0066FF</color>

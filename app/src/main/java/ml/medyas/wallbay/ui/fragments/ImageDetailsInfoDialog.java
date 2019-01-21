@@ -194,6 +194,7 @@ public class ImageDetailsInfoDialog extends DialogFragment implements TagsRecycl
 
         switch (imageEntity.getProvider()) {
             case PEXELS:
+                mListener.onTagItemPressed(PexelsViewPagerFragment.newInstance(2, query), query);
                 break;
 
             case PIXABAY:

@@ -7,6 +7,7 @@ public class WallbayWidgetRemoteViewsService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
+        WallbayWidget.sendRefreshBroadcast(getApplicationContext());
         return new WallbayWidgetRemoteViewsFactory(getApplicationContext(), intent);
     }
 }

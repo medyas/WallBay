@@ -34,6 +34,7 @@ import ml.medyas.wallbay.databinding.FragmentBaseBinding;
 import ml.medyas.wallbay.entities.ImageEntity;
 import ml.medyas.wallbay.services.WallpaperService;
 import ml.medyas.wallbay.utils.GlideApp;
+import ml.medyas.wallbay.utils.Utils;
 import ml.medyas.wallbay.widget.WallbayWidget;
 
 import static ml.medyas.wallbay.utils.Utils.calculateNoOfColumns;
@@ -93,14 +94,50 @@ public abstract class BaseFragment extends Fragment  implements BaseAdapter.onIm
             @Override
             public void onClick(View view) {
                 if (mAdapter.getCurrentList().size() == 0) {
-                    Toast.makeText(getContext(), "Wait for images to load!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.wait_for_load), Toast.LENGTH_SHORT).show();
                 } else {
-
+                    Toast.makeText(getContext(), getResources().getString(R.string.not_implemented), Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
         return binding.getRoot();
+    }
+
+    public void checkNetworkStatus(Utils.NetworkState networkState, final boolean replace) {
+        if (networkState == Utils.NetworkState.LOADED) {
+            getItemLoad().setVisibility(View.GONE);
+            getRecyclerView().setVisibility(View.VISIBLE);
+
+        } else if (networkState == Utils.NetworkState.EMPTY) {
+            Toast.makeText(getContext(), getString(R.string.error_getting_data), Toast.LENGTH_SHORT).show();
+
+        } else if (networkState == Utils.NetworkState.FAILED) {
+            if (getAdapter().getCurrentList() == null ||getAdapter().getCurrentList().size() == 0) {
+                getNetError().setVisibility(View.VISIBLE);
+                getItemLoad().setVisibility(View.GONE);
+                setSnackbar(Snackbar.make(getNetError(), R.string.net_error, Snackbar.LENGTH_INDEFINITE)
+                        .setAction(getResources().getString(R.string.retry), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                getNetError().setVisibility(View.GONE);
+                                if(replace) {
+                                    mListener.reCreateFragment(ForYouFragment.newInstance());
+                                }
+                            }
+                        }));
+                getSnackbar().show();
+            } else {
+                Snackbar.make(getNetError(), R.string.faild_to_load, Snackbar.LENGTH_LONG).setAction(R.string.retry, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(replace) {
+                            mListener.reCreateFragment(ForYouFragment.newInstance());
+                        }
+                    }
+                }).show();
+            }
+        }
     }
 
     public RecyclerView getRecyclerView() {
@@ -174,7 +211,6 @@ public abstract class BaseFragment extends Fragment  implements BaseAdapter.onIm
         }
         binding.selectedSheet.getRoot().setVisibility(View.VISIBLE);
         if (actionMode == null) {
-            //actionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
             Toolbar toolbar = ((AppCompatActivity) getActivity()).findViewById(R.id.toolbar);
             actionMode = toolbar.startActionMode(actionModeCallback);
         }
@@ -267,7 +303,7 @@ public abstract class BaseFragment extends Fragment  implements BaseAdapter.onIm
             urls.add(mAdapter.getCurrentList().get(i).getOriginalUrl());
         }
         WallpaperService.bulkWallpaperDownload(getContext(), urls);
-        Toast.makeText(getContext(), "Downloading images...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), getString(R.string.downloading), Toast.LENGTH_SHORT).show();
         actionMode.finish();
     }
 
@@ -303,6 +339,7 @@ public abstract class BaseFragment extends Fragment  implements BaseAdapter.onIm
 
         void onItemClicked(ImageEntity imageEntity, int position, ImageView imageView);
 
+        void reCreateFragment(Fragment newInstance);
     }
 }
 

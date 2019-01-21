@@ -69,6 +69,11 @@ public class FavoriteFragment extends Fragment implements FavoriteAdapter.onFavI
         mAdapter = new FavoriteAdapter(imageEntities, this);
         actionModeCallback = new ActionModeCallback(this, false);
 
+        setUpViewModel();
+
+    }
+
+    private void setUpViewModel() {
         favoriteViewModel = ViewModelProviders.of(this).get(FavoriteViewModel.class);
         favoriteViewModel.getFavorites().observe(this, new Observer<List<ImageEntity>>() {
             @Override
@@ -94,7 +99,6 @@ public class FavoriteFragment extends Fragment implements FavoriteAdapter.onFavI
                 mAdapter.notifyDataSetChanged();
             }
         });
-
     }
 
     @Override
@@ -127,9 +131,9 @@ public class FavoriteFragment extends Fragment implements FavoriteAdapter.onFavI
             @Override
             public void onClick(View view) {
                 if (mAdapter.getItemCount() == 0) {
-                    Toast.makeText(getContext(), "Wait for images to load!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.wait_for_load), Toast.LENGTH_SHORT).show();
                 } else {
-
+                    Toast.makeText(getContext(), getString(R.string.not_implemented), Toast.LENGTH_SHORT).show();
                 }
             }
         });
