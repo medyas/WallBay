@@ -11,7 +11,9 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDarker"> <!-- @drawable/image_detail_background -->
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@color/colorPrimaryDarker">
 
         <ImageView
             android:id="@+id/loading_image"
