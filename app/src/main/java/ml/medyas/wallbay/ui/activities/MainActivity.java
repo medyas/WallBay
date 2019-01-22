@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             if (pref.getBoolean(FIRST_START, true)) {
                 binding.startContainer.setVisibility(View.VISIBLE);
                 showStartFragment();
+                lockDrawer(true);
             } else {
                 binding.content.coordinator.setVisibility(View.VISIBLE);
                 replaceFragment(ForYouFragment.newInstance(), false);
@@ -211,7 +212,6 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     private void setUpToolbar(final boolean setup) {
         if (setup) {
             addedFragmentShown = false;
-            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             binding.content.toolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
             binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -224,7 +224,6 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             });
         } else {
             addedFragmentShown = true;
-            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             binding.content.toolbar.getMenu().clear();
             binding.content.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
             binding.content.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -235,6 +234,8 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             });
         }
 
+        lockDrawer(!setup);
+
         findToolbarTitle();
     }
 
@@ -243,6 +244,15 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
             getSupportActionBar().show();
         } else {
             getSupportActionBar().hide();
+            lockDrawer(true);
+        }
+    }
+
+    private void lockDrawer(boolean lock) {
+        if(lock) {
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        } else {
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
     }
 
@@ -414,6 +424,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         pref.apply();
 
         binding.content.coordinator.setVisibility(View.VISIBLE);
+        lockDrawer(false);
 
         replaceFragment(ForYouFragment.newInstance(), false);
 
@@ -477,6 +488,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
                 .add(R.id.main_container, fragment, fragment.getClass().getName())
                 .addToBackStack(fragment.getClass().getName())
                 .commit();
+
         addedFragmentShown = true;
         setUpToolbar(false);
         fragmentStack+=1;
