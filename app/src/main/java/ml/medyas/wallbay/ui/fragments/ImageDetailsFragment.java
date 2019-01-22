@@ -135,10 +135,14 @@ public class ImageDetailsFragment extends Fragment {
         binding.photoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (binding.imageDetailInfo.getRoot().getVisibility() == View.GONE) {
-                    binding.imageDetailInfo.getRoot().setVisibility(View.VISIBLE);
+                if (binding.imageDetailInfo.imageDetailsActions.getAlpha() == 0.0f) {
+                    ObjectAnimator fadeIn = ObjectAnimator.ofFloat(binding.imageDetailInfo.imageDetailsActions, "alpha", .0f, 1f);
+                    fadeIn.setDuration(300);
+                    fadeIn.start();
                 } else {
-                    binding.imageDetailInfo.getRoot().setVisibility(View.GONE);
+                    ObjectAnimator fadeOut = ObjectAnimator.ofFloat(binding.imageDetailInfo.imageDetailsActions, "alpha", 1.0f, .0f);
+                    fadeOut.setDuration(300);
+                    fadeOut.start();
                 }
             }
         });

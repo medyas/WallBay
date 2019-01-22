@@ -15,7 +15,8 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/image_details_actions">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lottie_download"

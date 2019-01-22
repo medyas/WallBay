@@ -85,7 +85,7 @@ public class GetStartedFragment extends Fragment {
 
         binding.getStartedRecyclerView.setHasFixedSize(true);
         binding.getStartedRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),
-                calculateNoOfColumns(getContext(), convertPixelsToDp(getResources().getDimension(R.dimen.get_started_card_width), getContext()))));
+                calculateNoOfColumns(getContext(), convertPixelsToDp(getResources().getDimension(R.dimen.get_started_card_width)+4, getContext()))));
         binding.getStartedRecyclerView.setAdapter(new GetStartedAdapter(mList));
 
 

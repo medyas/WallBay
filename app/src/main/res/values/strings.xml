@@ -72,7 +72,20 @@
     <string name="_0">0</string>
     <string name="opacity">Opacity</string>
     <string name="app_icon">app icon</string>
-    <string name="about_text">Capstone project, part of the Udacity Android Developer Nanodegreee.  the project is \"</string>
+    <string name="about_text">
+        Capstone project, final project for the Udacity Android Developer Nanodegreee.  the project is \n
+        The app consist of a wallpaper/images app which uses the Pixabay, Pexels and Unsplash API endpoints and
+        allow users to search and find free images which they can downloaded, edit or use as wallpaper in their phones.\n
+        The app main features are:\n
+            ● Browse and search over 3 million unique images.\n
+            ● Display images statistic.\n
+            ● Add images to favorite.\n
+            ● Download raw images using background service.\n
+            ● Multiple images select to add to favorite or download.\n
+            ● In app image editing.\n
+            ● Share images to social media or with link.\n
+            ● Set images as wallpaper from the app.\n
+    </string>
     <string name="wait_for_load">Wait for images to load!</string>
     <string name="not_implemented">Not yet implemented !</string>
     <string name="error_getting_data">Error retrieving more data!</string>
@@ -80,9 +93,9 @@
     <string name="faild_to_load">Failed to load more data</string>
     <string name="retry">Retry</string>
     <string name="provide_query">Please provide a search query!</string>
-    <string name="downloading">Downloading images...</string>
+    <string name="downloading">Downloading images…</string>
     <string name="notification_title">Wallpaper Download</string>
-    <string name="notification_text">Download in progress...</string>
+    <string name="notification_text">Download in progress…</string>
     <string name="image_set">Image set as wallpaper</string>
     <string name="could_not_set_image">Could not set image</string>
     <string name="could_not_get_image">Could not get the image</string>
@@ -93,7 +106,7 @@
     <string name="notify_download">notification for downloading wallpaper in background</string>
     <string name="download_failed">Failed to download the image</string>
     <string name="set_category">Please select a category !</string>
-    <string name="loading_image">Loading image ...</string>
+    <string name="loading_image">Loading image…</string>
     <string name="image_added">Image added to Favorite</string>
     <string name="could_not_add">could not added image to Favorite</string>
     <string name="permission_erro">Could not get permission</string>
