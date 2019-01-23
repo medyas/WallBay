@@ -10,14 +10,6 @@
         <include
             android:id="@+id/content"
             layout="@layout/activity_main_content" />
-        <!--
-        <ViewStub
-            android:id="@+id/content"
-            android:layout="@layout/activity_main_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom" />
-            -->
 
         <FrameLayout
             android:id="@+id/start_container"

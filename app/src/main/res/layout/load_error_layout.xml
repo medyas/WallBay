@@ -67,6 +67,7 @@
             android:clickable="true"
             android:focusable="true"
             app:srcCompat="@drawable/ic_play_arrow_black_24dp"
+            android:contentDescription="@string/start_image_slide_show"
             android:tint="@android:color/white"
             app:backgroundTint="@color/colorPrimaryLight"
             app:layout_constraintBottom_toBottomOf="parent"

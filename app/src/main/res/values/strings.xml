@@ -111,4 +111,10 @@
     <string name="could_not_add">could not added image to Favorite</string>
     <string name="permission_erro">Could not get permission</string>
     <string name="no_more_then">please choose not more than 8 categories!</string>
+    <string name="start_image_slide_show">start image slide show</string>
+    <string name="set_wallpaper">set image as wallpaper</string>
+    <string name="download_original_image">download original image</string>
+    <string name="edit_image">edit image</string>
+    <string name="get_image_information">get image information</string>
+    <string name="show_and_hide_image_actions">show and hide image actions</string>
 </resources>

@@ -257,7 +257,7 @@ public class FavoriteFragment extends Fragment implements FavoriteAdapter.onFavI
             urls.add(mAdapter.getImageEntities().get(i).getOriginalUrl());
         }
         WallpaperService.bulkWallpaperDownload(getContext(), urls);
-        Toast.makeText(getContext(), "Downloading images...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), getResources().getString(R.string.downloading), Toast.LENGTH_SHORT).show();
         actionMode.finish();
     }
 

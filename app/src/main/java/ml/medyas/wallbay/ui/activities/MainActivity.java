@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
                 showStartFragment();
                 lockDrawer(true);
             } else {
+                binding.startContainer.setVisibility(View.GONE);
                 binding.content.coordinator.setVisibility(View.VISIBLE);
                 replaceFragment(ForYouFragment.newInstance(), false);
                 getSupportActionBar().setTitle(getResources().getString(R.string.for_you));
@@ -427,6 +428,14 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
         lockDrawer(false);
 
         replaceFragment(ForYouFragment.newInstance(), false);
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.start_container);
+        if(fragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .remove(fragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                    .commit();
+        }
 
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, CATEGORIES);
