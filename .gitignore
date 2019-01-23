@@ -11,3 +11,5 @@
 /captures
 .externalNativeBuild
 gradle.properties
+capstone_key.jks
+keystore.properties
