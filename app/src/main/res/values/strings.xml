@@ -73,7 +73,7 @@
     <string name="opacity">Opacity</string>
     <string name="app_icon">app icon</string>
     <string name="about_text">
-        Capstone project, final project for the Udacity Android Developer Nanodegreee.  the project is \n
+        Capstone project, final project for the Udacity Android Developer Nanodegreee. \n
         The app consist of a wallpaper/images app which uses the Pixabay, Pexels and Unsplash API endpoints and
         allow users to search and find free images which they can downloaded, edit or use as wallpaper in their phones.\n
         The app main features are:\n
