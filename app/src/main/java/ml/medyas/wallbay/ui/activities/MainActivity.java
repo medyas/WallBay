@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.transition.Fade;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewCompat;
@@ -48,6 +49,7 @@ import ml.medyas.wallbay.ui.fragments.SearchFragment;
 import ml.medyas.wallbay.ui.fragments.UnsplashCollectionsFragment;
 import ml.medyas.wallbay.ui.fragments.UnsplashDefaultVPFragment;
 import ml.medyas.wallbay.ui.fragments.UnsplashFragment;
+import ml.medyas.wallbay.utils.DetailsTransition;
 import ml.medyas.wallbay.widget.WallbayWidget;
 
 import static ml.medyas.wallbay.utils.Utils.INTEREST_CATEGORIES;
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     private int fragmentStack =  0;
     private FirebaseAnalytics mFirebaseAnalytics;
 
+    //TODO: add slideshow - favorite images wallpaper slide - relaxing audio
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -464,10 +467,17 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     public void onItemClicked(ImageEntity imageEntity, int position, ImageView imageView) {
         ImageDetailsFragment frag = ImageDetailsFragment.newInstance(imageEntity);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             frag.setSharedElementEnterTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.move));
             //frag.setEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
             frag.setExitTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.move));
+        }*/
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            frag.setSharedElementEnterTransition(new DetailsTransition());
+            frag.setSharedElementReturnTransition(new DetailsTransition());
+            frag.setEnterTransition(new Fade());
+//            setExitTransition(new Fade());
         }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
@@ -475,7 +485,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
                 .addToBackStack(frag.getClass().getName());
 
         if(imageView != null) {
-            transaction.addSharedElement(imageView, String.format("transition %s", imageEntity.getId()));
+            transaction.addSharedElement(imageView, String.format("transition-%s", imageEntity.getId()));
         }
         transaction.commit();
 

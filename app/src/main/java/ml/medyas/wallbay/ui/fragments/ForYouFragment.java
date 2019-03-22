@@ -133,7 +133,11 @@ public class ForYouFragment extends BaseFragment implements java.util.Observer {
     @Override
     public void update(Observable observable, Object o) {
         if (getNetworkStatus(getContext()) && getNetError().getVisibility() == View.VISIBLE) {
-            mListener.reCreateFragment(ForYouFragment.newInstance());
+//            mListener.reCreateFragment(ForYouFragment.newInstance());
+            mViewModel = null;
+            setUpViewModel();
+            getNetError().setVisibility(View.GONE);
+            getItemLoad().setVisibility(View.VISIBLE);
             getSnackbar().dismiss();
         }
     }

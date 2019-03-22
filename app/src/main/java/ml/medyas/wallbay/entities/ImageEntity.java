@@ -1,6 +1,5 @@
 package ml.medyas.wallbay.entities;
 
-import android.annotation.TargetApi;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
@@ -127,11 +126,12 @@ public class ImageEntity implements Parcelable {
                 .into(view);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Ignore
     @BindingAdapter({"android:addTransitionName"})
     public static void addTransitionName(ImageView view, String id) {
-        view.setTransitionName(String.format("transition %s", id));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            view.setTransitionName(String.format("transition-%s", id));
+        }
     }
 
     @Ignore

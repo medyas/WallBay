@@ -10,7 +10,7 @@ android {
     signingConfigs {
         config {
         }
-        capstone {
+        medyas {
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
             storeFile file(keystoreProperties['storeFile'])
@@ -34,9 +34,10 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources true
             useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.capstone
+            signingConfig signingConfigs.medyas
         }
     }
     dataBinding {
@@ -94,3 +95,11 @@ dependencies {
 
 
 apply plugin: 'com.google.gms.google-services'
+
+
+
+task generateReleaseBuild(dependsOn: [':app:bundleRelease', ':app:assembleRelease']) {
+    doLast {
+        println 'Release app built'
+    }
+}
