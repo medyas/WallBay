@@ -15,10 +15,10 @@ import java.util.List;
 
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.databinding.CollectionItemLayoutBinding;
-import ml.medyas.wallbay.entities.CollectionEntity;
-import ml.medyas.wallbay.entities.unsplash.Tag;
+import ml.medyas.wallbay.models.CollectionEntity;
+import ml.medyas.wallbay.models.unsplash.Tag;
 
-import static ml.medyas.wallbay.entities.CollectionEntity.DIFF_CALLBACK;
+import static ml.medyas.wallbay.models.CollectionEntity.DIFF_CALLBACK;
 
 public class CollectionRecyclerViewAdapter extends PagedListAdapter<CollectionEntity, CollectionRecyclerViewAdapter.CollectionViewHolder> {
     private CollectionInterface mListener;

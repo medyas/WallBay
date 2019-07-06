@@ -1,7 +1,7 @@
 package ml.medyas.wallbay.network.pixabay;
 
 import io.reactivex.Observable;
-import ml.medyas.wallbay.entities.pixabay.PixabayEntity;
+import ml.medyas.wallbay.models.pixabay.PixabayEntity;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;

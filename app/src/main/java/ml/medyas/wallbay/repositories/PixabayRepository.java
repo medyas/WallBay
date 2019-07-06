@@ -2,7 +2,7 @@ package ml.medyas.wallbay.repositories;
 
 import android.content.Context;
 
-import ml.medyas.wallbay.entities.pixabay.PixabayEntity;
+import ml.medyas.wallbay.models.pixabay.PixabayEntity;
 import ml.medyas.wallbay.network.pixabay.PixabayCalls;
 import retrofit2.Call;
 

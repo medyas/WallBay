@@ -9,11 +9,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import ml.medyas.wallbay.R;
-import ml.medyas.wallbay.entities.ImageEntity;
-import ml.medyas.wallbay.models.unsplash.UnsplashCollectionPhotoViewModel;
-import ml.medyas.wallbay.models.unsplash.UnsplashSearchViewModel;
-import ml.medyas.wallbay.models.unsplash.UnsplashViewModel;
+import ml.medyas.wallbay.models.ImageEntity;
 import ml.medyas.wallbay.utils.Utils;
+import ml.medyas.wallbay.viewmodels.unsplash.UnsplashCollectionPhotoViewModel;
+import ml.medyas.wallbay.viewmodels.unsplash.UnsplashSearchViewModel;
+import ml.medyas.wallbay.viewmodels.unsplash.UnsplashViewModel;
 
 import static ml.medyas.wallbay.utils.Utils.FRAGMENT_POSITION;
 import static ml.medyas.wallbay.utils.Utils.SEARCH_QUERY;

@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.databinding.ImageEntityItemBinding;
-import ml.medyas.wallbay.entities.ImageEntity;
+import ml.medyas.wallbay.models.ImageEntity;
 import ml.medyas.wallbay.ui.fragments.BaseFragment;
 import ml.medyas.wallbay.ui.fragments.ForYouFragment;
 

@@ -1,7 +1,7 @@
 package ml.medyas.wallbay.repositories;
 
 import io.reactivex.Observable;
-import ml.medyas.wallbay.entities.SearchEntity;
+import ml.medyas.wallbay.models.SearchEntity;
 import ml.medyas.wallbay.network.SearchCalls;
 
 public class SearchRepository {

@@ -3,7 +3,7 @@ package ml.medyas.wallbay.repositories;
 
 import android.content.Context;
 
-import ml.medyas.wallbay.entities.pexels.PexelsEntity;
+import ml.medyas.wallbay.models.pexels.PexelsEntity;
 import ml.medyas.wallbay.network.pexels.PexelsCalls;
 import retrofit2.Call;
 

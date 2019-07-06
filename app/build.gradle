@@ -30,12 +30,13 @@ android {
         buildConfigField 'String', "PexelsApiKey", PEXELS_KEY
         buildConfigField 'String', "UnsplashApiKey", UNSPLASH_KEY
         vectorDrawables.useSupportLibrary = true
+        setProperty("archivesBaseName",  "wallbay-v"  + versionName )
     }
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
-            useProguard false
+//            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.medyas
         }
@@ -80,6 +81,7 @@ dependencies {
     // JSON Converter
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
+    // RxJava
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.4'
     // Glide

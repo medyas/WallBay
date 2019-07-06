@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ml.medyas.wallbay.R;
-import ml.medyas.wallbay.entities.ImageEntity;
+import ml.medyas.wallbay.models.ImageEntity;
 import ml.medyas.wallbay.repositories.FavoriteRepository;
 import ml.medyas.wallbay.ui.activities.MainActivity;
 

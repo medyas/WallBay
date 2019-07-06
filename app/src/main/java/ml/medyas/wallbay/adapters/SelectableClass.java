@@ -7,7 +7,7 @@ import android.util.SparseBooleanArray;
 import java.util.ArrayList;
 import java.util.List;
 
-import ml.medyas.wallbay.entities.ImageEntity;
+import ml.medyas.wallbay.models.ImageEntity;
 
 public abstract class SelectableClass extends PagedListAdapter<ImageEntity, RecyclerView.ViewHolder> {
     private SparseBooleanArray selectedItems = new SparseBooleanArray();

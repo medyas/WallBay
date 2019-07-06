@@ -8,11 +8,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
-import ml.medyas.wallbay.entities.ImageEntity;
-import ml.medyas.wallbay.models.pexels.PexelsCuratedViewModel;
-import ml.medyas.wallbay.models.pexels.PexelsSearchViewModel;
-import ml.medyas.wallbay.models.pexels.PexelsViewModel;
+import ml.medyas.wallbay.models.ImageEntity;
 import ml.medyas.wallbay.utils.Utils;
+import ml.medyas.wallbay.viewmodels.pexels.PexelsCuratedViewModel;
+import ml.medyas.wallbay.viewmodels.pexels.PexelsSearchViewModel;
+import ml.medyas.wallbay.viewmodels.pexels.PexelsViewModel;
 
 import static ml.medyas.wallbay.utils.Utils.FRAGMENT_POSITION;
 import static ml.medyas.wallbay.utils.Utils.SEARCH_QUERY;

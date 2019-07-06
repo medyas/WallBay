@@ -18,7 +18,7 @@ import java.util.List;
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.adapters.GetStartedAdapter;
 import ml.medyas.wallbay.databinding.FragmentGetStartedBinding;
-import ml.medyas.wallbay.entities.GetStartedEntity;
+import ml.medyas.wallbay.models.GetStartedEntity;
 
 import static ml.medyas.wallbay.utils.Utils.calculateNoOfColumns;
 import static ml.medyas.wallbay.utils.Utils.convertPixelsToDp;

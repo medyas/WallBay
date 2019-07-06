@@ -18,7 +18,7 @@ import java.util.List;
 
 import ja.burhanrashid52.photoeditor.PhotoFilter;
 import ml.medyas.wallbay.R;
-import ml.medyas.wallbay.entities.GetStartedEntity;
+import ml.medyas.wallbay.models.GetStartedEntity;
 
 public class Utils {
 
@@ -69,7 +69,7 @@ public class Utils {
     public static final int[] categoriesListImages = {R.drawable.fashion, R.drawable.nature, R.drawable.backgrounds, R.drawable.science, R.drawable.education,
             R.drawable.people, R.drawable.feelings, R.drawable.religon, R.drawable.health, R.drawable.places, R.drawable.animals, R.drawable.industry,
             R.drawable.food, R.drawable.computer, R.drawable.sports, R.drawable.transportation, R.drawable.travel, R.drawable.buildings, R.drawable.business, R.drawable.music};
-    private static final String categoriesListName[] = {"fashion", "nature", "backgrounds", "science", "education", "people", "feelings", "religion",
+    private static final String[] categoriesListName = {"fashion", "nature", "backgrounds", "science", "education", "people", "feelings", "religion",
             "health", "places", "animals", "industry", "food", "computer", "sports", "transportation", "travel", "buildings", "business", "music"};
 
     public static List<GetStartedEntity> getCategoriesList() {

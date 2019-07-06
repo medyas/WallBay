@@ -31,7 +31,7 @@ import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.adapters.ActionModeCallback;
 import ml.medyas.wallbay.adapters.BaseAdapter;
 import ml.medyas.wallbay.databinding.FragmentBaseBinding;
-import ml.medyas.wallbay.entities.ImageEntity;
+import ml.medyas.wallbay.models.ImageEntity;
 import ml.medyas.wallbay.services.WallpaperService;
 import ml.medyas.wallbay.utils.GlideApp;
 import ml.medyas.wallbay.utils.Utils;

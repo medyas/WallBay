@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import ml.medyas.wallbay.R;
-import ml.medyas.wallbay.entities.ImageEntity;
+import ml.medyas.wallbay.models.ImageEntity;
 import ml.medyas.wallbay.utils.GlideApp;
 
 import static ml.medyas.wallbay.ui.activities.MainActivity.IMAGE_ITEM;

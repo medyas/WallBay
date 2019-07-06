@@ -39,7 +39,7 @@ import ja.burhanrashid52.photoeditor.SaveSettings;
 import ja.burhanrashid52.photoeditor.ViewType;
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.databinding.ActivityEditImageBinding;
-import ml.medyas.wallbay.entities.ImageEntity;
+import ml.medyas.wallbay.models.ImageEntity;
 import ml.medyas.wallbay.ui.photoEditor.base.BaseActivity;
 import ml.medyas.wallbay.ui.photoEditor.filters.FilterListener;
 import ml.medyas.wallbay.ui.photoEditor.filters.FilterViewAdapter;

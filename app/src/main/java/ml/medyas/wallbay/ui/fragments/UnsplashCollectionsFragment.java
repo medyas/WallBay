@@ -22,11 +22,11 @@ import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.adapters.unsplash.CollectionRecyclerViewAdapter;
 import ml.medyas.wallbay.adapters.unsplash.TagsRecyclerViewAdapter;
 import ml.medyas.wallbay.databinding.FragmentBaseBinding;
-import ml.medyas.wallbay.entities.CollectionEntity;
-import ml.medyas.wallbay.models.unsplash.UnsplashCollectionsViewModel;
-import ml.medyas.wallbay.models.unsplash.UnsplashFeaturedCollectionsViewModel;
-import ml.medyas.wallbay.models.unsplash.UnsplashSearchCollectionsViewModel;
+import ml.medyas.wallbay.models.CollectionEntity;
 import ml.medyas.wallbay.utils.Utils;
+import ml.medyas.wallbay.viewmodels.unsplash.UnsplashCollectionsViewModel;
+import ml.medyas.wallbay.viewmodels.unsplash.UnsplashFeaturedCollectionsViewModel;
+import ml.medyas.wallbay.viewmodels.unsplash.UnsplashSearchCollectionsViewModel;
 
 import static ml.medyas.wallbay.utils.Utils.FRAGMENT_POSITION;
 import static ml.medyas.wallbay.utils.Utils.SEARCH_QUERY;

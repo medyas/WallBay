@@ -4,10 +4,10 @@ import android.content.Context;
 
 import java.util.List;
 
-import ml.medyas.wallbay.entities.unsplash.UnsplashCollectionSearchEntity;
-import ml.medyas.wallbay.entities.unsplash.UnsplashCollectionsEntity;
-import ml.medyas.wallbay.entities.unsplash.UnsplashPhotoEntity;
-import ml.medyas.wallbay.entities.unsplash.UnsplashSearchEntity;
+import ml.medyas.wallbay.models.unsplash.UnsplashCollectionSearchEntity;
+import ml.medyas.wallbay.models.unsplash.UnsplashCollectionsEntity;
+import ml.medyas.wallbay.models.unsplash.UnsplashPhotoEntity;
+import ml.medyas.wallbay.models.unsplash.UnsplashSearchEntity;
 import ml.medyas.wallbay.network.unsplash.UnsplashCalls;
 import retrofit2.Call;
 

@@ -28,10 +28,10 @@ import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.adapters.ActionModeCallback;
 import ml.medyas.wallbay.adapters.FavoriteAdapter;
 import ml.medyas.wallbay.databinding.FragmentFavoriteBinding;
-import ml.medyas.wallbay.entities.ImageEntity;
-import ml.medyas.wallbay.models.FavoriteViewModel;
+import ml.medyas.wallbay.models.ImageEntity;
 import ml.medyas.wallbay.services.WallpaperService;
 import ml.medyas.wallbay.utils.GlideApp;
+import ml.medyas.wallbay.viewmodels.FavoriteViewModel;
 import ml.medyas.wallbay.widget.WallbayWidget;
 
 import static ml.medyas.wallbay.utils.Utils.calculateNoOfColumns;

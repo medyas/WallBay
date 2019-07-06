@@ -8,9 +8,9 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import ml.medyas.wallbay.entities.ImageEntity;
-import ml.medyas.wallbay.entities.pixabay.Hit;
-import ml.medyas.wallbay.entities.pixabay.PixabayEntity;
+import ml.medyas.wallbay.models.ImageEntity;
+import ml.medyas.wallbay.models.pixabay.Hit;
+import ml.medyas.wallbay.models.pixabay.PixabayEntity;
 import ml.medyas.wallbay.repositories.PixabayRepository;
 import ml.medyas.wallbay.utils.Utils;
 import retrofit2.Call;

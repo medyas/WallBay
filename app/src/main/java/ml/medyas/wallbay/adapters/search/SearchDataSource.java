@@ -7,8 +7,8 @@ import android.util.Log;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import ml.medyas.wallbay.entities.ImageEntity;
-import ml.medyas.wallbay.entities.SearchEntity;
+import ml.medyas.wallbay.models.ImageEntity;
+import ml.medyas.wallbay.models.SearchEntity;
 import ml.medyas.wallbay.repositories.SearchRepository;
 import ml.medyas.wallbay.utils.Utils;
 

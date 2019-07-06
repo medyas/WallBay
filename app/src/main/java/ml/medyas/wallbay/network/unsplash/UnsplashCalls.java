@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import ml.medyas.wallbay.BuildConfig;
-import ml.medyas.wallbay.entities.unsplash.UnsplashCollectionSearchEntity;
-import ml.medyas.wallbay.entities.unsplash.UnsplashCollectionsEntity;
-import ml.medyas.wallbay.entities.unsplash.UnsplashPhotoEntity;
-import ml.medyas.wallbay.entities.unsplash.UnsplashSearchEntity;
+import ml.medyas.wallbay.models.unsplash.UnsplashCollectionSearchEntity;
+import ml.medyas.wallbay.models.unsplash.UnsplashCollectionsEntity;
+import ml.medyas.wallbay.models.unsplash.UnsplashPhotoEntity;
+import ml.medyas.wallbay.models.unsplash.UnsplashSearchEntity;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;

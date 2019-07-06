@@ -9,7 +9,7 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
-import ml.medyas.wallbay.entities.ImageEntity;
+import ml.medyas.wallbay.models.ImageEntity;
 
 @Dao
 public interface FavoriteDao {

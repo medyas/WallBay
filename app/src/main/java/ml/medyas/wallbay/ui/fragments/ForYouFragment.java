@@ -17,11 +17,11 @@ import android.view.View;
 import java.util.Observable;
 
 import ml.medyas.wallbay.R;
-import ml.medyas.wallbay.entities.ImageEntity;
-import ml.medyas.wallbay.models.search.SearchViewModel;
-import ml.medyas.wallbay.models.search.SearchViewModelFactory;
+import ml.medyas.wallbay.models.ImageEntity;
 import ml.medyas.wallbay.services.NetworkChangeReceiver;
 import ml.medyas.wallbay.utils.Utils;
+import ml.medyas.wallbay.viewmodels.search.SearchViewModel;
+import ml.medyas.wallbay.viewmodels.search.SearchViewModelFactory;
 
 import static ml.medyas.wallbay.utils.Utils.INTEREST_CATEGORIES;
 import static ml.medyas.wallbay.utils.Utils.getNetworkStatus;

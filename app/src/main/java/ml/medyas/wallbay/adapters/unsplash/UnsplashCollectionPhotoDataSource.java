@@ -8,8 +8,8 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import ml.medyas.wallbay.entities.ImageEntity;
-import ml.medyas.wallbay.entities.unsplash.UnsplashPhotoEntity;
+import ml.medyas.wallbay.models.ImageEntity;
+import ml.medyas.wallbay.models.unsplash.UnsplashPhotoEntity;
 import ml.medyas.wallbay.repositories.UnsplashRepository;
 import ml.medyas.wallbay.utils.Utils;
 import retrofit2.Call;

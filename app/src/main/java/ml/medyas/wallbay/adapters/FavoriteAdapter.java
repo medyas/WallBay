@@ -15,7 +15,7 @@ import java.util.List;
 
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.databinding.FavoriteImageEntityItemBinding;
-import ml.medyas.wallbay.entities.ImageEntity;
+import ml.medyas.wallbay.models.ImageEntity;
 import ml.medyas.wallbay.ui.fragments.FavoriteFragment;
 
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder> {

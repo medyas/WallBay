@@ -1,7 +1,7 @@
 package ml.medyas.wallbay.network.pexels;
 
 import io.reactivex.Observable;
-import ml.medyas.wallbay.entities.pexels.PexelsEntity;
+import ml.medyas.wallbay.models.pexels.PexelsEntity;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;

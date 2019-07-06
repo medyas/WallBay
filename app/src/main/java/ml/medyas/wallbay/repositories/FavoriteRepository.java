@@ -12,7 +12,7 @@ import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 import ml.medyas.wallbay.database.FavoriteDao;
 import ml.medyas.wallbay.database.FavoriteDatabase;
-import ml.medyas.wallbay.entities.ImageEntity;
+import ml.medyas.wallbay.models.ImageEntity;
 
 public class FavoriteRepository {
     private FavoriteDao favoriteDao;

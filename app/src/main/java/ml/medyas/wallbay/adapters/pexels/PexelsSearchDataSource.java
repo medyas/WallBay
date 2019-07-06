@@ -9,9 +9,9 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import ml.medyas.wallbay.entities.ImageEntity;
-import ml.medyas.wallbay.entities.pexels.PexelsEntity;
-import ml.medyas.wallbay.entities.pexels.Photo;
+import ml.medyas.wallbay.models.ImageEntity;
+import ml.medyas.wallbay.models.pexels.PexelsEntity;
+import ml.medyas.wallbay.models.pexels.Photo;
 import ml.medyas.wallbay.repositories.PexelsRepository;
 import ml.medyas.wallbay.utils.Utils;
 import retrofit2.Call;

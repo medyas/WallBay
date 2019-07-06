@@ -5,7 +5,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import ml.medyas.wallbay.entities.ImageEntity;
+import ml.medyas.wallbay.models.ImageEntity;
 
 @Database(entities = {ImageEntity.class}, version = 1, exportSchema = false)
 public abstract class FavoriteDatabase extends RoomDatabase {

@@ -7,7 +7,7 @@
 
         <variable
             name="imageItem"
-            type="ml.medyas.wallbay.entities.ImageEntity" />
+            type="ml.medyas.wallbay.models.ImageEntity" />
 
         <import type="android.view.View" />
     </data>

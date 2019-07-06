@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import ml.medyas.wallbay.BuildConfig;
-import ml.medyas.wallbay.entities.pexels.PexelsEntity;
+import ml.medyas.wallbay.models.pexels.PexelsEntity;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;

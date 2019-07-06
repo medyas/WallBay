@@ -28,7 +28,7 @@ import java.util.List;
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.adapters.unsplash.TagsRecyclerViewAdapter;
 import ml.medyas.wallbay.databinding.DialogImageDetailsInfoBinding;
-import ml.medyas.wallbay.entities.ImageEntity;
+import ml.medyas.wallbay.models.ImageEntity;
 import ml.medyas.wallbay.utils.Utils;
 
 import static ml.medyas.wallbay.utils.Utils.PEXELS_PROFILE_URL;

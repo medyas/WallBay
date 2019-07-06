@@ -6,7 +6,7 @@
 
         <variable
             name="image"
-            type="ml.medyas.wallbay.entities.ImageEntity" />
+            type="ml.medyas.wallbay.models.ImageEntity" />
 
         <variable
             name="fragment"

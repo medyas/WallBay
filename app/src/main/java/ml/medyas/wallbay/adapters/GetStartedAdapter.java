@@ -12,7 +12,7 @@ import java.util.List;
 
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.databinding.GetStartedItemLayoutBinding;
-import ml.medyas.wallbay.entities.GetStartedEntity;
+import ml.medyas.wallbay.models.GetStartedEntity;
 
 public class GetStartedAdapter extends RecyclerView.Adapter<GetStartedAdapter.GetStartedItemViewHolder> {
     private List<GetStartedEntity> items;

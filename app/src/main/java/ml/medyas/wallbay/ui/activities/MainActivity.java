@@ -33,8 +33,7 @@ import io.reactivex.Completable;
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.databinding.ActivityMainBinding;
 import ml.medyas.wallbay.databinding.NavigationBaseLayoutBinding;
-import ml.medyas.wallbay.entities.ImageEntity;
-import ml.medyas.wallbay.models.FavoriteViewModel;
+import ml.medyas.wallbay.models.ImageEntity;
 import ml.medyas.wallbay.ui.fragments.AboutFragment;
 import ml.medyas.wallbay.ui.fragments.BaseFragment;
 import ml.medyas.wallbay.ui.fragments.FavoriteFragment;
@@ -50,6 +49,7 @@ import ml.medyas.wallbay.ui.fragments.UnsplashCollectionsFragment;
 import ml.medyas.wallbay.ui.fragments.UnsplashDefaultVPFragment;
 import ml.medyas.wallbay.ui.fragments.UnsplashFragment;
 import ml.medyas.wallbay.utils.DetailsTransition;
+import ml.medyas.wallbay.viewmodels.FavoriteViewModel;
 import ml.medyas.wallbay.widget.WallbayWidget;
 
 import static ml.medyas.wallbay.utils.Utils.INTEREST_CATEGORIES;
@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     private FirebaseAnalytics mFirebaseAnalytics;
 
     //TODO: add slideshow - favorite images wallpaper slide - relaxing audio
+    // TODO: migrate to androidX and Kotlin
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

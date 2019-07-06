@@ -41,7 +41,7 @@ import io.reactivex.CompletableObserver;
 import io.reactivex.disposables.Disposable;
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.databinding.FragmentImageDetailsBinding;
-import ml.medyas.wallbay.entities.ImageEntity;
+import ml.medyas.wallbay.models.ImageEntity;
 import ml.medyas.wallbay.services.WallpaperService;
 import ml.medyas.wallbay.ui.photoEditor.EditImageActivity;
 import ml.medyas.wallbay.utils.GlideApp;

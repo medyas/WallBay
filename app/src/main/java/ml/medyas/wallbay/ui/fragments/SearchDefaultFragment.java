@@ -7,10 +7,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
-import ml.medyas.wallbay.entities.ImageEntity;
-import ml.medyas.wallbay.models.search.SearchViewModel;
-import ml.medyas.wallbay.models.search.SearchViewModelFactory;
+import ml.medyas.wallbay.models.ImageEntity;
 import ml.medyas.wallbay.utils.Utils;
+import ml.medyas.wallbay.viewmodels.search.SearchViewModel;
+import ml.medyas.wallbay.viewmodels.search.SearchViewModelFactory;
 
 import static ml.medyas.wallbay.utils.Utils.SEARCH_QUERY;
 

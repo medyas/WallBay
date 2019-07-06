@@ -9,9 +9,9 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import ml.medyas.wallbay.entities.CollectionEntity;
-import ml.medyas.wallbay.entities.unsplash.UnsplashCollectionSearchEntity;
-import ml.medyas.wallbay.entities.unsplash.UnsplashCollectionsEntity;
+import ml.medyas.wallbay.models.CollectionEntity;
+import ml.medyas.wallbay.models.unsplash.UnsplashCollectionSearchEntity;
+import ml.medyas.wallbay.models.unsplash.UnsplashCollectionsEntity;
 import ml.medyas.wallbay.repositories.UnsplashRepository;
 import ml.medyas.wallbay.utils.Utils;
 import retrofit2.Call;

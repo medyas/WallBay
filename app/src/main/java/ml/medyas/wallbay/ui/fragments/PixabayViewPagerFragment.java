@@ -8,10 +8,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import ml.medyas.wallbay.R;
-import ml.medyas.wallbay.entities.ImageEntity;
-import ml.medyas.wallbay.models.pixabay.PixabayViewModel;
-import ml.medyas.wallbay.models.pixabay.PixabayViewModelFactory;
+import ml.medyas.wallbay.models.ImageEntity;
 import ml.medyas.wallbay.utils.Utils;
+import ml.medyas.wallbay.viewmodels.pixabay.PixabayViewModel;
+import ml.medyas.wallbay.viewmodels.pixabay.PixabayViewModelFactory;
 
 import static ml.medyas.wallbay.utils.Utils.FRAGMENT_POSITION;
 import static ml.medyas.wallbay.utils.Utils.SEARCH_QUERY;
