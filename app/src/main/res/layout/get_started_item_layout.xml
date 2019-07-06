@@ -10,7 +10,7 @@
             type="ml.medyas.wallbay.models.GetStartedEntity" />
     </data>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/category_item"
         android:layout_width="@dimen/get_started_card_width"
         android:layout_height="wrap_content"
@@ -44,5 +44,5 @@
             android:textStyle="bold"
             android:toCap="@{category.categoryName}" />
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </layout>

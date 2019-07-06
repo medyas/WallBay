@@ -2,10 +2,11 @@ package ml.medyas.wallbay.adapters.unsplash;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.ui.fragments.UnsplashCollectionsFragment;

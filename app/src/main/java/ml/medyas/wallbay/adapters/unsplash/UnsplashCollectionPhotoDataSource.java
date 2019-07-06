@@ -1,9 +1,10 @@
 package ml.medyas.wallbay.adapters.unsplash;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.PageKeyedDataSource;
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.PageKeyedDataSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,7 +143,7 @@ public class UnsplashCollectionPhotoDataSource extends PageKeyedDataSource<Integ
     }
 
 
-    public static class UnsplashCollectionPhotoDataSourceFactory extends android.arch.paging.DataSource.Factory {
+    public static class UnsplashCollectionPhotoDataSourceFactory extends androidx.paging.DataSource.Factory {
         private MutableLiveData<UnsplashCollectionPhotoDataSource> mutableLiveData;
         private Context context;
         private int id;
@@ -154,7 +155,7 @@ public class UnsplashCollectionPhotoDataSource extends PageKeyedDataSource<Integ
         }
 
         @Override
-        public android.arch.paging.DataSource create() {
+        public androidx.paging.DataSource create() {
             UnsplashCollectionPhotoDataSource unsplashDataSource = new UnsplashCollectionPhotoDataSource(context, id);
             mutableLiveData.postValue(unsplashDataSource);
             return unsplashDataSource;

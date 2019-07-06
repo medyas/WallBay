@@ -1,7 +1,7 @@
 package ml.medyas.wallbay.adapters.search;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.DataSource;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.DataSource;
 
 public class SearchDataSourceFactory extends DataSource.Factory {
     private SearchDataSource dataSource;

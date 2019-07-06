@@ -1,9 +1,10 @@
 package ml.medyas.wallbay.viewmodels.pixabay;
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 public class PixabayViewModelFactory implements ViewModelProvider.Factory {
     private String query;

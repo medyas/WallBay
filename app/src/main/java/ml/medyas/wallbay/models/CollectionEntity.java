@@ -1,13 +1,14 @@
 package ml.medyas.wallbay.models;
 
-import android.arch.persistence.room.Ignore;
-import android.databinding.BindingAdapter;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.v7.util.DiffUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.BindingAdapter;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.room.Ignore;
 
 import java.util.List;
 

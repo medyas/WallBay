@@ -1,10 +1,11 @@
 package ml.medyas.wallbay.models;
 
-import android.databinding.BindingAdapter;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.databinding.BindingAdapter;
 
 import java.util.Locale;
 

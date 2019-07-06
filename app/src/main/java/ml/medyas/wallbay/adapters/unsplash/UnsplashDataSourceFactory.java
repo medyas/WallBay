@@ -1,9 +1,10 @@
 package ml.medyas.wallbay.adapters.unsplash;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 
-public class UnsplashDataSourceFactory extends android.arch.paging.DataSource.Factory {
+import androidx.lifecycle.MutableLiveData;
+
+public class UnsplashDataSourceFactory extends androidx.paging.DataSource.Factory {
     private MutableLiveData<UnsplashDataSource> mutableLiveData;
     private Context context;
     private String orderBy;
@@ -15,7 +16,7 @@ public class UnsplashDataSourceFactory extends android.arch.paging.DataSource.Fa
     }
 
     @Override
-    public android.arch.paging.DataSource create() {
+    public androidx.paging.DataSource create() {
         UnsplashDataSource unsplashDataSource = new UnsplashDataSource(context, orderBy);
         mutableLiveData.postValue(unsplashDataSource);
         return unsplashDataSource;

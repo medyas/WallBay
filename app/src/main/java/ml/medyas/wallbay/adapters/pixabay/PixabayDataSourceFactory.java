@@ -1,8 +1,9 @@
 package ml.medyas.wallbay.adapters.pixabay;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.DataSource;
 import android.content.Context;
+
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.DataSource;
 
 public class PixabayDataSourceFactory extends DataSource.Factory  {
     private PixabayDataSource pixabayDataSource;

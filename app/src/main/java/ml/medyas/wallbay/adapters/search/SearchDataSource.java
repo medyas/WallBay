@@ -1,9 +1,10 @@
 package ml.medyas.wallbay.adapters.search;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.PageKeyedDataSource;
-import android.support.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.PageKeyedDataSource;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;

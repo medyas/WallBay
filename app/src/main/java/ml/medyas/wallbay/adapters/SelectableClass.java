@@ -1,8 +1,9 @@
 package ml.medyas.wallbay.adapters;
 
-import android.arch.paging.PagedListAdapter;
-import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
+
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;

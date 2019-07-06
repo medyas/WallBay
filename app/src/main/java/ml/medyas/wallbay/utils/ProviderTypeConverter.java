@@ -1,6 +1,6 @@
 package ml.medyas.wallbay.utils;
 
-import android.arch.persistence.room.TypeConverter;
+import androidx.room.TypeConverter;
 
 public class ProviderTypeConverter {
 

@@ -1,26 +1,27 @@
 package ml.medyas.wallbay.ui.activities;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.transition.Fade;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionInflater;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.transition.Fade;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
 
     //TODO: add slideshow - favorite images wallpaper slide - relaxing audio
     // TODO: migrate to androidX and Kotlin
+    // TODO: add drawable dependency
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,8 +1,8 @@
 package ml.medyas.wallbay.viewmodels.search;
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 public class SearchViewModelFactory implements ViewModelProvider.Factory {
     private String query;

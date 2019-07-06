@@ -1,11 +1,11 @@
 package ml.medyas.wallbay.utils;
 
-import android.support.transition.AutoTransition;
-import android.support.transition.ChangeBounds;
-import android.support.transition.ChangeClipBounds;
-import android.support.transition.ChangeImageTransform;
-import android.support.transition.ChangeTransform;
-import android.support.transition.TransitionSet;
+import androidx.transition.AutoTransition;
+import androidx.transition.ChangeBounds;
+import androidx.transition.ChangeClipBounds;
+import androidx.transition.ChangeImageTransform;
+import androidx.transition.ChangeTransform;
+import androidx.transition.TransitionSet;
 
 public class DetailsTransition extends TransitionSet {
     public DetailsTransition() {
