@@ -4,10 +4,12 @@ import android.app.DownloadManager;
 import android.app.IntentService;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -16,21 +18,18 @@ import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.bumptech.glide.load.DecodeFormat;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import ml.medyas.wallbay.BuildConfig;
 import ml.medyas.wallbay.R;
-import ml.medyas.wallbay.utils.GlideApp;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -145,28 +144,34 @@ public class WallpaperService extends IntentService {
 
         Bitmap resource = null;
         try {
-            resource = GlideApp.with(getApplicationContext())
+            /*resource = GlideApp.with(getApplicationContext())
                     .asBitmap()
                     .load(url)
                     .apply(new RequestOptions()
                             .format(DecodeFormat.PREFER_ARGB_8888))
                     .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                    .get();
+                    .get();*/
+            URL u = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) u
+                    .openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            resource = BitmapFactory.decodeStream(input);
+            input.close();
 
-        } catch (ExecutionException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.could_not_set_image), Toast.LENGTH_SHORT).show();
+            Intent retry = new Intent(this, WallpaperService.class);
+            retry.setAction(ACTION_SET_WALLPAPER);
+            retry.putExtra(EXTRA_PARAM1, url);
+            PendingIntent retryIntent = PendingIntent.getService(this, 0, retry, 0);
             mBuilder.setContentText(getResources().getString(R.string.could_not_get_image))
+                    .addAction(R.drawable.ic_retry, "Retry", retryIntent)
                     .setProgress(0, 0, false);
             notificationManager.notify(notificationId, mBuilder.build());
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.could_not_set_image), Toast.LENGTH_SHORT).show();
-            mBuilder.setContentText(getResources().getString(R.string.could_not_get_image))
-                    .setProgress(0, 0, false);
-            notificationManager.notify(notificationId, mBuilder.build());
-
+            return;
         }
 
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.image_loaded), Toast.LENGTH_SHORT).show();
@@ -221,7 +226,17 @@ public class WallpaperService extends IntentService {
             dir = Environment.getExternalStorageDirectory().toString() + dir;
         }
 
-        request.setDestinationInExternalPublicDir(dir, uri.getLastPathSegment() + ".jpg");
+        String path = uri.getLastPathSegment();
+        int index = path.lastIndexOf(".");
+        if(index != -1) {
+            String temp = path.substring(index).toLowerCase();
+            if(!(temp.equals(".jpg") || temp.equals(".jpeg"))) {
+                path += ".jpg";
+            }
+        } else {
+            path += ".jpg";
+        }
+        request.setDestinationInExternalPublicDir(dir,  path);
 
         downloadManager.enqueue(request);
     }

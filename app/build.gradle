@@ -36,7 +36,6 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-//            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.medyas
         }
@@ -57,9 +56,10 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.vectordrawable:vectordrawable:1.0.1'
     // Admob - Firebase Analytics
-    implementation 'com.google.android.gms:play-services-ads:18.0.0'
-    implementation 'com.google.firebase:firebase-core:17.0.0'
+    implementation 'com.google.android.gms:play-services-ads:18.1.0'
+    implementation 'com.google.firebase:firebase-core:17.0.1'
     // Expresso Junit
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'

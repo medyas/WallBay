@@ -8,13 +8,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.transition.TransitionInflater;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -78,8 +78,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
     private FirebaseAnalytics mFirebaseAnalytics;
 
     //TODO: add slideshow - favorite images wallpaper slide - relaxing audio
-    // TODO: migrate to androidX and Kotlin
-    // TODO: add drawable dependency
+    // TODO: migrate to and Kotlin
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements GetStartedFragmen
                     if(!binding.navigation.isInflated()) {
                         binding.navigation.getViewStub().inflate();
                     }
-                    binding.drawerLayout.openDrawer(Gravity.START);
+                    binding.drawerLayout.openDrawer(GravityCompat.START);
                 }
             });
         } else {
