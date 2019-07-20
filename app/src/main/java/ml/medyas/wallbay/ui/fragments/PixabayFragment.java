@@ -18,18 +18,12 @@ import androidx.fragment.app.Fragment;
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.adapters.pixabay.PixabayViewPagerAdapter;
 import ml.medyas.wallbay.databinding.FragmentPixabayBinding;
+import ml.medyas.wallbay.utils.Utils;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnPixabayFragmentInteractions} interface
- * to handle interaction events.
- * Use the {@link PixabayFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class PixabayFragment extends Fragment {
 
-    private OnPixabayFragmentInteractions mListener;
+    private Utils.OnFragmentInteractions mListener;
     public static final String TAG = "ml.medyas.wallbay.ui.fragments.PixabayFragment";
 
     public PixabayFragment() {
@@ -109,8 +103,8 @@ public class PixabayFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnPixabayFragmentInteractions) {
-            mListener = (OnPixabayFragmentInteractions) context;
+        if (context instanceof Utils.OnFragmentInteractions) {
+            mListener = (Utils.OnFragmentInteractions) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -128,18 +122,4 @@ public class PixabayFragment extends Fragment {
         super.onResume();
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnPixabayFragmentInteractions {
-        void onAddFragment(Fragment fragment);
-        void updateToolbarTitle(String title);
-    }
 }

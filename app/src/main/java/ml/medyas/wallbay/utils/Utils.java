@@ -13,6 +13,8 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.fragment.app.Fragment;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -195,5 +197,10 @@ public class Utils {
 
         return activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
+    }
+
+    public interface OnFragmentInteractions {
+        void onAddFragment(Fragment fragment);
+        void updateToolbarTitle(String title);
     }
 }

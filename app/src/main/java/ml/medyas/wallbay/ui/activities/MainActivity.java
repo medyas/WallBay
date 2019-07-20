@@ -46,19 +46,17 @@ import ml.medyas.wallbay.ui.fragments.PexelsFragment;
 import ml.medyas.wallbay.ui.fragments.PixabayFragment;
 import ml.medyas.wallbay.ui.fragments.PixabayViewPagerFragment;
 import ml.medyas.wallbay.ui.fragments.SearchFragment;
-import ml.medyas.wallbay.ui.fragments.UnsplashCollectionsFragment;
 import ml.medyas.wallbay.ui.fragments.UnsplashDefaultVPFragment;
 import ml.medyas.wallbay.ui.fragments.UnsplashFragment;
 import ml.medyas.wallbay.utils.DetailsTransition;
+import ml.medyas.wallbay.utils.Utils;
 import ml.medyas.wallbay.viewmodels.FavoriteViewModel;
 import ml.medyas.wallbay.widget.WallbayWidget;
 
 import static ml.medyas.wallbay.utils.Utils.INTEREST_CATEGORIES;
 
 public class MainActivity extends AppCompatActivity implements GetStartedFragment.OnGetStartedFragmentInteractions, BaseFragment.OnBaseFragmentInteractions,
-        ImageDetailsFragment.OnImageDetailsFragmentInteractions, FavoriteFragment.onFavoriteFragmentInteractions, PixabayFragment.OnPixabayFragmentInteractions,
-        UnsplashFragment.OnUnsplashFragmentInteractions, PexelsFragment.OnPexelsFragmentInteractions, SearchFragment.OnSearchFragmentInteractions,
-        AboutFragment.OnFragmentInteractionListener, ForYouFragment.OnForYouFragmentInteractions, UnsplashCollectionsFragment.UnsplashCollectionInterface,
+        Utils.OnFragmentInteractions, ImageDetailsFragment.OnImageDetailsFragmentInteractions, FavoriteFragment.onFavoriteFragmentInteractions,
         ImageDetailsInfoDialog.OnImageDialogInteractions {
 
     public static final String FIRST_START = "first_start";

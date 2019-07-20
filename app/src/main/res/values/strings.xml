@@ -117,4 +117,5 @@
     <string name="edit_image">edit image</string>
     <string name="get_image_information">get image information</string>
     <string name="show_and_hide_image_actions">show and hide image actions</string>
+    <string name="download_retry">Retry</string>
 </resources>

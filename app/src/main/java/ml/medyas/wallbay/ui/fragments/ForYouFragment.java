@@ -35,7 +35,7 @@ import static ml.medyas.wallbay.utils.Utils.getNetworkStatus;
  * create an instance of this fragment.
  */
 public class ForYouFragment extends BaseFragment implements java.util.Observer {
-    private OnForYouFragmentInteractions mListener;
+    private Utils.OnFragmentInteractions mListener;
     private SearchViewModel mViewModel;
 
     public static final String TAG = "ml.medyas.wallbay.ui.fragments.ForYouFragment";
@@ -105,8 +105,8 @@ public class ForYouFragment extends BaseFragment implements java.util.Observer {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnForYouFragmentInteractions) {
-            mListener = (OnForYouFragmentInteractions) context;
+        if (context instanceof Utils.OnFragmentInteractions) {
+            mListener = (Utils.OnFragmentInteractions) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -143,9 +143,5 @@ public class ForYouFragment extends BaseFragment implements java.util.Observer {
         }
     }
 
-    public interface OnForYouFragmentInteractions {
-        void onAddFragment(Fragment fragment);
-        void reCreateFragment(Fragment fragment);
-    }
 
 }

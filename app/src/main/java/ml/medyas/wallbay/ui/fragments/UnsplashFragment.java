@@ -19,17 +19,11 @@ import androidx.fragment.app.Fragment;
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.adapters.unsplash.UnsplashViewPagerAdapter;
 import ml.medyas.wallbay.databinding.FragmentUnsplashBinding;
+import ml.medyas.wallbay.utils.Utils;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnUnsplashFragmentInteractions} interface
- * to handle interaction events.
- * Use the {@link UnsplashFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class UnsplashFragment extends Fragment {
-    private OnUnsplashFragmentInteractions mListener;
+    private Utils.OnFragmentInteractions mListener;
     public static final String TAG = "ml.medyas.wallbay.ui.fragments.UnsplashFragment";
 
     public UnsplashFragment() {
@@ -107,8 +101,8 @@ public class UnsplashFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnUnsplashFragmentInteractions) {
-            mListener = (OnUnsplashFragmentInteractions) context;
+        if (context instanceof Utils.OnFragmentInteractions) {
+            mListener = (Utils.OnFragmentInteractions) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -121,18 +115,5 @@ public class UnsplashFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnUnsplashFragmentInteractions {
-        void onAddFragment(Fragment fragment);
-        void updateToolbarTitle(String title);
-    }
+
 }

@@ -13,7 +13,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -30,8 +29,6 @@ import java.util.List;
 
 import ml.medyas.wallbay.BuildConfig;
 import ml.medyas.wallbay.R;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -51,6 +48,9 @@ public class WallpaperService extends IntentService {
     private static final String EXTRA_PARAM1 = "ml.medyas.wallbay.services.extra.IMAGE_ITEM";
     private static final String EXTRA_PARAM2 = "ml.medyas.wallbay.services.extra.IMAGE_PROVIDER";
     public static final String UNSPLASH_COM = "https://api.unsplash.com";
+
+
+    private static final int notificationId = 124521;
 
     public WallpaperService() {
         super("WallpaperService");
@@ -102,15 +102,7 @@ public class WallpaperService extends IntentService {
         }
     }
 
-    private void handleBulkDownload(List<String> urls) {
-        for (String url : urls) {
-            if (url.contains(UNSPLASH_COM)) {
-                retrieveUrl(url);
-            } else {
-                downloadImage(url);
-            }
-        }
-    }
+
 
     /**
      * Handle action in the provided background thread with the provided
@@ -128,7 +120,6 @@ public class WallpaperService extends IntentService {
             channel.setDescription(description);
             NotificationManager notificationManager1 = getSystemService(NotificationManager.class);
             notificationManager1.createNotificationChannel(channel);
-
         }
 
         final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID);
@@ -139,9 +130,26 @@ public class WallpaperService extends IntentService {
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .setAutoCancel(false)
                 .setProgress(0, 0, true);
-        int notificationId = 124521;
         notificationManager.notify(notificationId, mBuilder.build());
 
+        if (url.contains(UNSPLASH_COM)) {
+            retrieveUrl(url, new OnRetrieveDownloadURL() {
+                @Override
+                public void onSuccess(String u) {
+                    setImageAsWallpaper(u, notificationManager, mBuilder, notificationId);
+                }
+
+                @Override
+                public void onFailed() {
+                    urlDownloadFailed();
+                }
+            });
+        } else {
+            setImageAsWallpaper(url, notificationManager, mBuilder, notificationId);
+        }
+    }
+
+    private void setImageAsWallpaper(String url, NotificationManagerCompat notificationManager, NotificationCompat.Builder mBuilder, int notificationId) {
         Bitmap resource = null;
         try {
             /*resource = GlideApp.with(getApplicationContext())
@@ -162,26 +170,23 @@ public class WallpaperService extends IntentService {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.could_not_set_image), Toast.LENGTH_SHORT).show();
             Intent retry = new Intent(this, WallpaperService.class);
             retry.setAction(ACTION_SET_WALLPAPER);
             retry.putExtra(EXTRA_PARAM1, url);
             PendingIntent retryIntent = PendingIntent.getService(this, 0, retry, 0);
             mBuilder.setContentText(getResources().getString(R.string.could_not_get_image))
-                    .addAction(R.drawable.ic_retry, "Retry", retryIntent)
+                    .addAction(R.drawable.ic_retry, getString(R.string.download_retry), retryIntent)
                     .setProgress(0, 0, false);
             notificationManager.notify(notificationId, mBuilder.build());
             return;
         }
 
-        Toast.makeText(getApplicationContext(), getResources().getString(R.string.image_loaded), Toast.LENGTH_SHORT).show();
         WallpaperManager myWallpaperManager
                 = WallpaperManager.getInstance(getApplicationContext());
         String text = getResources().getString(R.string.could_not_get_image);
         if (resource != null) {
             try {
                 myWallpaperManager.setBitmap(resource);
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.image_set), Toast.LENGTH_SHORT).show();
                 text = getResources().getString(R.string.dwonload_complete);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -201,11 +206,40 @@ public class WallpaperService extends IntentService {
      */
     private void handleDownloadWallpaperAction(String url, int code) {
         if (code == 2) {
-            retrieveUrl(url);
+            retrieveUrl(url, new OnRetrieveDownloadURL() {
+                @Override
+                public void onSuccess(String url) {
+                    downloadImage(url);
+                }
+
+                @Override
+                public void onFailed() {
+                    urlDownloadFailed();
+                }
+            });
         } else {
             downloadImage(url);
         }
+    }
 
+    private void handleBulkDownload(List<String> urls) {
+        for (String url : urls) {
+            if (url.contains(UNSPLASH_COM)) {
+                retrieveUrl(url, new OnRetrieveDownloadURL() {
+                    @Override
+                    public void onSuccess(String url) {
+                        downloadImage(url);
+                    }
+
+                    @Override
+                    public void onFailed() {
+                        urlDownloadFailed();
+                    }
+                });
+            } else {
+                downloadImage(url);
+            }
+        }
     }
 
     private void downloadImage(String url) {
@@ -241,56 +275,59 @@ public class WallpaperService extends IntentService {
         downloadManager.enqueue(request);
     }
 
-    private void retrieveUrl(String u) {
+    private void retrieveUrl(String u, final OnRetrieveDownloadURL listener) {
         String url = String.format("%s?client_id=%s", u, BuildConfig.UnsplashApiKey);
         OkHttpClient client = new OkHttpClient();
         Request.Builder builder = new Request.Builder();
         builder.url(url);
         Request request = builder.build();
         try {
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
-                    String CHANNEL_ID = "WALLPAPER_DOWNLOAD";
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        CharSequence name = getString(R.string.wallpaper_download);
-                        String description = getString(R.string.notify_download);
-                        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-                        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-                        channel.setDescription(description);
-                        NotificationManager notificationManager1 = getSystemService(NotificationManager.class);
-                        notificationManager1.createNotificationChannel(channel);
-
-                    }
-
-                    final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID);
-                    mBuilder.setContentTitle(getString(R.string.wallpaper_download))
-                            .setColor(getResources().getColor(R.color.colorLightTransparent))
-                            .setContentText(getString(R.string.download_failed))
-                            .setSmallIcon(R.drawable.ic_error_black_24dp)
-                            .setPriority(NotificationCompat.PRIORITY_LOW);
-                    int notificationId = 124521;
-                    notificationManager.notify(notificationId, mBuilder.build());
+            Response response = client.newCall(request).execute();
+            if(response.isSuccessful()) {
+                String temp = response.body().string();
+                JSONObject json;
+                try {
+                    json = new JSONObject(temp);
+                    listener.onSuccess(json.optString("url"));
+                } catch (JSONException e) {
+                    listener.onFailed();
+                    e.printStackTrace();
                 }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    String temp = response.body().string();
-                    JSONObject json = null;
-                    try {
-                        json = new JSONObject(temp);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    downloadImage(json.optString("url"));
-                }
-            });
+//                    downloadImage(json.optString("url"));
+            } else {
+                listener.onFailed();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
 
+    private void urlDownloadFailed() {
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+        String CHANNEL_ID = "WALLPAPER_DOWNLOAD";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.wallpaper_download);
+            String description = getString(R.string.notify_download);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager1 = getSystemService(NotificationManager.class);
+            notificationManager1.createNotificationChannel(channel);
+
+        }
+
+        final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID);
+        mBuilder.setContentTitle(getString(R.string.wallpaper_download))
+                .setColor(getResources().getColor(R.color.colorLightTransparent))
+                .setContentText(getString(R.string.download_failed))
+                .setSmallIcon(R.drawable.ic_error_black_24dp)
+                .setPriority(NotificationCompat.PRIORITY_LOW);
+        notificationManager.notify(notificationId, mBuilder.build());
+    }
+
+    interface OnRetrieveDownloadURL {
+        void onSuccess(String url);
+        void onFailed();
+    }
 }

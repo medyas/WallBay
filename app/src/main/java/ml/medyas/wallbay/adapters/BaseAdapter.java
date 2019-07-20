@@ -30,14 +30,14 @@ public class BaseAdapter extends SelectableClass {
 
     @NonNull
     @Override
-    public ForYouViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+    public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         ImageEntityItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.image_entity_item, parent, false);
-        return new ForYouViewHolder(binding);
+        return new BaseViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-        final ForYouViewHolder holder = (ForYouViewHolder) viewHolder;
+        final BaseViewHolder holder = (BaseViewHolder) viewHolder;
 
         if (getItem(i) != null) {
             holder.imageEntityItemBinding.setImageItem(getItem(i));
@@ -118,10 +118,10 @@ public class BaseAdapter extends SelectableClass {
         boolean onItemLongClicked(int position);
     }
 
-    public class ForYouViewHolder extends RecyclerView.ViewHolder {
+    public class BaseViewHolder extends RecyclerView.ViewHolder {
         private ImageEntityItemBinding imageEntityItemBinding;
 
-        public ForYouViewHolder(@NonNull ImageEntityItemBinding itemView) {
+        public BaseViewHolder(@NonNull ImageEntityItemBinding itemView) {
             super(itemView.getRoot());
             imageEntityItemBinding = itemView;
         }

@@ -40,7 +40,7 @@ public class UnsplashCollectionsFragment extends Fragment implements CollectionR
     private FragmentBaseBinding binding;
     private int position;
     private String query;
-    private UnsplashCollectionInterface mListener;
+    private Utils.OnFragmentInteractions mListener;
 
 
     public static Fragment newInstance(int position) {
@@ -223,8 +223,8 @@ public class UnsplashCollectionsFragment extends Fragment implements CollectionR
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof UnsplashCollectionInterface) {
-            mListener = (UnsplashCollectionInterface) context;
+        if (context instanceof Utils.OnFragmentInteractions) {
+            mListener = (Utils.OnFragmentInteractions) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -249,11 +249,4 @@ public class UnsplashCollectionsFragment extends Fragment implements CollectionR
         mListener.updateToolbarTitle(collectionEntity.getTitle());
     }
 
-
-
-
-    public interface UnsplashCollectionInterface {
-        void onAddFragment(Fragment fragment);
-        void updateToolbarTitle(String title);
-    }
 }

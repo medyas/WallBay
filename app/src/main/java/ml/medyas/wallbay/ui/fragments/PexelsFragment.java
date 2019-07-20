@@ -18,17 +18,11 @@ import androidx.fragment.app.Fragment;
 import ml.medyas.wallbay.R;
 import ml.medyas.wallbay.adapters.pexels.PexelsViewPagerAdapter;
 import ml.medyas.wallbay.databinding.FragmentPexelsBinding;
+import ml.medyas.wallbay.utils.Utils;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnPexelsFragmentInteractions} interface
- * to handle interaction events.
- * Use the {@link PexelsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class PexelsFragment extends Fragment {
-    private OnPexelsFragmentInteractions mListener;
+    private Utils.OnFragmentInteractions mListener;
     public static final String TAG = "ml.medyas.wallbay.ui.fragments.PexelsFragment";
 
     public PexelsFragment() {
@@ -108,8 +102,8 @@ public class PexelsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnPexelsFragmentInteractions) {
-            mListener = (OnPexelsFragmentInteractions) context;
+        if (context instanceof Utils.OnFragmentInteractions) {
+            mListener = (Utils.OnFragmentInteractions) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -122,20 +116,5 @@ public class PexelsFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnPexelsFragmentInteractions {
 
-        void onAddFragment(Fragment newInstance);
-
-        void updateToolbarTitle(String text);
-    }
 }
